@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bangumi_win"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="BGM-Win" Height="930" Width="1200">
     <Grid>
-        <TextBlock Name="textBlockOutput">Nothing</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Name="name">Name</TextBlock>
+            <TextBlock Name="name_cn">Name_CN</TextBlock>
+        </StackPanel>
     </Grid>
 </Window>

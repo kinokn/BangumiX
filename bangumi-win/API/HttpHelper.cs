@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 
+
 namespace bangumi_win.API
 {
     class HttpHelper
@@ -16,23 +17,44 @@ namespace bangumi_win.API
             BaseAddress = new Uri("https://api.bgm.tv/")
         };
 
-        public static async Task<string> GetSubject(int id, int responseGroup = 0)
+        public static async Task<dynamic> GetSubject(int id, int responseGroup = 0)
+        {
+
+            string responseBody = await GetSubjectString(id, responseGroup);
+            dynamic subject = new SubjectSmall();
+            switch (responseGroup)
+            {
+                case 0:
+                    subject = JsonConvert.DeserializeObject<SubjectSmall>(responseBody);
+                    break;
+                case 1:
+                    subject = JsonConvert.DeserializeObject<SubjectLarge>(responseBody);
+                    break;
+                case 2:
+                    subject = JsonConvert.DeserializeObject<SubjectLarge>(responseBody);
+                    break;
+            }
+            return subject;
+        }
+
+        public static async Task<string> GetSubjectString(int id, int responseGroup = 0)
         {
             try
             {
-                string url = "subject/" + id;
-                if (responseGroup != 0)
+                string url = String.Format("subject/{0}?responseGroup=", id);
+                switch (responseGroup)
                 {
-                    url += "?responseGroup=";
-                    if (responseGroup == 1)
-                    {
+                    case 0:
+                        url += "small";
+                        break;
+                    case 1:
                         url += "medium";
-                    }
-                    else
-                    {
+                        break;
+                    case 2:
                         url += "large";
-                    }
+                        break;
                 }
+
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();

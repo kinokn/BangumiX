@@ -30,7 +30,9 @@ namespace bangumi_win
 
         private async void ChangeOutput()
         {
-            textBlockOutput.Text = await API.HttpHelper.GetSubject(12, 1);
+            var subjectInfo = await API.HttpHelper.GetSubject(12, 2);
+            name.Text = subjectInfo.name;
+            name_cn.Text = subjectInfo.name_cn;
         }
     }
 }
