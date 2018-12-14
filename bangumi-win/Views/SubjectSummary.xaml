@@ -5,49 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:bangumi_win.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="700">
+             d:DesignHeight="550" d:DesignWidth="700" 
+             Foreground="GhostWhite">
     <UserControl.Resources>
         <Style TargetType="DockPanel" x:Key="DockPanelDetail">
             <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="Height" Value="25"/>
-                    <Setter Property="Margin" Value="2 0 0 0"/>
-                    <Setter Property="BorderThickness" Value="2 0 0 0" />
-                    <Setter Property="BorderBrush" Value="DimGray" />
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Margin" Value="0 0 0 0"/>
+                    <Setter Property="BorderThickness" Value="2 0 0 0"/>
+                    <Setter Property="BorderBrush" Value="DimGray"/>
                 </Style>
             </Style.Resources>
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockDetailLeft">
-            <Setter Property="DockPanel.Dock" Value="Left" />
-            <Setter Property="Margin" Value="5 0 0 0" />
-            <Setter Property="FontFamily" Value="SimSun" />
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+            <Setter Property="FontFamily" Value="SimSun"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockDetailRight">
-            <Setter Property="DockPanel.Dock" Value="Right" />
-            <Setter Property="Margin" Value="0 0 20 0" />
-            <Setter Property="FontFamily" Value="SimSun" />
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Margin" Value="0 0 10 0"/>
+            <Setter Property="FontFamily" Value="SimSun"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Right"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockSummary">
             <Setter Property="FontFamily" Value="SimHei"/>
-            <Setter Property="FontSize" Value="18" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0 3" />
-            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0 3"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockSummaryContent">
             <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-            <Setter Property="Margin" Value="0 5 16 5" />
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0 5 16 5"/>
+            <Setter Property="LineHeight" Value="24"/>
         </Style>
     </UserControl.Resources>
 
@@ -61,41 +64,42 @@
             <StackPanel>
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="话数" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding eps_count}" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="话数"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding eps_count}"/>
                 </DockPanel>
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="放送开始" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding air_date}" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="放送开始"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding air_date}"/>
                 </DockPanel>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="类型" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding type_parsed}" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="类型"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding type_parsed}"/>
                 </DockPanel>
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="放送星期" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding air_weekday_parsed}" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="放送星期"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding air_weekday_parsed}"/>
                 </DockPanel>
             </StackPanel>
             <StackPanel Grid.Column="2">
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="评分" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}" Margin="0 0 25 0" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="评分"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}" Margin="0 0 25 0"/>
                 </DockPanel>
                 <DockPanel Style="{StaticResource DockPanelDetail}">
                     <Border/>
-                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="当前放送" />
-                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}" Margin="0 0 25 0" />
+                    <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="当前放送"/>
+                    <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}" Margin="0 0 25 0"/>
                 </DockPanel>
             </StackPanel>
         </Grid>
-        <TextBlock Text="剧情简介" Style="{StaticResource TextBlockSummary}" />
+        <Line StrokeThickness="2" Stroke="DimGray" X1="30" X2="650" Margin="0 10"/>
+        <TextBlock Text="剧情简介" Style="{StaticResource TextBlockSummary}"/>
         <TextBlock Text="{Binding summary}" Style="{StaticResource TextBlockSummaryContent}"/>
     </StackPanel>
 </UserControl>

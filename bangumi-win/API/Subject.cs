@@ -79,11 +79,11 @@ namespace bangumi_win.API
     }
     public class SubjectLarge : SubjectSmall
     {
-        new public Episode[] eps { get; set; }
-        public Character[] crt { get; set; }
-        public Staff[] staff { get; set; }
-        public Topic[] topic { get; set; }
-        public Blog[] blog { get; set; }
+        new public List<Episode> eps { get; set; }
+        public List<Character> crt { get; set; }
+        public List<Staff> staff { get; set; }
+        public List<Topic> topic { get; set; }
+        public List<Blog> blog { get; set; }
     }
     public class Episode
     {
@@ -126,7 +126,7 @@ namespace bangumi_win.API
         public dynamic source { get; set; }
         public dynamic name_cn { get; set; }
         public dynamic cv { get; set; }
-        public Actor[] actors { get; set; }
+        public List<Actor> actors { get; set; }
     }
     //public class Info
     //{
