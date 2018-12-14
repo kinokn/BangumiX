@@ -18,11 +18,16 @@ using bangumi_win.API;
 namespace bangumi_win.Views
 {
     /// <summary>
-    /// Interaction logic for SubjectSummaryPage.xaml
+    /// Interaction logic for SubjectSummary.xaml
     /// </summary>
-    public partial class SubjectSummaryPage : Page
+    public partial class SubjectSummary : UserControl
     {
-        public SubjectSummaryPage(SubjectLarge subject)
+        public SubjectSummary()
+        {
+            InitializeComponent();
+        }
+
+        public SubjectSummary(SubjectLarge subject)
         {
             InitializeComponent();
             DataContext = subject;

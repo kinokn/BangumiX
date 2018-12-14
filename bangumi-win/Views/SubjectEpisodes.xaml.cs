@@ -14,28 +14,23 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using bangumi_win.API;
-using bangumi_win.Views;
 
-namespace bangumi_win
+namespace bangumi_win.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SubjectEpisodes.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SubjectEpisodes : UserControl
     {
-        public MainWindow()
+        public SubjectEpisodes()
         {
             InitializeComponent();
-            AddSubjectPage();
         }
 
-        private async void AddSubjectPage()
+        public SubjectEpisodes(SubjectLarge subject)
         {
-            var subjectInfo = await HttpHelper.GetSubject(12, 2);
-            //var subjectInfo = await HttpHelper.GetSubject(218971, 2);
-            var subject = new Subject(subjectInfo);
-            gridMain.Children.Add(subject);
-            Grid.SetColumn(subject, 3);
+            InitializeComponent();
+            DataContext = subject;
         }
     }
 }
