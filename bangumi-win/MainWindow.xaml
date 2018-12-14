@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bangumi_win"
         mc:Ignorable="d"
-        Title="BGM-Win" Height="930" Width="1200">
-    <Grid>
-        <Grid.RowDefinitions>
+        Title="BGM-Win" Height="800" Width="1000"
+        FontFamily="SimHei">
+
+    <Grid Name="gridMain">
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions> -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="600"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Name="name">Name</TextBlock>
-            <TextBlock Name="name_cn">Name_CN</TextBlock>
-        </StackPanel>
     </Grid>
+
 </Window>

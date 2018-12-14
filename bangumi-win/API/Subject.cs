@@ -24,7 +24,7 @@ namespace bangumi_win.API
         public Dictionary<string, string> images { get; set; }
         public Dictionary<string, uint> collection { get; set; }
 
-        public static string ParseType(int type)
+        private static string ParseType(int type)
         {
             switch (type)
             {
@@ -41,7 +41,14 @@ namespace bangumi_win.API
             }
             return string.Empty;
         }
-        public static string ParseDate(int day)
+        public string type_parsed
+        {
+            get
+            {
+                return ParseType(type);
+            }
+        }
+        private static string ParseDate(int day)
         {
             switch (day)
             {
@@ -61,6 +68,13 @@ namespace bangumi_win.API
                     return "周日";
             }
             return string.Empty;
+        }
+        public string air_weekday_parsed
+        {
+            get
+            {
+                return ParseDate(air_weekday);
+            }
         }
     }
     public class SubjectLarge : SubjectSmall

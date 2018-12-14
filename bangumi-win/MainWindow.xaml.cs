@@ -25,14 +25,17 @@ namespace bangumi_win
         public MainWindow()
         {
             InitializeComponent();
-            ChangeOutput();
+            AddSubjectPage();
         }
 
-        private async void ChangeOutput()
+        private async void AddSubjectPage()
         {
-            var subjectInfo = await API.HttpHelper.GetSubject(12, 2);
-            name.Text = subjectInfo.name;
-            name_cn.Text = subjectInfo.name_cn;
+            var subjectInfo = await HttpHelper.GetSubject(12, 2);
+            var subjectPage = new Views.SubjectPage(subjectInfo);
+            var subjectFrame = new Frame();
+            subjectFrame.Navigate(subjectPage);
+            gridMain.Children.Add(subjectFrame);
+            Grid.SetColumn(subjectFrame, 2);
         }
     }
 }
