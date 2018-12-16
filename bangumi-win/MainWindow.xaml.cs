@@ -31,7 +31,7 @@ namespace bangumi_win
 
         private async void AddSubjectPage()
         {
-            var subjectInfo = await HttpHelper.GetSubject(12, 2);
+            var subjectInfo = await HttpHelper.GetSubject(23686, 2);
             //var subjectInfo = await HttpHelper.GetSubject(218971, 2);
             var subject = new Subject(subjectInfo);
             gridMain.Children.Add(subject);

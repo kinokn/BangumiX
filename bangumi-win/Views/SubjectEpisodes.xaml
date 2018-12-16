@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:bangumi_win.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="700"
+             d:DesignHeight="500" d:DesignWidth="700"
              Foreground="GhostWhite">
 
     <UserControl.Resources>
@@ -22,8 +22,8 @@
         </Style>
         <Style TargetType="Border" x:Key="BorderDockPanel">
             <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0 0 20 0"/>
             <Setter Property="Padding" Value="5 0"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
             <Setter Property="BorderThickness" Value="2 0 2 0" />
             <Setter Property="BorderBrush" Value="DimGray" />
         </Style>
@@ -31,7 +31,7 @@
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
-            <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding eps}" AlternationCount="2">
+            <ItemsControl ItemsSource="{Binding eps}" AlternationCount="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel/>
@@ -42,7 +42,7 @@
                         <StackPanel>
                             <Border x:Name="BorderEpisode" Style="{StaticResource BorderDockPanel}">
                                 <DockPanel Style="{StaticResource DockPanelEpisode}">
-                                    <TextBlock Text="{Binding sort}" Margin="10 0 0 0"/>
+                                    <TextBlock Text="{Binding sort}" Margin="5 0 0 0"/>
                                     <TextBlock Text="."/>
                                     <TextBlock Text="{Binding name}"/>
                                     <TextBlock Text=" / "/>
@@ -50,7 +50,6 @@
                                     <Button Content="Play" Width="30" DockPanel.Dock="Right"/>
                                 </DockPanel>
                             </Border>
-                            <Rectangle Height="10"/>
                         </StackPanel>
                         <DataTemplate.Triggers>
                             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
