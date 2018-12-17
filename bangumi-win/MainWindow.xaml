@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="BGM-Win" Height="800" Width="1000"
         MinHeight="800" MinWidth="1000"
-        FontFamily="SimHei">
+        FontFamily="SimHei"
+        Foreground="GhostWhite">
 
     <Grid Name="gridMain" Background="Black">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="700"/>

@@ -116,6 +116,7 @@ namespace bangumi_win.API
         public uint comment { get; set; }
         public uint collcts { get; set; }
         public Info info { get; set; }
+        public List<Actor> actors { get; set; }
     }
     public class Info
     {
@@ -126,7 +127,6 @@ namespace bangumi_win.API
         public dynamic source { get; set; }
         public dynamic name_cn { get; set; }
         public dynamic cv { get; set; }
-        public List<Actor> actors { get; set; }
     }
     //public class Info
     //{

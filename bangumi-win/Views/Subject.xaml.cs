@@ -25,6 +25,7 @@ namespace bangumi_win.Views
         private static SubjectLarge subject = new SubjectLarge();
         private static SubjectSummary subjectSummary;
         private static SubjectEpisodes subjectEpisodes;
+        private static SubjectCharacters subjectCharacters;
 
         public Subject()
         {
@@ -37,6 +38,7 @@ namespace bangumi_win.Views
             DataContext = subject;
             subjectSummary = new SubjectSummary(subject);
             subjectEpisodes = new SubjectEpisodes(subject);
+            subjectCharacters = new SubjectCharacters(subject);
 
             gridMain.Children.Add(subjectSummary);
             Grid.SetRow(subjectSummary, 2);
@@ -58,6 +60,13 @@ namespace bangumi_win.Views
             Grid.SetRow(subjectEpisodes, 2);
         }
 
+        private void AddCharacter()
+        {
+            Remove();
+            gridMain.Children.Add(subjectCharacters);
+            Grid.SetRow(subjectCharacters, 2);
+        }
+
         private void ButtonSummary_Click(object sender, RoutedEventArgs e)
         {
             AddSummary();
@@ -70,7 +79,7 @@ namespace bangumi_win.Views
 
         private void ButtonCharacter_Click(object sender, RoutedEventArgs e)
         {
-
+            AddCharacter();
         }
 
         private void ButtonDetail_Click(object sender, RoutedEventArgs e)
