@@ -101,6 +101,8 @@
         </Grid>
         <Line StrokeThickness="2" Stroke="DimGray" X1="20" X2="680" Margin="0 0 0 10"/>
         <TextBlock Text="剧情简介" Style="{StaticResource TextBlockSummary}"/>
-        <TextBlock Text="{Binding summary}" Style="{StaticResource TextBlockSummaryContent}"/>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <TextBlock Text="{Binding summary}" Style="{StaticResource TextBlockSummaryContent}"/>
+        </ScrollViewer>
     </StackPanel>
 </UserControl>

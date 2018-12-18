@@ -32,5 +32,6 @@ namespace bangumi_win.Views
             InitializeComponent();
             DataContext = subject;
         }
+
     }
 }

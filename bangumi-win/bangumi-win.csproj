@@ -79,6 +79,9 @@
     <Compile Include="Views\SubjectCharacters.xaml.cs">
       <DependentUpon>SubjectCharacters.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SubjectCharactersDetails.xaml.cs">
+      <DependentUpon>SubjectCharactersDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubjectEpisodes.xaml.cs">
       <DependentUpon>SubjectEpisodes.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\SubjectCharacters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubjectCharactersDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
