@@ -25,9 +25,9 @@
                     <Setter Property="FontFamily" Value="SimHei"/>
                     <Setter Property="FontSize" Value="25"/>
                     <Setter Property="Foreground" Value="Silver"/>
-                    <Setter Property="TextWrapping" Value="Wrap" />
+                    <Setter Property="TextWrapping" Value="Wrap"/>
                     <Style.Triggers>
-                        <Trigger Property="TextBlock.IsMouseOver" Value="True" >
+                        <Trigger Property="TextBlock.IsMouseOver" Value="True">
                             <Setter Property="Foreground" Value="LightGray"/>
                             <Setter Property="TextBlock.Effect">
                                 <Setter.Value>
@@ -46,7 +46,7 @@
                     <Setter Property="Width" Value="500"/>
                     <Setter Property="Margin" Value="5"/>
                     <Setter Property="FontFamily" Value="SimHei"/>
-                    <Setter Property="TextWrapping" Value="Wrap" />
+                    <Setter Property="TextWrapping" Value="Wrap"/>
                 </Style>
             </Style.Resources>
         </Style>
@@ -54,14 +54,15 @@
 
     <Grid Name="gridMain">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Image Source="{Binding images[large]}" HorizontalAlignment="Left" Margin="10"/>
             <StackPanel Style="{StaticResource StackPanelTitle}" Grid.Column="1">
@@ -71,12 +72,12 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Style="{StaticResource ButtonMenu}" Name="buttonSummary" Grid.Column="0" Click="ButtonSummary_Click">
                 <TextBlock>概览</TextBlock>
@@ -97,5 +98,6 @@
                 <TextBlock>评论</TextBlock>
             </Button>
         </Grid>
+        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="10" X2="690"/>
     </Grid>
 </UserControl>

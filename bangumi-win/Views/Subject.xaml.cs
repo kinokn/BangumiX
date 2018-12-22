@@ -41,30 +41,30 @@ namespace bangumi_win.Views
             subjectCharacters = new SubjectCharacters(subject);
 
             gridMain.Children.Add(subjectSummary);
-            Grid.SetRow(subjectSummary, 2);
+            Grid.SetRow(subjectSummary, 3);
         }
         private void Remove()
         {
-            gridMain.Children.RemoveAt(2);
+            gridMain.Children.RemoveAt(3);
         }
         private void AddSummary()
         {
             Remove();
             gridMain.Children.Add(subjectSummary);
-            Grid.SetRow(subjectSummary, 2);
+            Grid.SetRow(subjectSummary, 3);
         }
         private void AddEpisode()
         {
             Remove();
             gridMain.Children.Add(subjectEpisodes);
-            Grid.SetRow(subjectEpisodes, 2);
+            Grid.SetRow(subjectEpisodes, 3);
         }
 
         private void AddCharacter()
         {
             Remove();
             gridMain.Children.Add(subjectCharacters);
-            Grid.SetRow(subjectCharacters, 2);
+            Grid.SetRow(subjectCharacters, 3);
         }
 
         private void ButtonSummary_Click(object sender, RoutedEventArgs e)

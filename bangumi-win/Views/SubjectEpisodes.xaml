@@ -23,7 +23,7 @@
             <Setter Property="Height" Value="30"/>
             <Setter Property="Padding" Value="5 0"/>
             <Setter Property="Margin" Value="0 0 0 10"/>
-            <Setter Property="BorderThickness" Value="2 0 2 0" />
+            <Setter Property="BorderThickness" Value="4 0 0 0" />
             <Setter Property="BorderBrush" Value="DimGray" />
         </Style>
     </UserControl.Resources>
