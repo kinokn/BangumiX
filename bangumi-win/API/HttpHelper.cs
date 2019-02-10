@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 using System.Net.Http;
 using Newtonsoft.Json;
+using HtmlAgilityPack;
 
 
 namespace bangumi_win.API
@@ -16,6 +18,31 @@ namespace bangumi_win.API
         {
             BaseAddress = new Uri("https://api.bgm.tv/")
         };
+
+        public static async Task<dynamic> CheckLogin()
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync("");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(responseBody);
+                var form = htmlDoc.DocumentNode.SelectSingleNode("//form[@id=\"loginForm\"]");
+                if (form != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                return e.Message;
+            }
+        }
 
         public static async Task<dynamic> GetSubject(int id, int responseGroup = 0)
         {

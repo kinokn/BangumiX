@@ -99,7 +99,7 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <Line StrokeThickness="2" Stroke="DimGray" X1="10" X2="690" Margin="0 0 0 10"/>
+        <Line StrokeThickness="2" Stroke="DimGray" X1="0" X2="700" Margin="0 0 0 10"/>
         <TextBlock Text="剧情简介" Style="{StaticResource TextBlockSummary}"/>
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
             <TextBlock Text="{Binding summary}" Style="{StaticResource TextBlockSummaryContent}"/>

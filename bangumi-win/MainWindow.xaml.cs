@@ -12,9 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 using bangumi_win.API;
 using bangumi_win.Views;
+using System.Windows.Media.Effects;
 
 namespace bangumi_win
 {
@@ -26,7 +28,23 @@ namespace bangumi_win
         public MainWindow()
         {
             InitializeComponent();
+            CheckLogin();
             AddSubjectPage();
+        }
+
+        private async void CheckLogin()
+        {
+            bool logged = await HttpHelper.CheckLogin();
+            if (logged)
+            {
+                return;
+            }
+            else
+            {
+                gridMain.Effect = new BlurEffect();
+                var popupLogin = new Login();
+                gridWrapper.Children.Add(popupLogin);
+            }
         }
 
         private async void AddSubjectPage()

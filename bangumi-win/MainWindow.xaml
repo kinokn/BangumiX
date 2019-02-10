@@ -10,12 +10,14 @@
         FontFamily="SimHei"
         Foreground="GhostWhite">
 
-    <Grid Name="gridMain" Background="Black">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="700"/>
-        </Grid.ColumnDefinitions>
+    <Grid Name="gridWrapper" Background="Transparent">
+        <Grid Name="gridMain" Background="Black">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="700"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 
 </Window>

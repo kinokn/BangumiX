@@ -98,6 +98,6 @@
                 <TextBlock>评论</TextBlock>
             </Button>
         </Grid>
-        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="10" X2="690"/>
+        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="700"/>
     </Grid>
 </UserControl>
