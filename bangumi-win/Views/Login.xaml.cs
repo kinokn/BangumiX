@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Diagnostics;
+using bangumi_win.Properties;
 
 namespace bangumi_win.Views
 {
@@ -22,24 +22,19 @@ namespace bangumi_win.Views
     /// </summary>
     public partial class Login : UserControl
     {
-        public string username { get; set; }
-        public string password { get; set; }
+        public API.Login user_login = new API.Login();
 
         public Login()
         {
             InitializeComponent();
-            this.DataContext = this;
+            this.DataContext = user_login;
         }
 
-        private void Button_Login_Click(object sender, RoutedEventArgs e)
+        private void LoginClick(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine(username);
-            Debug.WriteLine(password);
-            username = "test1";
-            password = "test2";
         }
 
-        private void Button_Cancel(object sender, RoutedEventArgs e)
+        private void CancelClick(object sender, RoutedEventArgs e)
         {
             Grid parent = (Grid)this.Parent;
             parent.Children.Remove(this);

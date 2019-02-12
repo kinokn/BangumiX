@@ -23,9 +23,9 @@ namespace bangumi_win.Views
     public partial class Subject : UserControl
     {
         private static SubjectLarge subject = new SubjectLarge();
-        private static SubjectSummary subjectSummary;
-        private static SubjectEpisodes subjectEpisodes;
-        private static SubjectCharacters subjectCharacters;
+        private static SubjectSummary subject_summary;
+        private static SubjectEpisodes subject_episodes;
+        private static SubjectCharacters subject_characters;
 
         public Subject()
         {
@@ -36,63 +36,63 @@ namespace bangumi_win.Views
             InitializeComponent();
             subject = s;
             DataContext = subject;
-            subjectSummary = new SubjectSummary(subject);
-            subjectEpisodes = new SubjectEpisodes(subject);
-            subjectCharacters = new SubjectCharacters(subject);
+            subject_summary = new SubjectSummary(subject);
+            subject_episodes = new SubjectEpisodes(subject);
+            subject_characters = new SubjectCharacters(subject);
 
-            gridMain.Children.Add(subjectSummary);
-            Grid.SetRow(subjectSummary, 3);
+            GridMain.Children.Add(subject_summary);
+            Grid.SetRow(subject_summary, 3);
         }
         private void Remove()
         {
-            gridMain.Children.RemoveAt(3);
+            GridMain.Children.RemoveAt(3);
         }
         private void AddSummary()
         {
             Remove();
-            gridMain.Children.Add(subjectSummary);
-            Grid.SetRow(subjectSummary, 3);
+            GridMain.Children.Add(subject_summary);
+            Grid.SetRow(subject_summary, 3);
         }
         private void AddEpisode()
         {
             Remove();
-            gridMain.Children.Add(subjectEpisodes);
-            Grid.SetRow(subjectEpisodes, 3);
+            GridMain.Children.Add(subject_episodes);
+            Grid.SetRow(subject_episodes, 3);
         }
 
         private void AddCharacter()
         {
             Remove();
-            gridMain.Children.Add(subjectCharacters);
-            Grid.SetRow(subjectCharacters, 3);
+            GridMain.Children.Add(subject_characters);
+            Grid.SetRow(subject_characters, 3);
         }
 
-        private void ButtonSummary_Click(object sender, RoutedEventArgs e)
+        private void SummaryClick(object sender, RoutedEventArgs e)
         {
             AddSummary();
         }
 
-        private void ButtonEpisode_Click(object sender, RoutedEventArgs e)
+        private void EpisodeClick(object sender, RoutedEventArgs e)
         {
             AddEpisode();
         }
 
-        private void ButtonCharacter_Click(object sender, RoutedEventArgs e)
+        private void CharacterClick(object sender, RoutedEventArgs e)
         {
             AddCharacter();
         }
 
-        private void ButtonDetail_Click(object sender, RoutedEventArgs e)
+        private void DetailClick(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void ButtonComment_Click(object sender, RoutedEventArgs e)
+        private void CommentClick(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void ButtonReview_Click(object sender, RoutedEventArgs e)
+        private void ReviewClick(object sender, RoutedEventArgs e)
         {
 
         }

@@ -44,32 +44,20 @@ namespace bangumi_win.API
             }
         }
 
-        public static async Task<dynamic> GetSubject(int id, int responseGroup = 0)
+        public class SubjectResult
         {
-
-            string responseBody = await GetSubjectString(id, responseGroup);
-            dynamic subject = new SubjectSmall();
-            switch (responseGroup)
-            {
-                case 0:
-                    subject = JsonConvert.DeserializeObject<SubjectSmall>(responseBody);
-                    break;
-                case 1:
-                    subject = JsonConvert.DeserializeObject<SubjectLarge>(responseBody);
-                    break;
-                case 2:
-                    subject = JsonConvert.DeserializeObject<SubjectLarge>(responseBody);
-                    break;
-            }
-            return subject;
+            public int Status { get; set; }
+            public string ErrorMessage { get; set; }
+            public dynamic Subject { get; set; }
         }
-
-        public static async Task<string> GetSubjectString(int id, int responseGroup = 0)
+        public static async Task<SubjectResult> GetSubject(int id, int response_group = 0)
         {
+            string response_body;
+            SubjectResult subject_result = new SubjectResult();
             try
             {
                 string url = String.Format("subject/{0}?responseGroup=", id);
-                switch (responseGroup)
+                switch (response_group)
                 {
                     case 0:
                         url += "small";
@@ -81,16 +69,31 @@ namespace bangumi_win.API
                         url += "large";
                         break;
                 }
-
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return responseBody;
+                HttpResponseMessage _response = await client.GetAsync(url);
+                _response.EnsureSuccessStatusCode();
+                response_body = await _response.Content.ReadAsStringAsync();
+                subject_result.Status = 1;
             }
             catch (HttpRequestException e)
             {
-                return e.Message;
+                subject_result.Status = -1;
+                subject_result.ErrorMessage = e.Message;
+                return subject_result;
             }
+            switch (response_group)
+            {
+                case 0:
+                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
+                    break;
+                case 1:
+                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
+                    break;
+                case 2:
+                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
+                    break;
+            }
+            return subject_result;
         }
+
     }
 }

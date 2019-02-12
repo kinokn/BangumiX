@@ -52,7 +52,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Name="gridMain">
+    <Grid Name="GridMain">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="50"/>
@@ -79,22 +79,22 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonSummary" Grid.Column="0" Click="ButtonSummary_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonSummary" Grid.Column="0" Click="SummaryClick">
                 <TextBlock>概览</TextBlock>
             </Button>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonEpisode" Grid.Column="1" Click="ButtonEpisode_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick">
                 <TextBlock>章节</TextBlock>
             </Button>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonCharacter" Grid.Column="2" Click="ButtonCharacter_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonCharacter" Grid.Column="2" Click="CharacterClick">
                 <TextBlock>角色</TextBlock>
             </Button>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonDetail" Grid.Column="3" Click="ButtonDetail_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonDetail" Grid.Column="3" Click="DetailClick">
                 <TextBlock>制作</TextBlock>
             </Button>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonComment" Grid.Column="4" Click="ButtonComment_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonComment" Grid.Column="4" Click="CommentClick">
                 <TextBlock>吐槽</TextBlock>
             </Button>
-            <Button Style="{StaticResource ButtonMenu}" Name="buttonReview" Grid.Column="5" Click="ButtonReview_Click">
+            <Button Style="{StaticResource ButtonMenu}" Name="buttonReview" Grid.Column="5" Click="ReviewClick">
                 <TextBlock>评论</TextBlock>
             </Button>
         </Grid>

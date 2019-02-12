@@ -10,8 +10,8 @@
         FontFamily="SimHei"
         Foreground="GhostWhite">
 
-    <Grid Name="gridWrapper" Background="Transparent">
-        <Grid Name="gridMain" Background="Black">
+    <Grid Name="GridWrapper" Background="Transparent">
+        <Grid Name="GridMain" Background="Black">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="5"/>

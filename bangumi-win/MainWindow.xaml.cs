@@ -14,8 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-using bangumi_win.API;
-using bangumi_win.Views;
 using System.Windows.Media.Effects;
 
 namespace bangumi_win
@@ -34,26 +32,29 @@ namespace bangumi_win
 
         private async void CheckLogin()
         {
-            bool logged = await HttpHelper.CheckLogin();
+            bool logged = await API.HttpHelper.CheckLogin();
             if (logged)
             {
                 return;
             }
             else
             {
-                gridMain.Effect = new BlurEffect();
-                var popupLogin = new Login();
-                gridWrapper.Children.Add(popupLogin);
+                GridMain.Effect = new BlurEffect();
+                var login_popup = new Views.Login();
+                GridWrapper.Children.Add(login_popup);
             }
         }
 
         private async void AddSubjectPage()
         {
-            var subjectInfo = await HttpHelper.GetSubject(23686, 2);
+            var subject_info = await API.HttpHelper.GetSubject(23686, 2);
             //var subjectInfo = await HttpHelper.GetSubject(218971, 2);
-            var subject = new Subject(subjectInfo);
-            gridMain.Children.Add(subject);
-            Grid.SetColumn(subject, 3);
+            if (subject_info.Status == 1)
+            {
+                var subject = new Views.Subject(subject_info.Subject);
+                GridMain.Children.Add(subject);
+                Grid.SetColumn(subject, 3);
+            }
         }
     }
 }
