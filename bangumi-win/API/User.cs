@@ -16,6 +16,9 @@ namespace bangumi_win.API
     {
         public string FormHash { get; set; }
         public string CookieTime { get; set; }
+        public string ChaptchaSrc { get; set; }
+        public string Chaptcha { get; set; }
+
         private string _email;
         public string Email
         {

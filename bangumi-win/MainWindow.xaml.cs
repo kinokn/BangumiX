@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 
 using System.Windows.Media.Effects;
+using bangumi_win.Properties;
 
 namespace bangumi_win
 {
@@ -26,21 +27,23 @@ namespace bangumi_win
         public MainWindow()
         {
             InitializeComponent();
+            API.HttpHelper.ClientInitialize();
             CheckLogin();
             AddSubjectPage();
         }
 
         private async void CheckLogin()
         {
-            bool logged = await API.HttpHelper.CheckLogin();
-            if (logged)
+            if (Settings.Default.NeverAsk == true) return;
+            var logged = await API.HttpHelper.CheckLogin();
+            if (logged.Status == 1)
             {
                 return;
             }
             else
             {
                 GridMain.Effect = new BlurEffect();
-                var login_popup = new Views.Login();
+                var login_popup = new Views.Login(logged.Login);
                 GridWrapper.Children.Add(login_popup);
             }
         }

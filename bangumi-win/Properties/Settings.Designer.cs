@@ -62,24 +62,23 @@ namespace bangumi_win.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Cookies {
-            get {
-                return ((string)(this["Cookies"]));
-            }
-            set {
-                this["Cookies"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Password {
             get {
                 return ((string)(this["Password"]));
             }
             set {
                 this["Password"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Net.CookieCollection Cookies {
+            get {
+                return ((global::System.Net.CookieCollection)(this["Cookies"]));
+            }
+            set {
+                this["Cookies"] = value;
             }
         }
     }

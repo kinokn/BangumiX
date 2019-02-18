@@ -22,16 +22,22 @@ namespace bangumi_win.Views
     /// </summary>
     public partial class Login : UserControl
     {
-        public API.Login user_login = new API.Login();
-
+        private API.Login user_login = new API.Login();
         public Login()
         {
             InitializeComponent();
+        }
+        public Login(API.Login login)
+        {
+            InitializeComponent();
+            user_login = login;
             this.DataContext = user_login;
         }
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine(user_login.FormHash);
+            Console.WriteLine(user_login.CookieTime);
         }
 
         private void CancelClick(object sender, RoutedEventArgs e)

@@ -11,10 +11,10 @@
     <Setting Name="Email" Type="System.String" Scope="User">
       <Value Profile="(Default)">kiriz@qq.com</Value>
     </Setting>
-    <Setting Name="Cookies" Type="System.String" Scope="User">
+    <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Password" Type="System.String" Scope="User">
+    <Setting Name="Cookies" Type="System.Net.CookieCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
