@@ -9,10 +9,10 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using HtmlAgilityPack;
 
-using bangumi_win.Properties;
+using BangumiX.Properties;
 
 
-namespace bangumi_win.API
+namespace BangumiX.API
 {
     class HttpHelper
     {
@@ -26,13 +26,13 @@ namespace bangumi_win.API
         {
             BaseAddress = new Uri("https://bangumi.tv/")
         };
-        public static string host = HTMLclient.BaseAddress.ToString();
+        public static string host = HTMLclient.BaseAddress.AbsoluteUri;
         public static void ClientInitialize()
         {
             host = host.Substring(host.Length - 1);
             JSONclient.DefaultRequestHeaders.Add("UserAgent", "Mozilla/5.0 (compatible; AcmeInc/1.0");
             JSONclient.DefaultRequestHeaders.Add("Accept", "text/html");
-            Cookies.Add(Settings.Default.Cookies);
+            if (Settings.Default.Cookies != null) Cookies.Add(Settings.Default.Cookies);
         }
 
         public class HttpResult

@@ -1,4 +1,4 @@
-﻿namespace bangumi_win.Properties {
+﻿namespace BangumiX.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

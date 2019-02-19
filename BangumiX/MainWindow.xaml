@@ -1,0 +1,40 @@
+﻿<Window x:Class="BangumiX.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BangumiX"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Height="900" Width="1200"
+        ResizeMode="NoResize"
+        Background="Black">
+
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
+    </Window.Resources>
+
+    <Grid Name="GridWrapper">
+        <Grid Name="GridMain">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="700"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="1" Grid.ColumnSpan="2">
+                <Button DockPanel.Dock="Right" Width="44">
+                    <TextBlock>X</TextBlock>
+                </Button>
+                <Button DockPanel.Dock="Right" Width="44">
+                    <TextBlock>-</TextBlock>
+                </Button>
+                <TextBlock MouseLeftButtonDown="MoveWindow"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+
+</Window>

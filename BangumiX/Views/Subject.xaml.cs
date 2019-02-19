@@ -13,9 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using bangumi_win.API;
+using BangumiX.API;
 
-namespace bangumi_win.Views
+namespace BangumiX.Views
 {
     /// <summary>
     /// Interaction logic for Subject.xaml

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using bangumi_win.Properties;
+using BangumiX.Properties;
 
-namespace bangumi_win.API
+namespace BangumiX.API
 {
     public class User
     {

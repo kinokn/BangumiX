@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace bangumi_win.API
+namespace BangumiX.API
 {
     public class SubjectSmall
     {

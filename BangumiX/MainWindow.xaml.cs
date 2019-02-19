@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 
 using System.Windows.Media.Effects;
-using bangumi_win.Properties;
+using BangumiX.Properties;
 
-namespace bangumi_win
+namespace BangumiX
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -56,8 +56,15 @@ namespace bangumi_win
             {
                 var subject = new Views.Subject(subject_info.Subject);
                 GridMain.Children.Add(subject);
+                Grid.SetRow(subject, 1);
                 Grid.SetColumn(subject, 3);
             }
+        }
+
+        private void MoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }

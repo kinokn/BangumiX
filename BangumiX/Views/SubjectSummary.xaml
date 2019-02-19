@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="bangumi_win.Views.SubjectSummary"
+﻿<UserControl x:Class="BangumiX.Views.SubjectSummary"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:bangumi_win.Views"
+             xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="700">
+             d:DesignHeight="640" d:DesignWidth="700">
 
     <UserControl.Resources>
         <Style TargetType="Border" x:Key="BorderDetail">
@@ -14,34 +14,30 @@
             <Setter Property="BorderThickness" Value="4 0 0 0"/>
             <Setter Property="BorderBrush" Value="DimGray"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockDetailLeft">
+        <Style TargetType="TextBlock" x:Key="TextBlockDetailLeft" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="DockPanel.Dock" Value="Left"/>
             <Setter Property="Margin" Value="5 0 0 0"/>
             <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockDetailRight">
+        <Style TargetType="TextBlock" x:Key="TextBlockDetailRight" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="Margin" Value="0 0 10 0"/>
             <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="TextAlignment" Value="Right"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockSummary">
-            <Setter Property="FontFamily" Value="SimHei"/>
+        <Style TargetType="TextBlock" x:Key="TextBlockSummary" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0 3"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockSummaryContent">
+        <Style TargetType="TextBlock" x:Key="TextBlockSummaryContent" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="FontSize" Value="16"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Margin" Value="0 5"/>
             <Setter Property="LineHeight" Value="24"/>

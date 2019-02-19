@@ -13,21 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using bangumi_win.API;
+using BangumiX.API;
 
-namespace bangumi_win.Views
+namespace BangumiX.Views
 {
     /// <summary>
-    /// Interaction logic for SubjectSummary.xaml
+    /// Interaction logic for SubjectEpisodes.xaml
     /// </summary>
-    public partial class SubjectSummary : UserControl
+    public partial class SubjectEpisodes : UserControl
     {
-        public SubjectSummary()
+        public SubjectEpisodes()
         {
             InitializeComponent();
         }
 
-        public SubjectSummary(SubjectLarge subject)
+        public SubjectEpisodes(SubjectLarge subject)
         {
             InitializeComponent();
             DataContext = subject;
