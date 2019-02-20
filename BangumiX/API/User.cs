@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Media.Imaging;
 using BangumiX.Properties;
 
 namespace BangumiX.API
 {
     public class User
     {
+        public string UserName { get; set; }
+        public string NickName { get; set; }
+        public string Avator { get; set; }
     }
 
     public class Login
     {
-        public string FormHash { get; set; }
-        public string CookieTime { get; set; }
-        public string ChaptchaSrc { get; set; }
-        public string Chaptcha { get; set; }
+        public BitmapImage CaptchaSrc { get; set; }
+        public string Captcha { get; set; }
 
         private string _email;
         public string Email
@@ -39,7 +40,10 @@ namespace BangumiX.API
         {
             get
             {
-                _password = Settings.Default.Password;
+                if (SavePassword)
+                {
+                    _password = Settings.Default.Password;
+                }
                 return _password;
             }
             set
@@ -83,6 +87,54 @@ namespace BangumiX.API
             {
                 _never_ask = value;
                 Settings.Default.NeverAsk = _never_ask;
+            }
+        }
+    }
+
+    public class Token
+    {
+        public string user_id
+        {
+            get
+            {
+                return Settings.Default.UserID;
+            }
+            set
+            {
+                Settings.Default.UserID = value;
+            }
+        }
+        public string access_token
+        {
+            get
+            {
+                return Settings.Default.AccessToken;
+            }
+            set
+            {
+                Settings.Default.AccessToken = value;
+            }
+        }
+        public string expires_in
+        {
+            get
+            {
+                return Settings.Default.Expire;
+            }
+            set
+            {
+                Settings.Default.Expire = value;
+            }
+        }
+        public string refresh_token
+        {
+            get
+            {
+                return Settings.Default.RefreshToken;
+            }
+            set
+            {
+                Settings.Default.RefreshToken = value;
             }
         }
     }

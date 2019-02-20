@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,24 +28,35 @@ namespace BangumiX.Views
         {
             InitializeComponent();
         }
-        public Login(API.Login login)
+        public Login(string captcha_src)
         {
             InitializeComponent();
-            user_login = login;
+            byte[] binaryData = Convert.FromBase64String(captcha_src);
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.StreamSource = new MemoryStream(binaryData);
+            bi.EndInit();
+            user_login.CaptchaSrc = bi;
             this.DataContext = user_login;
         }
 
-        private void LoginClick(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine(user_login.FormHash);
-            Console.WriteLine(user_login.CookieTime);
-        }
-
-        private void CancelClick(object sender, RoutedEventArgs e)
+        private void RemoveSelf()
         {
             Grid parent = (Grid)this.Parent;
             parent.Children.Remove(this);
             parent.Children.OfType<Grid>().First().Effect = null;
+        }
+
+        private async void LoginClick(object sender, RoutedEventArgs e)
+        {
+            var login_result = await API.HttpHelper.StartLogin.Start(user_login);
+            if (login_result.Status == 1) RemoveSelf();
+            else Console.WriteLine("Login Failed");
+        }
+
+        private void CancelClick(object sender, RoutedEventArgs e)
+        {
+            RemoveSelf();
         }
     }
 }

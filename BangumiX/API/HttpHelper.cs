@@ -8,6 +8,9 @@ using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
 using HtmlAgilityPack;
+using CefSharp;
+using CefSharp.OffScreen;
+//using CefSharp.Wpf;
 
 using BangumiX.Properties;
 
@@ -16,24 +19,10 @@ namespace BangumiX.API
 {
     class HttpHelper
     {
-        private static readonly HttpClient JSONclient = new HttpClient()
+        private static readonly HttpClient APIclient = new HttpClient()
         {
             BaseAddress = new Uri("https://api.bgm.tv/")
         };
-        public static CookieContainer Cookies = new CookieContainer();
-        public static HttpClientHandler HttpClientHandler = new HttpClientHandler() { CookieContainer = Cookies };
-        private static readonly HttpClient HTMLclient = new HttpClient(HttpClientHandler)
-        {
-            BaseAddress = new Uri("https://bangumi.tv/")
-        };
-        public static string host = HTMLclient.BaseAddress.AbsoluteUri;
-        public static void ClientInitialize()
-        {
-            host = host.Substring(host.Length - 1);
-            JSONclient.DefaultRequestHeaders.Add("UserAgent", "Mozilla/5.0 (compatible; AcmeInc/1.0");
-            JSONclient.DefaultRequestHeaders.Add("Accept", "text/html");
-            if (Settings.Default.Cookies != null) Cookies.Add(Settings.Default.Cookies);
-        }
 
         public class HttpResult
         {
@@ -46,90 +35,130 @@ namespace BangumiX.API
             }
         }
 
-        public class CheckLoginResult : HttpResult
+        public class CaptchaSrcResult : HttpResult
         {
-            public Login Login { get; set; }
-            public CheckLoginResult()
+            public string CaptchaSrc { get; set; }
+        }
+        public class LoginResult : HttpResult
+        {
+            public Token Token { get; set; }
+            public LoginResult()
             {
-                Login = new Login();
+                Token = new Token();
             }
         }
-        public static async Task<CheckLoginResult> CheckLogin()
+        public static class StartLogin
         {
-            CheckLoginResult login_result = new CheckLoginResult();
-            try
+            public static ChromiumWebBrowser browser;
+            public static string LoginUri;
+            public static async Task Initialize()
             {
-                HttpResponseMessage response = await HTMLclient.GetAsync(String.Empty);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(response_body);
-                var form = htmlDoc.DocumentNode.SelectSingleNode("//form[@id=\"loginForm\"]");
-                if (form == null)
+                Cef.Initialize(new CefSettings()
                 {
-                    login_result.Status = 1;
-                }
-                else
-                {
-                    login_result.Status = 0;
-                    login_result.Login.FormHash = form.SelectSingleNode("//input[@name=\"formhash\"]").Attributes["value"].Value;
-                    login_result.Login.CookieTime = form.SelectSingleNode("//input[@name=\"cookietime\"]").Attributes["value"].Value;
-                    if (form.SelectSingleNode("//dt[@id=\"rechaptcha_form\"]").Attributes["style"].Value != "display:none")
-                    {
-                        login_result.Login.ChaptchaSrc = host + form.SelectSingleNode("//img[@id=\"captcha_img_code\"]").Attributes["src"].Value;
-                    }
-                    else
-                    {
-                        login_result.Login.Chaptcha = "不需要填写";
-                    }
-                }
-                return login_result;
+                    PersistSessionCookies = true
+                });
+                LoginUri = String.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.Default.ClientID);
+                browser = new ChromiumWebBrowser(LoginUri, new BrowserSettings());
+                await LoadPageAsync(browser);
             }
-            catch (HttpRequestException e)
+            public static async Task<CaptchaSrcResult> GetCaptchaSrc()
             {
-                login_result.Status = -1;
-                login_result.ErrorMessage = e.Message;
-                return login_result;
-            }
-        }
+                CaptchaSrcResult captcha_src_result = new CaptchaSrcResult();
+                string script = @"(function() {
+                                    var email = document.getElementById('email');
+                                    var password = document.getElementById('password');
+                                    var ev = new Event('input');
+                                    email.value = 1;
+                                    password.value = 1;
+                                    email.dispatchEvent(ev);
+                                })();";
 
-        public static async Task<HttpResult> StartLogin(Login login)
-        {
-            HttpResult login_result = new HttpResult();
-            var parameters = new Dictionary<string, string>
-            {
-                { "formhash", login.FormHash },
-                { "cookietime", login.CookieTime },
-                { "email", login.Email },
-                { "password", login.Password },
-                { "captcha_challenge_field", login.Chaptcha }
-            };
-            if (login.ChaptchaSrc == string.Empty)
-            {
-                parameters["captcha_challenge_field"] = string.Empty;
-            }
-            var encoded_parameters = new FormUrlEncodedContent(parameters);
-            try
-            {
-                HttpResponseMessage response = await HTMLclient.PostAsync("login", encoded_parameters);
-                response.EnsureSuccessStatusCode();
-                CookieCollection response_cookie = Cookies.GetCookies(HTMLclient.BaseAddress);
-                Settings.Default.Cookies = response_cookie;
+                browser.ExecuteScriptAsync(script);
+                System.Threading.Thread.Sleep(1000);
 
-                IEnumerable<Cookie> response_cookies = Cookies.GetCookies(HTMLclient.BaseAddress).Cast<Cookie>();
-                foreach (Cookie cookie in response_cookies)
+                script = @"(function() {var img = document.getElementById('captcha_img_code');
+                                var canvas = document.createElement('canvas');
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                var ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, img.width, img.height);
+                                var ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase();
+                                var dataURL = canvas.toDataURL('image/' + ext);
+                                return dataURL;
+                            })();";
+
+                var task = browser.EvaluateScriptAsync(script);
+                await task.ContinueWith(t =>
                 {
-                    Console.WriteLine(cookie.Name + ": " + cookie.Value);
-                }
+                    if (!t.IsFaulted)
+                    {
+                        var response = t.Result;
+                        if (response.Success && response.Result != null)
+                        {
+                            captcha_src_result.CaptchaSrc = response.Result.ToString().Substring(22); // Remove "data:image/png;base64,"
+                        }
+                    }
+                });
+                captcha_src_result.Status = 1;
+                return captcha_src_result;
+            }
+            public static async Task<LoginResult> Start(Login login)
+            {
+                LoginResult login_result = new LoginResult();
+                string script = String.Format(@"(function() {{ var email = document.getElementById('email')
+                                                email.value = '{0}';
+                                                document.getElementById('password').value = '{1}';
+                                                var ev = new Event('input');
+                                                email.dispatchEvent(ev);
+                                                document.getElementById('captcha').value = '{2}';
+                                                document.getElementsByClassName('inputBtn')[0].click();}})();", login.Email, login.Password, login.Captcha);
+                browser.ExecuteScriptAsync(script);
+                await LoadPageAsync(browser);
+
+                script = @"document.getElementsByClassName('btnPink large')[0].click();";
+                browser.ExecuteScriptAsync(script);
+                await LoadPageAsync(browser);
+
+                script = "(function () { return document.documentElement.innerText; })();";
+                var task = browser.EvaluateScriptAsync(script);
+                await task.ContinueWith(t =>
+                {
+                    if (!t.IsFaulted)
+                    {
+                        var response = t.Result;
+                        if (response.Success && response.Result != null)
+                        {
+                            login_result.Token = JsonConvert.DeserializeObject<Token>(response.Result.ToString());
+                        }
+                    }
+                });
 
                 login_result.Status = 1;
+
                 return login_result;
             }
-            catch (HttpRequestException e)
+
+            public static Task LoadPageAsync(IWebBrowser browser, string address = null)
             {
-                login_result.Status = -1;
-                login_result.ErrorMessage = e.Message;
-                return login_result;
+                var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+                EventHandler<LoadingStateChangedEventArgs> handler = null;
+                handler = (sender, args) =>
+                {
+                    if (!args.IsLoading)
+                    {
+                        browser.LoadingStateChanged -= handler;
+                        tcs.TrySetResult(true);
+                    }
+                };
+
+                browser.LoadingStateChanged += handler;
+
+                if (!string.IsNullOrEmpty(address))
+                {
+                    browser.Load(address);
+                }
+                return tcs.Task;
             }
         }
 
@@ -143,7 +172,6 @@ namespace BangumiX.API
         }
         public static async Task<GetSubjectResult> GetSubject(int id, int response_group = 0)
         {
-            string response_body;
             GetSubjectResult subject_result = new GetSubjectResult();
             try
             {
@@ -160,10 +188,23 @@ namespace BangumiX.API
                         url += "large";
                         break;
                 }
-                HttpResponseMessage response = await JSONclient.GetAsync(url);
+                HttpResponseMessage response = await APIclient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
-                response_body = await response.Content.ReadAsStringAsync();
+                string response_body = await response.Content.ReadAsStringAsync();
                 subject_result.Status = 1;
+                switch (response_group)
+                {
+                    case 0:
+                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
+                        break;
+                    case 1:
+                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
+                        break;
+                    case 2:
+                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
+                        break;
+                }
+                return subject_result;
             }
             catch (HttpRequestException e)
             {
@@ -171,21 +212,6 @@ namespace BangumiX.API
                 subject_result.ErrorMessage = e.Message;
                 return subject_result;
             }
-            switch (response_group)
-            {
-                case 0:
-                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
-                    break;
-                case 1:
-                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                    break;
-                case 2:
-                    subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                    break;
-            }
-            return subject_result;
         }
-
     }
-
 }

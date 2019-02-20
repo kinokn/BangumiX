@@ -25,7 +25,7 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SavePassword {
             get {
                 return ((bool)(this["SavePassword"]));
@@ -49,7 +49,7 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("kiriz@qq.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("test@bangumiX.com")]
         public string Email {
             get {
                 return ((string)(this["Email"]));
@@ -73,12 +73,69 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Net.CookieCollection Cookies {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AccessToken {
             get {
-                return ((global::System.Net.CookieCollection)(this["Cookies"]));
+                return ((string)(this["AccessToken"]));
             }
             set {
-                this["Cookies"] = value;
+                this["AccessToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Expire {
+            get {
+                return ((string)(this["Expire"]));
+            }
+            set {
+                this["Expire"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RefreshToken {
+            get {
+                return ((string)(this["RefreshToken"]));
+            }
+            set {
+                this["RefreshToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime TokenTime {
+            get {
+                return ((global::System.DateTime)(this["TokenTime"]));
+            }
+            set {
+                this["TokenTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("bgm7915c00e885ca2b9")]
+        public string ClientID {
+            get {
+                return ((string)(this["ClientID"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserID {
+            get {
+                return ((string)(this["UserID"]));
+            }
+            set {
+                this["UserID"] = value;
             }
         }
     }

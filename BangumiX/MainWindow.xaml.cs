@@ -27,7 +27,6 @@ namespace BangumiX
         public MainWindow()
         {
             InitializeComponent();
-            API.HttpHelper.ClientInitialize();
             CheckLogin();
             AddSubjectPage();
         }
@@ -35,16 +34,20 @@ namespace BangumiX
         private async void CheckLogin()
         {
             if (Settings.Default.NeverAsk == true) return;
-            var logged = await API.HttpHelper.CheckLogin();
-            if (logged.Status == 1)
+            if (Settings.Default.AccessToken != String.Empty) return;
+            await API.HttpHelper.StartLogin.Initialize();
+            var captcha_src_result = await API.HttpHelper.StartLogin.GetCaptchaSrc();
+            if (captcha_src_result.Status == -1)
             {
                 return;
             }
             else
             {
                 GridMain.Effect = new BlurEffect();
-                var login_popup = new Views.Login(logged.Login);
+                var login_popup = new Views.Login(captcha_src_result.CaptchaSrc);
                 GridWrapper.Children.Add(login_popup);
+                Grid.SetRowSpan(login_popup, 2);
+                Grid.SetColumnSpan(login_popup, 2);
             }
         }
 
@@ -56,8 +59,7 @@ namespace BangumiX
             {
                 var subject = new Views.Subject(subject_info.Subject);
                 GridMain.Children.Add(subject);
-                Grid.SetRow(subject, 1);
-                Grid.SetColumn(subject, 3);
+                Grid.SetColumn(subject, 2);
             }
         }
 

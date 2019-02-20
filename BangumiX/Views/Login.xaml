@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="350"
-             Height="200" Width="350"
-             Background="Black">
+             d:DesignHeight="200" d:DesignWidth="350"
+             Background="Black"
+             VerticalAlignment="Center"
+             HorizontalAlignment="Center">
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
             <Setter Property="TextAlignment" Value="Center"/>
@@ -52,8 +53,8 @@
             <TextBlock Grid.Row="2" HorizontalAlignment="Right">密码</TextBlock>
             <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Right">验证码</TextBlock>
-            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding Chaptcha, UpdateSourceTrigger=PropertyChanged}" Width="125"/>
-            <Image Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Source="{Binding ChaptchaSrc}" Margin="5 0 0 0"/>
+            <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding Captcha, UpdateSourceTrigger=PropertyChanged}" Width="125"/>
+            <Image Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Source="{Binding CaptchaSrc}" Margin="5 0 0 0"/>
             <CheckBox Grid.Row="4" Grid.Column="1" Margin="15 0 0 0" IsChecked="{Binding SavePassword}">
                 <TextBlock FontSize="14">记住密码</TextBlock>
             </CheckBox>

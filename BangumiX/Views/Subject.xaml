@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="700"
-             MinWidth="700" MaxWidth="700">
+             d:DesignHeight="900" d:DesignWidth="700">
 
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="StackPanelTitle">
@@ -33,7 +32,7 @@
             <RowDefinition Height="200"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="640"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>

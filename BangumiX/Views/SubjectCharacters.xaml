@@ -64,8 +64,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MaxWidth="500"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
         <ListView Grid.Column="0" x:Name="ListViewCharacters" ItemsSource="{Binding crt}" Style="{StaticResource ListViewCharacters}">
             <ListView.ItemTemplate>

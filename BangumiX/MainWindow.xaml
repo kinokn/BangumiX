@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BangumiX"
         mc:Ignorable="d"
         WindowStyle="None"
-        Height="900" Width="1200"
+        Height="932" Width="1200"
         ResizeMode="NoResize"
         Background="Black">
 
@@ -15,25 +15,36 @@
     </Window.Resources>
 
     <Grid Name="GridWrapper">
-        <Grid Name="GridMain">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="900" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="64"/>
+            <ColumnDefinition Width="1136"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="1" Grid.ColumnSpan="2" Panel.ZIndex="99">
+            <Button DockPanel.Dock="Right" Width="44">
+                <Viewbox Width="22" Height="16">
+                    <Canvas Width="22" Height="16">
+                        <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="Gray" Stretch="Uniform" Width="22" Height="16"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button DockPanel.Dock="Right" Width="44">
+                <Viewbox Width="22" Height="16">
+                    <Canvas Width="22" Height="16">
+                        <Path Data="M20,12H4V10H20" Fill="Gray" Stretch="Uniform" Width="22" Height="16"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <TextBlock MouseLeftButtonDown="MoveWindow"/>
+        </DockPanel>
+        <Grid Name="GridMain" Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="436"/>
                 <ColumnDefinition Width="700"/>
             </Grid.ColumnDefinitions>
-            <DockPanel Grid.Column="1" Grid.ColumnSpan="2">
-                <Button DockPanel.Dock="Right" Width="44">
-                    <TextBlock>X</TextBlock>
-                </Button>
-                <Button DockPanel.Dock="Right" Width="44">
-                    <TextBlock>-</TextBlock>
-                </Button>
-                <TextBlock MouseLeftButtonDown="MoveWindow"/>
-            </DockPanel>
         </Grid>
     </Grid>
 
