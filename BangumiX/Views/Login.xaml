@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="350"
-             Background="Black"
              VerticalAlignment="Center"
              HorizontalAlignment="Center">
     <UserControl.Resources>
@@ -28,11 +27,11 @@
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
     </UserControl.Resources>
     <Grid>
-        <Border Background="Black" BorderBrush="DimGray" BorderThickness="1">
-            <Border.Effect>
-                <DropShadowEffect Color="DimGray" ShadowDepth="1" BlurRadius="10"/>
-            </Border.Effect>
-        </Border>
+        <Canvas Background="Black" Grid.ColumnSpan="6" Grid.RowSpan="3" Opacity="0.9">
+            <Canvas.Effect>
+                <BlurEffect Radius="50"/>
+            </Canvas.Effect>
+        </Canvas>
         <Grid Height="200" Width="350">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -54,17 +53,19 @@
             <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Grid.Row="3" HorizontalAlignment="Right">验证码</TextBlock>
             <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding Captcha, UpdateSourceTrigger=PropertyChanged}" Width="125"/>
-            <Image Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Source="{Binding CaptchaSrc}" Margin="5 0 0 0"/>
+            <Button Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="5 0 0 0" Click="CaptchaClick">
+                <Image x:Name="CaptchaImg"/>
+            </Button>
             <CheckBox Grid.Row="4" Grid.Column="1" Margin="15 0 0 0" IsChecked="{Binding SavePassword}">
                 <TextBlock FontSize="14">记住密码</TextBlock>
             </CheckBox>
             <CheckBox Grid.Row="4" Grid.Column="2" IsChecked="{Binding NeverAsk}">
                 <TextBlock FontSize="14">不再提示</TextBlock>
             </CheckBox>
-            <Button Grid.Row="5" Grid.Column="1" Margin="11 0 0 0" HorizontalAlignment="Left" Click="LoginClick" Width="50">
+            <Button Grid.Row="5" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" Click="LoginClick" Width="50">
                 <TextBlock FontSize="20">登录</TextBlock>
             </Button>
-            <Button Grid.Row="5" Grid.Column="2" Margin="-4 0 0 0"   HorizontalAlignment="Left" Click="CancelClick" Width="50" DockPanel.Dock="Right">
+            <Button Grid.Row="5" Grid.Column="2" Margin="-5 0 0 0"   HorizontalAlignment="Left" Click="CancelClick" Width="50" DockPanel.Dock="Right">
                 <TextBlock FontSize="20">取消</TextBlock>
             </Button>
         </Grid>

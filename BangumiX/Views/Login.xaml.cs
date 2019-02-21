@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -23,34 +22,41 @@ namespace BangumiX.Views
     /// </summary>
     public partial class Login : UserControl
     {
-        private API.Login user_login = new API.Login();
+        public API.HttpHelper.StartLogin start_login;
         public Login()
         {
-            InitializeComponent();
         }
-        public Login(string captcha_src)
+        public Login(ref API.HttpHelper.StartLogin ref_start_login)
         {
+            start_login = ref_start_login;
             InitializeComponent();
-            byte[] binaryData = Convert.FromBase64String(captcha_src);
-            BitmapImage bi = new BitmapImage();
-            bi.BeginInit();
-            bi.StreamSource = new MemoryStream(binaryData);
-            bi.EndInit();
-            user_login.CaptchaSrc = bi;
-            this.DataContext = user_login;
+            this.DataContext = start_login.login;
+            CaptchaImg.Source = start_login.captcha_src_result.CaptchaSrc;
         }
 
         private void RemoveSelf()
         {
+            start_login.Shutdown();
             Grid parent = (Grid)this.Parent;
             parent.Children.Remove(this);
             parent.Children.OfType<Grid>().First().Effect = null;
         }
 
+        private async void CaptchaClick(object sender, RoutedEventArgs e)
+        {
+            start_login.captcha_src_result = new API.HttpHelper.CaptchaSrcResult();
+            await start_login.GetCaptchaSrc();
+            if (start_login.captcha_src_result.Status == 1)
+            {
+                CaptchaImg.Source = start_login.captcha_src_result.CaptchaSrc;
+            }
+            else Console.WriteLine("Captcha Failed");
+        }
+
         private async void LoginClick(object sender, RoutedEventArgs e)
         {
-            var login_result = await API.HttpHelper.StartLogin.Start(user_login);
-            if (login_result.Status == 1) RemoveSelf();
+            await start_login.Start();
+            if (start_login.login_result.Status == 1) RemoveSelf();
             else Console.WriteLine("Login Failed");
         }
 

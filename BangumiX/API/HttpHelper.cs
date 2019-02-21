@@ -7,21 +7,23 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
-using HtmlAgilityPack;
 using CefSharp;
 using CefSharp.OffScreen;
-//using CefSharp.Wpf;
 
 using BangumiX.Properties;
-
+using System.Windows.Media.Imaging;
 
 namespace BangumiX.API
 {
-    class HttpHelper
+    public class HttpHelper
     {
         private static readonly HttpClient APIclient = new HttpClient()
         {
             BaseAddress = new Uri("https://api.bgm.tv/")
+        };
+        private static readonly HttpClient TokenClient = new HttpClient()
+        {
+            BaseAddress = new Uri("http://47.101.195.180:5000/")
         };
 
         public class HttpResult
@@ -37,33 +39,41 @@ namespace BangumiX.API
 
         public class CaptchaSrcResult : HttpResult
         {
-            public string CaptchaSrc { get; set; }
+            public BitmapImage CaptchaSrc { get; set; }
         }
         public class LoginResult : HttpResult
         {
             public Token Token { get; set; }
-            public LoginResult()
-            {
-                Token = new Token();
-            }
         }
-        public static class StartLogin
+        public class StartLogin
         {
-            public static ChromiumWebBrowser browser;
-            public static string LoginUri;
-            public static async Task Initialize()
+            public ChromiumWebBrowser browser;
+            public string login_uri;
+            public Login login;
+            public CaptchaSrcResult captcha_src_result;
+            public LoginResult login_result;
+            public StartLogin()
             {
-                Cef.Initialize(new CefSettings()
+                Cef.Initialize(new CefSettings());
+                login_uri = String.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.Default.ClientID);
+                browser = new ChromiumWebBrowser(browserSettings: new BrowserSettings());
+                while (!browser.IsBrowserInitialized)
                 {
-                    PersistSessionCookies = true
-                });
-                LoginUri = String.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.Default.ClientID);
-                browser = new ChromiumWebBrowser(LoginUri, new BrowserSettings());
-                await LoadPageAsync(browser);
+                    System.Threading.Thread.Sleep(100);
+                }
+                
+                login = new Login();
+                captcha_src_result = new CaptchaSrcResult();
+                login_result = new LoginResult();
             }
-            public static async Task<CaptchaSrcResult> GetCaptchaSrc()
+            public void Shutdown()
             {
-                CaptchaSrcResult captcha_src_result = new CaptchaSrcResult();
+                Cef.Shutdown();
+            }
+            public async Task GetCaptchaSrc()
+            {
+                await LoadPageAsync(browser, login_uri);
+
                 string script = @"(function() {
                                     var email = document.getElementById('email');
                                     var password = document.getElementById('password');
@@ -76,6 +86,7 @@ namespace BangumiX.API
                 browser.ExecuteScriptAsync(script);
                 System.Threading.Thread.Sleep(1000);
 
+                string captcha_string = string.Empty;
                 script = @"(function() {var img = document.getElementById('captcha_img_code');
                                 var canvas = document.createElement('canvas');
                                 canvas.width = img.width;
@@ -95,16 +106,24 @@ namespace BangumiX.API
                         var response = t.Result;
                         if (response.Success && response.Result != null)
                         {
-                            captcha_src_result.CaptchaSrc = response.Result.ToString().Substring(22); // Remove "data:image/png;base64,"
+                            captcha_string = response.Result.ToString().Substring(22);
                         }
                     }
                 });
+
+                byte[] binaryData = Convert.FromBase64String(captcha_string);
+                BitmapImage bi = new BitmapImage();
+                bi.BeginInit();
+                bi.StreamSource = new System.IO.MemoryStream(binaryData);
+                bi.EndInit();
+                captcha_src_result.CaptchaSrc = bi;
+
                 captcha_src_result.Status = 1;
-                return captcha_src_result;
+                return;
             }
-            public static async Task<LoginResult> Start(Login login)
+
+            public async Task Start()
             {
-                LoginResult login_result = new LoginResult();
                 string script = String.Format(@"(function() {{ var email = document.getElementById('email')
                                                 email.value = '{0}';
                                                 document.getElementById('password').value = '{1}';
@@ -129,14 +148,16 @@ namespace BangumiX.API
                         if (response.Success && response.Result != null)
                         {
                             login_result.Token = JsonConvert.DeserializeObject<Token>(response.Result.ToString());
+                            login_result.Token.token_time = DateTime.Now;
                         }
                     }
                 });
 
                 login_result.Status = 1;
 
-                return login_result;
+                return;
             }
+
 
             public static Task LoadPageAsync(IWebBrowser browser, string address = null)
             {
@@ -159,6 +180,31 @@ namespace BangumiX.API
                     browser.Load(address);
                 }
                 return tcs.Task;
+            }
+        }
+
+        public class RefreshTokenResult : HttpResult
+        {
+            public Token Token { get; set; }
+        }
+        public static async Task<RefreshTokenResult> StartRefreshToken()
+        {
+            RefreshTokenResult refresh_token_result = new RefreshTokenResult();
+            try
+            {
+                string url = String.Format("callback?refresh_token={0}", Settings.Default.RefreshToken);
+                HttpResponseMessage response = await TokenClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                refresh_token_result.Token = JsonConvert.DeserializeObject<Token>(response_body);
+                refresh_token_result.Status = 1;
+                return refresh_token_result;
+            }
+            catch (HttpRequestException e)
+            {
+                refresh_token_result.Status = -1;
+                refresh_token_result.ErrorMessage = e.Message;
+                return refresh_token_result;
             }
         }
 
@@ -191,7 +237,6 @@ namespace BangumiX.API
                 HttpResponseMessage response = await APIclient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string response_body = await response.Content.ReadAsStringAsync();
-                subject_result.Status = 1;
                 switch (response_group)
                 {
                     case 0:
@@ -204,6 +249,7 @@ namespace BangumiX.API
                         subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
                         break;
                 }
+                subject_result.Status = 1;
                 return subject_result;
             }
             catch (HttpRequestException e)

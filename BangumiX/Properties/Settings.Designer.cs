@@ -85,10 +85,10 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Expire {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Expire {
             get {
-                return ((string)(this["Expire"]));
+                return ((int)(this["Expire"]));
             }
             set {
                 this["Expire"] = value;

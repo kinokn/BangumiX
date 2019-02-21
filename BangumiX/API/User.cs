@@ -17,7 +17,6 @@ namespace BangumiX.API
 
     public class Login
     {
-        public BitmapImage CaptchaSrc { get; set; }
         public string Captcha { get; set; }
 
         private string _email;
@@ -115,7 +114,7 @@ namespace BangumiX.API
                 Settings.Default.AccessToken = value;
             }
         }
-        public string expires_in
+        public int expires_in
         {
             get
             {
@@ -135,6 +134,17 @@ namespace BangumiX.API
             set
             {
                 Settings.Default.RefreshToken = value;
+            }
+        }
+        public DateTime token_time
+        {
+            get
+            {
+                return Settings.Default.TokenTime;
+            }
+            set
+            {
+                Settings.Default.TokenTime = value;
             }
         }
     }
