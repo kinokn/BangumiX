@@ -85,10 +85,9 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int Expire {
+        public uint Expire {
             get {
-                return ((int)(this["Expire"]));
+                return ((uint)(this["Expire"]));
             }
             set {
                 this["Expire"] = value;
@@ -129,13 +128,24 @@ namespace BangumiX.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UserID {
+        public uint UserID {
             get {
-                return ((string)(this["UserID"]));
+                return ((uint)(this["UserID"]));
             }
             set {
                 this["UserID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TokenType {
+            get {
+                return ((string)(this["TokenType"]));
+            }
+            set {
+                this["TokenType"] = value;
             }
         }
     }

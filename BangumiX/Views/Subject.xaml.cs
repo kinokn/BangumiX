@@ -22,23 +22,16 @@ namespace BangumiX.Views
     /// </summary>
     public partial class Subject : UserControl
     {
-        private static SubjectLarge subject = new SubjectLarge();
-        private static SubjectSummary subject_summary;
-        private static SubjectEpisodes subject_episodes;
-        private static SubjectCharacters subject_characters;
+        public static SubjectSummary subject_summary;
+        public static SubjectEpisodes subject_episodes;
+        public static SubjectCharacters subject_characters;
 
         public Subject()
         {
             InitializeComponent();
-        }
-        public Subject(SubjectLarge s)
-        {
-            InitializeComponent();
-            subject = s;
-            DataContext = subject;
-            subject_summary = new SubjectSummary(subject);
-            subject_episodes = new SubjectEpisodes(subject);
-            subject_characters = new SubjectCharacters(subject);
+            subject_summary = new SubjectSummary();
+            subject_episodes = new SubjectEpisodes();
+            subject_characters = new SubjectCharacters();
 
             GridMain.Children.Add(subject_summary);
             Grid.SetRow(subject_summary, 3);
@@ -47,22 +40,25 @@ namespace BangumiX.Views
         {
             GridMain.Children.RemoveAt(3);
         }
-        private void AddSummary()
+        public void AddSummary()
         {
             Remove();
+            subject_summary.DataContext = this.DataContext;
             GridMain.Children.Add(subject_summary);
             Grid.SetRow(subject_summary, 3);
         }
-        private void AddEpisode()
+        public void AddEpisode()
         {
             Remove();
+            subject_episodes.DataContext = this.DataContext;
             GridMain.Children.Add(subject_episodes);
             Grid.SetRow(subject_episodes, 3);
         }
 
-        private void AddCharacter()
+        public void AddCharacter()
         {
             Remove();
+            subject_characters.DataContext = this.DataContext;
             GridMain.Children.Add(subject_characters);
             Grid.SetRow(subject_characters, 3);
         }

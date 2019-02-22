@@ -17,11 +17,11 @@ namespace BangumiX.API
 {
     public class HttpHelper
     {
-        private static readonly HttpClient APIclient = new HttpClient()
+        public static readonly HttpClient APIclient = new HttpClient()
         {
             BaseAddress = new Uri("https://api.bgm.tv/")
         };
-        private static readonly HttpClient TokenClient = new HttpClient()
+        public static readonly HttpClient TokenClient = new HttpClient()
         {
             BaseAddress = new Uri("http://47.101.195.180:5000/")
         };
@@ -208,47 +208,76 @@ namespace BangumiX.API
             }
         }
 
-        public class GetSubjectResult : HttpResult
+        public class WatchingResult : HttpResult
+        {
+            public List<Collection> Watching { get; set; }
+        }
+        public static async Task<WatchingResult> GetWatching(uint id, string cat = "watching")
+        {
+            WatchingResult watching_result = new WatchingResult();
+            try
+            {
+                string url = String.Format("user/{0}/collection?app_id={1}&cat={2}", id, Settings.Default.ClientID, cat);
+                HttpResponseMessage response = await APIclient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                watching_result.Watching = JsonConvert.DeserializeObject<List<Collection>>(response_body);
+                watching_result.Status = 1;
+                return watching_result;
+            }
+            catch (HttpRequestException e)
+            {
+                watching_result.Status = -1;
+                watching_result.ErrorMessage = e.Message;
+                return watching_result;
+            }
+        }
+
+        public class CollectionResult : HttpResult
+        {
+            public List<CollectsWrapper> CollectWrapper { get; set; }
+        }
+        public static async Task<CollectionResult> GetCollection(uint id, string subject_type = "anime")
+        {
+            CollectionResult collection_result = new CollectionResult();
+            try
+            {
+                string url = String.Format("user/{0}/collections/{1}?app_id={2}", id, subject_type, Settings.Default.ClientID);
+                HttpResponseMessage response = await APIclient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                collection_result.CollectWrapper = JsonConvert.DeserializeObject<List<CollectsWrapper>>(response_body);
+                collection_result.Status = 1;
+                return collection_result;
+            }
+            catch (HttpRequestException e)
+            {
+                collection_result.Status = -1;
+                collection_result.ErrorMessage = e.Message;
+                return collection_result;
+            }
+        }
+
+        public class SubjectResult : HttpResult
         {
             public dynamic Subject { get; set; }
-            public GetSubjectResult()
+            public SubjectResult()
             {
                 Subject = new SubjectSmall();
             }
         }
-        public static async Task<GetSubjectResult> GetSubject(int id, int response_group = 0)
+        public static async Task<SubjectResult> GetSubject(uint id, string response_group = "large")
         {
-            GetSubjectResult subject_result = new GetSubjectResult();
+            SubjectResult subject_result = new SubjectResult();
             try
             {
-                string url = String.Format("subject/{0}?responseGroup=", id);
-                switch (response_group)
-                {
-                    case 0:
-                        url += "small";
-                        break;
-                    case 1:
-                        url += "medium";
-                        break;
-                    case 2:
-                        url += "large";
-                        break;
-                }
+                string url = String.Format("subject/{0}?responseGroup={1}", id, response_group);
                 HttpResponseMessage response = await APIclient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string response_body = await response.Content.ReadAsStringAsync();
-                switch (response_group)
-                {
-                    case 0:
-                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
-                        break;
-                    case 1:
-                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                        break;
-                    case 2:
-                        subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                        break;
-                }
+                if (response_group == "small") subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
+                else if (response_group == "medium") subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
+                else if (response_group == "large") subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
                 subject_result.Status = 1;
                 return subject_result;
             }

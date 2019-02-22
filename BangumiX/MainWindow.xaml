@@ -14,10 +14,11 @@
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
     </Window.Resources>
 
-    <Grid Name="GridWrapper">
+    <Grid Name="GridMain">
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
-            <RowDefinition Height="900" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="800" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="64"/>
@@ -40,12 +41,5 @@
             </Button>
             <TextBlock MouseLeftButtonDown="MoveWindow"/>
         </DockPanel>
-        <Grid Name="GridMain" Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="436"/>
-                <ColumnDefinition Width="700"/>
-            </Grid.ColumnDefinitions>
-        </Grid>
     </Grid>
-
 </Window>

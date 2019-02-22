@@ -92,7 +92,7 @@ namespace BangumiX.API
 
     public class Token
     {
-        public string user_id
+        public uint user_id
         {
             get
             {
@@ -114,7 +114,7 @@ namespace BangumiX.API
                 Settings.Default.AccessToken = value;
             }
         }
-        public int expires_in
+        public uint expires_in
         {
             get
             {
@@ -145,6 +145,17 @@ namespace BangumiX.API
             set
             {
                 Settings.Default.TokenTime = value;
+            }
+        }
+        public string token_type
+        {
+            get
+            {
+                return Settings.Default.TokenType;
+            }
+            set
+            {
+                Settings.Default.TokenType = value;
             }
         }
     }

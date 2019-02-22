@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="640" d:DesignWidth="250">
+             d:DesignHeight="540" d:DesignWidth="250">
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="StackPanelCharacterDetails">
             <Setter Property="Orientation" Value="Vertical"/>
@@ -32,8 +32,8 @@
             <StackPanel.Resources>
                 <local:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
             </StackPanel.Resources>
-            <TextBlock Text="{Binding name, StringFormat={}日文名：{0}}" Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding name_cn, StringFormat={}中文名：{0}}" Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding name, StringFormat={}日文名：{0}}" Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding info.alias[en], StringFormat={}英文名：{0}}" Visibility="{Binding info.alias[en], Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding info.gender, StringFormat={}性别：{0}}" Visibility="{Binding info.gender, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding info.birth, StringFormat={}生日：{0}}" Visibility="{Binding info.birth, Converter={StaticResource NullToVisibilityConverter}}"/>

@@ -39,7 +39,7 @@ namespace BangumiX.Views
             start_login.Shutdown();
             Grid parent = (Grid)this.Parent;
             parent.Children.Remove(this);
-            parent.Children.OfType<Grid>().First().Effect = null;
+            //parent.Children.OfType<Grid>().First().Effect = null;
         }
 
         private async void CaptchaClick(object sender, RoutedEventArgs e)
@@ -56,7 +56,11 @@ namespace BangumiX.Views
         private async void LoginClick(object sender, RoutedEventArgs e)
         {
             await start_login.Start();
-            if (start_login.login_result.Status == 1) RemoveSelf();
+            if (start_login.login_result.Status == 1)
+            {
+                API.HttpHelper.APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
+                RemoveSelf();
+            }
             else Console.WriteLine("Login Failed");
         }
 

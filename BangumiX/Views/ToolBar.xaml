@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
              d:DesignHeight="932" d:DesignWidth="64">
-    <Grid Grid.RowSpan="2" Height="936" Width="64">
+    <Grid Grid.RowSpan="2" Height="932" Width="64">
         <Grid.RowDefinitions>
             <RowDefinition Height="64"/>
             <RowDefinition Height="64"/>
