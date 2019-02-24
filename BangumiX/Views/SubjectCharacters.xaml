@@ -5,29 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="700">
+             d:DesignHeight="640" d:DesignWidth="790">
 
     <UserControl.Resources>
-        <Style TargetType="ListView" x:Key="ListViewCharacters">
-            <Setter Property="SelectedIndex" Value="0"/>
-            <Setter Property="SelectionMode" Value="Single"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="GhostWhite"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}">
+            <Setter Property="SelectedIndex" Value="-1"/>
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource BaseListViewItem}">
+                        <Setter Property="Margin" Value="0 2"/>
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -44,17 +30,9 @@
                 <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
                     <Setter Property="Margin" Value="0 0 0 5"/>
                     <Setter Property="FontFamily" Value="SimSun"/>
-                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontSize" Value="16"/>
                 </Style>
             </Style.Resources>
-        </Style>
-        <Style TargetType="Border" x:Key="BorderDockPanel">
-            <Setter Property="Height" Value="75"/>
-            <Setter Property="Padding" Value="5 0"/>
-            <Setter Property="Margin" Value="0 0 0 10"/>
-        </Style>
-        <Style TargetType="StackPanel" x:Key="StackPanelCV">
-            <Setter Property="Orientation" Value="Horizontal"/>
         </Style>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}" x:Key="TextBlockCV">
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -67,34 +45,31 @@
             <ColumnDefinition Width="450"/>
             <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0" x:Name="ListViewCharacters" ItemsSource="{Binding crt}" Style="{StaticResource ListViewCharacters}">
+        <ListView Grid.Column="0" x:Name="ListViewCharacters" ItemsSource="{Binding crt}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0 0 2 0" BorderBrush="DimGray">
-                        <StackPanel>
-                            <Border x:Name="BorderEpisode" Style="{StaticResource BorderDockPanel}">
-                                <DockPanel Style="{StaticResource DockPanelCharacter}">
-                                    <Image Source="{Binding images[grid]}"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding name_cn}"/>
-                                        <TextBlock Text="{Binding name}"/>
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock Text="CV: " Style="{StaticResource TextBlockCV}"/>
-                                        <ItemsControl ItemsSource="{Binding actors}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Style="{StaticResource StackPanelCV}">
-                                                        <TextBlock Text="{Binding name, StringFormat={}{0} }" Style="{StaticResource TextBlockCV}"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </DockPanel>
-                            </Border>
+                    <DockPanel Style="{StaticResource DockPanelCharacter}">
+                        <Image Source="{Binding images[grid]}"/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding name_cn}"/>
+                            <TextBlock Text="{Binding name}"/>
                         </StackPanel>
-                    </Border>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="CV: " Style="{StaticResource TextBlockCV}"/>
+                            <ItemsControl ItemsSource="{Binding actors}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Margin="0 0 10 0" Text="{Binding name, StringFormat={}{0} }" Style="{StaticResource TextBlockCV}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DockPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

@@ -5,14 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="932" d:DesignWidth="64">
-    <Grid Grid.RowSpan="2" Height="932" Width="64">
+             Background="#01000000"
+             d:DesignHeight="900" d:DesignWidth="64">
+
+    <UserControl.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}"/>
+    </UserControl.Resources>
+    <Grid Grid.RowSpan="2" Height="900" Width="64" Background="#7F1F1F1F">
         <Grid.RowDefinitions>
             <RowDefinition Height="64"/>
             <RowDefinition Height="64"/>
             <RowDefinition Height="64"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="64"/>
+            <RowDefinition Height="64"/>
             <RowDefinition Height="64"/>
         </Grid.RowDefinitions>
-
+        <Button Grid.Row="0" Content="每日"/>
+        <Button Grid.Row="1" Content="追番"/>
+        <Button Grid.Row="2" Content="历史"/>
+        <Button Grid.Row="4" Content="恰饭"/>
+        <Button Grid.Row="5" Content="设置"/>
+        <Button Grid.Row="6" Content="头像"/>
     </Grid>
 </UserControl>

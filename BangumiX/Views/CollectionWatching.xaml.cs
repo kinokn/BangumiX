@@ -50,12 +50,12 @@ namespace BangumiX.Views
                 Grid.SetColumn(SubjectControl, 1);
                 GridMain.Children.Add(SubjectControl);
                 SubjectControl.DataContext = watching_result.Watching[index].subject_detail;
-                SubjectControl.AddSummary();
+                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             else
             {
                 SubjectControl.DataContext = watching_result.Watching[index].subject_detail;
-                SubjectControl.AddSummary();
+                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             return;
         }

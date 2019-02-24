@@ -5,35 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1136">
+             Background="#01000000"
+             d:DesignHeight="900" d:DesignWidth="1136">
 
     <UserControl.Resources>
-        <Style TargetType="ListView" x:Key="ListViewCollections">
-            <Setter Property="SelectedIndex" Value="0"/>
-            <Setter Property="SelectionMode" Value="Single"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="GhostWhite"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}"/>
         <Style TargetType="DockPanel" x:Key="DockPanelCollection">
-            <Setter Property="Height" Value="100"/>
+            <Setter Property="Height" Value="105"/>
             <Setter Property="LastChildFill" Value="False"/>
             <Style.Resources>
                 <Style TargetType="StackPanel">
@@ -43,58 +21,42 @@
                 </Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
                     <Setter Property="Margin" Value="0 0 0 5"/>
-                    <Setter Property="FontFamily" Value="SimSun"/>
-                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
                 </Style>
             </Style.Resources>
         </Style>
-        <Style TargetType="Border" x:Key="BorderDockPanel">
-            <Setter Property="Height" Value="100"/>
-            <Setter Property="Padding" Value="5 0"/>
-            <Setter Property="Margin" Value="0 0 0 10"/>
-        </Style>
-        <!--<Style TargetType="StackPanel" x:Key="StackPanelCV">
-            <Setter Property="Orientation" Value="Horizontal"/>
-        </Style>-->
-        <!--<Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}" x:Key="TextBlockCV">
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="FontFamily" Value="SimSun"/>
-        </Style>-->
     </UserControl.Resources>
 
     <Grid x:Name="GridMain">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="436"/>
-            <ColumnDefinition Width="700"/>
+            <ColumnDefinition Width="346"/>
+            <ColumnDefinition Width="790"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="ListViewCollections" ItemsSource="{Binding}" Style="{StaticResource ListViewCollections}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                        <StackPanel>
-                            <Border x:Name="BorderEpisode" Style="{StaticResource BorderDockPanel}">
-                                <DockPanel Style="{StaticResource DockPanelCollection}">
-                                    <Image Source="{Binding subject.images[small]}"/>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding subject.name_cn}"/>
-                                        <TextBlock Text="{Binding subject.name}"/>
-                                    </StackPanel>
-                                    <!--<StackPanel>
-                                        <TextBlock Text="CV: " Style="{StaticResource TextBlockCV}"/>
-                                        <ItemsControl ItemsSource="{Binding actors}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Style="{StaticResource StackPanelCV}">
-                                                        <TextBlock Text="{Binding name, StringFormat={}{0} }" Style="{StaticResource TextBlockCV}"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>-->
-                                </DockPanel>
-                            </Border>
-                        </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Border BorderThickness="1 0 1 0" BorderBrush="Black">
+            <Grid Background="#7F0F0F0F">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="56"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+                    <TextBox Margin="5 0" BorderBrush="Black" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="#AF2F2F2F" FontSize="16" Foreground="Silver" />
+                </Border>
+                <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Style="{StaticResource DockPanelCollection}">
+                                <Image DockPanel.Dock="Left" Source="{Binding subject.images[small]}"/>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding subject.name_cn}"/>
+                                    <TextBlock Text="{Binding subject.name}"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

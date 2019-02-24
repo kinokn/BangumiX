@@ -24,7 +24,9 @@
         <Style TargetType="CheckBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
+        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Canvas Background="Black" Grid.ColumnSpan="6" Grid.RowSpan="3" Opacity="0.9">
@@ -62,12 +64,8 @@
             <CheckBox Grid.Row="4" Grid.Column="2" IsChecked="{Binding NeverAsk}">
                 <TextBlock FontSize="14">不再提示</TextBlock>
             </CheckBox>
-            <Button Grid.Row="5" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" Click="LoginClick" Width="50">
-                <TextBlock FontSize="20">登录</TextBlock>
-            </Button>
-            <Button Grid.Row="5" Grid.Column="2" Margin="-5 0 0 0"   HorizontalAlignment="Left" Click="CancelClick" Width="50" DockPanel.Dock="Right">
-                <TextBlock FontSize="20">取消</TextBlock>
-            </Button>
+            <Button Grid.Row="5" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" Click="LoginClick" Width="50" Content="登录"/>
+            <Button Grid.Row="5" Grid.Column="2" Margin="-5 0 0 0"   HorizontalAlignment="Left" Click="CancelClick" Width="50" DockPanel.Dock="Right" Content="取消"/>
         </Grid>
     </Grid>
 </UserControl>

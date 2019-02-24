@@ -5,40 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="700">
+             d:DesignHeight="640" d:DesignWidth="700">
 
     <UserControl.Resources>
         <Style TargetType="Border" x:Key="BorderDetail">
-            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Background" Value="#7F3F3F3F"/>
+            <Setter Property="Margin" Value="0 0 5 10"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="BorderThickness" Value="4 0 0 0"/>
             <Setter Property="BorderBrush" Value="DimGray"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockDetailLeft" BasedOn="{StaticResource BaseTextBlock}">
+        <Style TargetType="TextBlock" x:Key="BaseSubjectSummaryTextBlock" BasedOn="{StaticResource BaseTextBlock}">
+            <Setter Property="FontFamily" Value="SimSun"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TextBlockDetailLeft" BasedOn="{StaticResource BaseSubjectSummaryTextBlock}">
             <Setter Property="DockPanel.Dock" Value="Left"/>
             <Setter Property="Margin" Value="5 0 0 0"/>
-            <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockDetailRight" BasedOn="{StaticResource BaseTextBlock}">
+        <Style TargetType="TextBlock" x:Key="TextBlockDetailRight" BasedOn="{StaticResource BaseSubjectSummaryTextBlock}">
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="Margin" Value="0 0 10 0"/>
             <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="TextAlignment" Value="Right"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockSummary" BasedOn="{StaticResource BaseTextBlock}">
+        <Style TargetType="TextBlock" x:Key="TextBlockSummary" BasedOn="{StaticResource BaseSubjectSummaryTextBlock}">
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0 3"/>
+            <Setter Property="Margin" Value="0 15 0 5"/>
+            <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
-        <Style TargetType="TextBlock" x:Key="TextBlockSummaryContent" BasedOn="{StaticResource BaseTextBlock}">
-            <Setter Property="FontFamily" Value="SimSun"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
+        <Style TargetType="TextBlock" x:Key="TextBlockSummaryContent" BasedOn="{StaticResource BaseSubjectSummaryTextBlock}">
             <Setter Property="Margin" Value="0 5"/>
             <Setter Property="LineHeight" Value="24"/>
         </Style>
@@ -81,13 +79,13 @@
                 </Border>
             </StackPanel>
             <StackPanel Grid.Column="2">
-                <Border Style="{StaticResource BorderDetail}">
+                <Border Style="{StaticResource BorderDetail}" Margin="0 0 0 10">
                     <DockPanel>
                         <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="评分"/>
                         <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}"/>
                     </DockPanel>
                 </Border>
-                <Border Style="{StaticResource BorderDetail}">
+                <Border Style="{StaticResource BorderDetail}" Margin="0 0 0 10">
                     <DockPanel>
                         <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="当前放送"/>
                         <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}"/>
@@ -95,8 +93,8 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <Line StrokeThickness="2" Stroke="DimGray" X1="0" X2="700" Margin="0 0 0 10"/>
         <TextBlock Text="剧情简介" Style="{StaticResource TextBlockSummary}"/>
+        <Line StrokeThickness="2" Stroke="DimGray" X1="0" X2="790" Margin="0 0 0 10"/>
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
             <TextBlock Text="{Binding summary}" Style="{StaticResource TextBlockSummaryContent}"/>
         </ScrollViewer>

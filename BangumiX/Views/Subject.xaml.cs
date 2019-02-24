@@ -33,49 +33,22 @@ namespace BangumiX.Views
             subject_episodes = new SubjectEpisodes();
             subject_characters = new SubjectCharacters();
 
-            GridMain.Children.Add(subject_summary);
-            Grid.SetRow(subject_summary, 3);
-        }
-        private void Remove()
-        {
-            GridMain.Children.RemoveAt(3);
-        }
-        public void AddSummary()
-        {
-            Remove();
-            subject_summary.DataContext = this.DataContext;
-            GridMain.Children.Add(subject_summary);
-            Grid.SetRow(subject_summary, 3);
-        }
-        public void AddEpisode()
-        {
-            Remove();
-            subject_episodes.DataContext = this.DataContext;
-            GridMain.Children.Add(subject_episodes);
-            Grid.SetRow(subject_episodes, 3);
-        }
-
-        public void AddCharacter()
-        {
-            Remove();
-            subject_characters.DataContext = this.DataContext;
-            GridMain.Children.Add(subject_characters);
-            Grid.SetRow(subject_characters, 3);
+            SubjectContentCtrl.Content = subject_summary;
         }
 
         private void SummaryClick(object sender, RoutedEventArgs e)
         {
-            AddSummary();
+            SubjectContentCtrl.Content = subject_summary;
         }
 
         private void EpisodeClick(object sender, RoutedEventArgs e)
         {
-            AddEpisode();
+            SubjectContentCtrl.Content = subject_episodes;
         }
 
         private void CharacterClick(object sender, RoutedEventArgs e)
         {
-            AddCharacter();
+            SubjectContentCtrl.Content = subject_characters;
         }
 
         private void DetailClick(object sender, RoutedEventArgs e)

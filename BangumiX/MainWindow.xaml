@@ -4,11 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BangumiX"
+        xmlns:views="clr-namespace:BangumiX.Views"
         mc:Ignorable="d"
+        AllowsTransparency="True"
         WindowStyle="None"
         Height="932" Width="1200"
         ResizeMode="NoResize"
-        Background="Black">
+        Background="#01000000"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
@@ -17,29 +20,50 @@
     <Grid Name="GridMain">
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
-            <RowDefinition Height="100" />
-            <RowDefinition Height="800" />
+            <RowDefinition Height="900" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="64"/>
             <ColumnDefinition Width="1136"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="1" Grid.ColumnSpan="2" Panel.ZIndex="99">
-            <Button DockPanel.Dock="Right" Width="44">
-                <Viewbox Width="22" Height="16">
-                    <Canvas Width="22" Height="16">
-                        <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="Gray" Stretch="Uniform" Width="22" Height="16"/>
-                    </Canvas>
-                </Viewbox>
-            </Button>
-            <Button DockPanel.Dock="Right" Width="44">
-                <Viewbox Width="22" Height="16">
-                    <Canvas Width="22" Height="16">
-                        <Path Data="M20,12H4V10H20" Fill="Gray" Stretch="Uniform" Width="22" Height="16"/>
-                    </Canvas>
-                </Viewbox>
-            </Button>
-            <TextBlock MouseLeftButtonDown="MoveWindow"/>
-        </DockPanel>
+        <views:ToolBar Grid.Row="1"/>
+        <Border BorderBrush="Black" BorderThickness="0 0 0 1" Grid.ColumnSpan="3" Panel.ZIndex="99">
+            <DockPanel Background="#A7292929">
+                <TextBlock Grid.ColumnSpan="2" Style="{StaticResource BaseTextBlock}" VerticalAlignment="Center" Foreground="Silver" FontFamily="Arial" Text="  BangumiX"/>
+                <Button DockPanel.Dock="Right" Width="44" Click="CloseApplication">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Crimson"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Viewbox Width="22" Height="16">
+                        <Canvas Width="22" Height="16">
+                            <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="Silver" Stretch="Uniform" Width="22" Height="16"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+                <Button DockPanel.Dock="Right" Width="44" Click="MinimizeWindow">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Viewbox Width="22" Height="16">
+                        <Canvas Width="22" Height="16">
+                            <Path Data="M20,12H4V10H20" Fill="Silver" Stretch="Uniform" Width="22" Height="16"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+                <TextBlock MouseLeftButtonDown="MoveWindow"/>
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>

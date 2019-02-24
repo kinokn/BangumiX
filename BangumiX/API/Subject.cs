@@ -12,8 +12,37 @@ namespace BangumiX.API
         public uint id { get; set; }
         public string url { get; set; }
         public int type { get; set; }
-        public string name { get; set; }
-        public string name_cn { get; set; }
+
+        //public string name { get; set; }
+        private string _name { get; set; }
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (value == String.Empty) _name = null;
+                else _name = value;
+            }
+        }
+
+        //public string name_cn { get; set; }
+        private string _name_cn { get; set; }
+        public string name_cn
+        {
+            get
+            {
+                return _name_cn;
+            }
+            set
+            {
+                if (value == String.Empty) _name_cn = null;
+                else _name_cn = value;
+            }
+        }
+
         public string summary { get; set; }
         public int eps { get; set; }
         public int eps_count { get; set; }
@@ -79,7 +108,7 @@ namespace BangumiX.API
     }
     public class SubjectLarge : SubjectSmall
     {
-        new public List<Episode> eps { get; set; }
+        public List<Episode> eps { get; set; }
         public List<Character> crt { get; set; }
         public List<Staff> staff { get; set; }
         public List<Topic> topic { get; set; }
@@ -91,8 +120,37 @@ namespace BangumiX.API
         public string url { get; set; }
         public int type { get; set; }
         public float sort { get; set; }
-        public string name { get; set; }
-        public string name_cn { get; set; }
+
+        //public string name { get; set; }
+        private string _name { get; set; }
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (value == String.Empty) _name = null;
+                else _name = value;
+            }
+        }
+
+        //public string name_cn { get; set; }
+        private string _name_cn { get; set; }
+        public string name_cn
+        {
+            get
+            {
+                return _name_cn;
+            }
+            set
+            {
+                if (value == String.Empty) _name_cn = null;
+                else _name_cn = value;
+            }
+        }
+
         public string duration { get; set; }
         public string airdate { get; set; }
         public uint comment { get; set; }

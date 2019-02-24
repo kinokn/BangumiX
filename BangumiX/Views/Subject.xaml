@@ -5,44 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="700">
+             Background="#AF0F0F0F"
+             Padding="26 26 26 0"
+             d:DesignHeight="900" d:DesignWidth="790">
 
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="StackPanelTitle">
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="5 0"/>
             <Style.Resources>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
-                    <!--<Setter Property="Width" Value="500"/>-->
                     <Setter Property="TextWrapping" Value="Wrap"/>
                 </Style>
             </Style.Resources>
         </Style>
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Style.Resources>
-                <Style TargetType="TextBlock" BasedOn="{StaticResource BaseButtonTextBlock}">
-                    <Setter Property="FontSize" Value="25"/>
-                </Style>
-            </Style.Resources>
+            <Setter Property="FontSize" Value="25"/>
         </Style>
     </UserControl.Resources>
 
     <Grid Name="GridMain">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="363"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="540"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="264"/>
+                <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Image Margin="0 0 0 26" Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <StackPanel Style="{StaticResource StackPanelTitle}" Grid.Column="1">
-                <TextBlock FontSize="30" Text="{Binding name_cn}"/>
-                <TextBlock FontSize="25" Text="{Binding name}"/>
+                <TextBlock Margin="0 0 0 5" FontSize="28" Text="{Binding name}"/>
+                <TextBlock Margin="4 0 0 0" FontSize="20" Text="{Binding name_cn}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
@@ -54,25 +50,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick">
-                <TextBlock>概览</TextBlock>
-            </Button>
-            <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick">
-                <TextBlock>章节</TextBlock>
-            </Button>
-            <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick">
-                <TextBlock>角色</TextBlock>
-            </Button>
-            <Button Name="buttonDetail" Grid.Column="3" Click="DetailClick">
-                <TextBlock>制作</TextBlock>
-            </Button>
-            <Button Name="buttonComment" Grid.Column="4" Click="CommentClick">
-                <TextBlock>吐槽</TextBlock>
-            </Button>
-            <Button Name="buttonReview" Grid.Column="5" Click="ReviewClick">
-                <TextBlock>评论</TextBlock>
-            </Button>
+            <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick" Content="概览"/>
+            <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick" Content="章节"/>
+            <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick" Content="角色"/>
+            <Button Name="buttonDetail" Grid.Column="3" Click="DetailClick" Content="制作"/>
+            <Button Name="buttonComment" Grid.Column="4" Click="CommentClick" Content="吐槽"/>
+            <Button Name="buttonReview" Grid.Column="5" Click="ReviewClick" Content="评论"/>
         </Grid>
-        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="700"/>
+        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
+        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/> 
     </Grid>
 </UserControl>
