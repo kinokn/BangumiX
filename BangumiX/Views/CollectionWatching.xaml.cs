@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using BangumiX.Common;
+
 namespace BangumiX.Views
 {
     /// <summary>
@@ -20,41 +22,42 @@ namespace BangumiX.Views
     /// </summary>
     public partial class CollectionWatching : UserControl
     {
-        public API.HttpHelper.WatchingResult watching_result = new API.HttpHelper.WatchingResult();
+        public List<Model.Collection> subject_list;
         public Subject SubjectControl;
         public CollectionWatching()
         {
             InitializeComponent();
-        }
-        public CollectionWatching(ref API.HttpHelper.WatchingResult ref_watching_result)
-        {
-            watching_result = ref_watching_result;
-            InitializeComponent();
-            DataContext = watching_result.Watching;
             ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
+        }
+
+        public void Switch(ref List<Model.Collection> collections)
+        {
+            subject_list = collections;
+            DataContext = subject_list;
         }
 
         private async void ListViewCollectionsSelectedIndexChanged(object sender, EventArgs e)
         {
             var index = ListViewCollections.SelectedIndex;
-            if (watching_result.Watching[index].subject_detail == null)
+            if (index == -1) return;
+            if (subject_list[index].subject_detail == null)
             {
-                API.HttpHelper.SubjectResult subject_result = new API.HttpHelper.SubjectResult();
-                subject_result = await API.HttpHelper.GetSubject(watching_result.Watching[index].subject_id);
+                HttpHelper.SubjectResult subject_result = new HttpHelper.SubjectResult();
+                subject_result = await HttpHelper.GetSubject(subject_list[index].subject_id);
                 if (subject_result.Status != 1) return;
-                watching_result.Watching[index].subject_detail = subject_result.Subject;
+                subject_list[index].subject_detail = subject_result.Subject;
             }
             if (SubjectControl == null)
             {
                 SubjectControl = new Subject();
                 Grid.SetColumn(SubjectControl, 1);
                 GridMain.Children.Add(SubjectControl);
-                SubjectControl.DataContext = watching_result.Watching[index].subject_detail;
+                SubjectControl.DataContext = subject_list[index].subject_detail;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             else
             {
-                SubjectControl.DataContext = watching_result.Watching[index].subject_detail;
+                SubjectControl.DataContext = subject_list[index].subject_detail;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             return;

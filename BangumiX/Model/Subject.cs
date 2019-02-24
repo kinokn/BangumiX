@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace BangumiX.API
+namespace BangumiX.Model
 {
     public class SubjectSmall
     {
@@ -108,7 +108,7 @@ namespace BangumiX.API
     }
     public class SubjectLarge : SubjectSmall
     {
-        public List<Episode> eps { get; set; }
+        new public List<Episode> eps { get; set; }
         public List<Character> crt { get; set; }
         public List<Staff> staff { get; set; }
         public List<Topic> topic { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BangumiX.API
+namespace BangumiX.Model
 {
     public class CollectsWrapper
     {

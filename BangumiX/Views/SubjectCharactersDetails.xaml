@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
+             xmlns:common="clr-namespace:BangumiX.Common"
              mc:Ignorable="d" 
              d:DesignHeight="640" d:DesignWidth="250">
     <UserControl.Resources>
@@ -30,7 +31,7 @@
         <Image Source="{Binding images[large]}" Grid.Row="0" MaxWidth="200" MaxHeight="300" Stretch="Uniform" HorizontalAlignment="Center" Margin="0 0 0 10"/>
         <StackPanel Grid.Row="1" Style="{StaticResource StackPanelCharacterDetails}">
             <StackPanel.Resources>
-                <local:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+                <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
             </StackPanel.Resources>
             <TextBlock Text="{Binding name_cn, StringFormat={}中文名：{0}}" Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding name, StringFormat={}日文名：{0}}" Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}"/>

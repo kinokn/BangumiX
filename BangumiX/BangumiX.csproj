@@ -87,7 +87,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="API\Collection.cs" />
+    <Compile Include="Common\HttpHelper.cs" />
+    <Compile Include="Common\ViewHelper.cs" />
+    <Compile Include="Model\Collection.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Views\CollectionWatching.xaml.cs">
       <DependentUpon>CollectionWatching.xaml</DependentUpon>
@@ -117,9 +119,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="API\HttpHelper.cs" />
-    <Compile Include="API\Subject.cs" />
-    <Compile Include="API\User.cs" />
+    <Compile Include="Model\Subject.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

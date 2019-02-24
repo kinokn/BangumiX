@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
+             xmlns:common="clr-namespace:BangumiX.Common"
              mc:Ignorable="d" 
              d:DesignHeight="640" d:DesignWidth="700">
 
@@ -38,7 +39,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <DataTemplate.Resources>
-                            <local:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+                            <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
                         </DataTemplate.Resources>
                         <StackPanel Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}">
                             <Border x:Name="BorderEpisode" Style="{StaticResource BorderDockPanel}">

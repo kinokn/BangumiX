@@ -13,8 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using BangumiX.API;
-
 namespace BangumiX.Views
 {
     /// <summary>
@@ -25,12 +23,6 @@ namespace BangumiX.Views
         public SubjectEpisodes()
         {
             InitializeComponent();
-        }
-
-        public SubjectEpisodes(SubjectLarge subject)
-        {
-            InitializeComponent();
-            DataContext = subject;
         }
     }
 }

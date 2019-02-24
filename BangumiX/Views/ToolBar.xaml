@@ -23,8 +23,8 @@
             <RowDefinition Height="64"/>
         </Grid.RowDefinitions>
         <Button Grid.Row="0" Content="每日"/>
-        <Button Grid.Row="1" Content="追番"/>
-        <Button Grid.Row="2" Content="历史"/>
+        <Button x:Name="SwitchToWatchingBtn" Grid.Row="1" Content="追番" Click="SwitchToWatchingClick"/>
+        <Button x:Name="SwitchToRecentBtn" Grid.Row="2" Content="历史" Click="SwitchToRecentClick"/>
         <Button Grid.Row="4" Content="恰饭"/>
         <Button Grid.Row="5" Content="设置"/>
         <Button Grid.Row="6" Content="头像"/>

@@ -10,6 +10,7 @@
 
     <UserControl.Resources>
         <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}"/>
         <Style TargetType="DockPanel" x:Key="DockPanelCollection">
             <Setter Property="Height" Value="105"/>
             <Setter Property="LastChildFill" Value="False"/>
@@ -41,7 +42,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                    <TextBox Margin="5 0" BorderBrush="Black" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="#AF2F2F2F" FontSize="16" Foreground="Silver" />
+                    <TextBox Margin="5 0" BorderBrush="DimGray" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="#AF2F2F2F" FontSize="16" Foreground="Silver" />
                 </Border>
                 <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}">
                     <ListView.ItemTemplate>

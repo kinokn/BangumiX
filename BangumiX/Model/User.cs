@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using BangumiX.Properties;
 
-namespace BangumiX.API
+namespace BangumiX.Model
 {
     public class User
     {
