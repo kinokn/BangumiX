@@ -31,13 +31,13 @@ namespace BangumiX.Views
         private async void SwitchToWatchingClick(object sender, RoutedEventArgs e)
         {
             var subject_list = await Switch(0);
-            ((MainWindow)Application.Current.MainWindow).MyCollection.Switch(ref subject_list);
+            ((MainWindow)Application.Current.MainWindow).MyCollections.Switch(ref subject_list);
         }
 
         private async void SwitchToRecentClick(object sender, RoutedEventArgs e)
         {
             var subject_list = await Switch(1);
-            ((MainWindow)Application.Current.MainWindow).MyCollection.Switch(ref subject_list);
+            ((MainWindow)Application.Current.MainWindow).MyCollections.Switch(ref subject_list);
         }
 
         private async Task<List<Model.Collection>> Switch(int type)
@@ -45,7 +45,7 @@ namespace BangumiX.Views
             List<Model.Collection> subject_list = new List<Model.Collection>();
             if (type == 0)
             {
-                var watching_result = await HttpHelper.GetWatching(Settings.Default.UserID);
+                var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
                 if (watching_result.Status == 1)
                 {
                     subject_list = watching_result.Watching;
@@ -53,7 +53,7 @@ namespace BangumiX.Views
             }
             else if (type == 1)
             {
-                var recent_result = await HttpHelper.GetRecentCollection(Settings.Default.UserID);
+                var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
                 if (recent_result.Status == 1)
                 {
                     foreach (var c in recent_result.CollectWrapper[0].collects)

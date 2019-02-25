@@ -65,6 +65,6 @@
                 <TextBlock MouseLeftButtonDown="MoveWindow"/>
             </DockPanel>
         </Border>
-        <views:CollectionWatching x:Name="MyCollection" x:FieldModifier="public" Grid.Row="1" Grid.Column="1"/>
+        <views:MyCollections x:Name="MyCollections" x:FieldModifier="public" Grid.Row="1" Grid.Column="1"/>
     </Grid>
 </Window>

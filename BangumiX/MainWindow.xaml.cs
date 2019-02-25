@@ -33,9 +33,9 @@ namespace BangumiX
 
         private async Task<bool> CheckLogin()
         {
-            var check_login_result = await HttpHelper.CheckLogin();
+            var check_login_result = await LoginHelper.CheckLogin();
             if (check_login_result.Status == 1) return true;
-            var start_login = new HttpHelper.StartLogin();
+            var start_login = new LoginHelper.StartLogin();
             await start_login.GetCaptchaSrc();
             if (start_login.captcha_src_result.Status == -1)
             {

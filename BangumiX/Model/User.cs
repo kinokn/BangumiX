@@ -31,6 +31,7 @@ namespace BangumiX.Model
             {
                 _email = value;
                 Settings.Default.Email = _email;
+                Settings.Default.Save();
             }
         }
 
@@ -51,10 +52,12 @@ namespace BangumiX.Model
                 if (SavePassword)
                 {
                     Settings.Default.Password = _password;
+                    Settings.Default.Save();
                 }
                 else
                 {
                     Settings.Default.Password = String.Empty;
+                    Settings.Default.Save();
                 }
             }
         }
@@ -71,6 +74,7 @@ namespace BangumiX.Model
             {
                 _save_password = value;
                 Settings.Default.SavePassword = _save_password;
+                Settings.Default.Save();
             }
         }
 
@@ -86,6 +90,7 @@ namespace BangumiX.Model
             {
                 _never_ask = value;
                 Settings.Default.NeverAsk = _never_ask;
+                Settings.Default.Save();
             }
         }
     }
@@ -101,6 +106,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.UserID = value;
+                Settings.Default.Save();
             }
         }
         public string access_token
@@ -112,6 +118,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.AccessToken = value;
+                Settings.Default.Save();
             }
         }
         public uint expires_in
@@ -123,6 +130,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.Expire = value;
+                Settings.Default.Save();
             }
         }
         public string refresh_token
@@ -134,6 +142,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.RefreshToken = value;
+                Settings.Default.Save();
             }
         }
         public DateTime token_time
@@ -145,6 +154,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.TokenTime = value;
+                Settings.Default.Save();
             }
         }
         public string token_type
@@ -156,6 +166,7 @@ namespace BangumiX.Model
             set
             {
                 Settings.Default.TokenType = value;
+                Settings.Default.Save();
             }
         }
     }

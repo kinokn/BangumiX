@@ -20,11 +20,11 @@ namespace BangumiX.Views
     /// <summary>
     /// Interaction logic for Collection.xaml
     /// </summary>
-    public partial class CollectionWatching : UserControl
+    public partial class MyCollections : UserControl
     {
         public List<Model.Collection> subject_list;
         public Subject SubjectControl;
-        public CollectionWatching()
+        public MyCollections()
         {
             InitializeComponent();
             ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
@@ -42,8 +42,8 @@ namespace BangumiX.Views
             if (index == -1) return;
             if (subject_list[index].subject_detail == null)
             {
-                HttpHelper.SubjectResult subject_result = new HttpHelper.SubjectResult();
-                subject_result = await HttpHelper.GetSubject(subject_list[index].subject_id);
+                ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
+                subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
                 if (subject_result.Status != 1) return;
                 subject_list[index].subject_detail = subject_result.Subject;
             }

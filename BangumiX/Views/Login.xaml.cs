@@ -23,11 +23,11 @@ namespace BangumiX.Views
     /// </summary>
     public partial class Login : UserControl
     {
-        public HttpHelper.StartLogin start_login;
+        public LoginHelper.StartLogin start_login;
         public Login()
         {
         }
-        public Login(ref HttpHelper.StartLogin ref_start_login)
+        public Login(ref LoginHelper.StartLogin ref_start_login)
         {
             start_login = ref_start_login;
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace BangumiX.Views
 
         private async void CaptchaClick(object sender, RoutedEventArgs e)
         {
-            start_login.captcha_src_result = new HttpHelper.CaptchaSrcResult();
+            start_login.captcha_src_result = new LoginHelper.CaptchaSrcResult();
             await start_login.GetCaptchaSrc();
             if (start_login.captcha_src_result.Status == 1)
             {
@@ -59,7 +59,7 @@ namespace BangumiX.Views
             await start_login.Start();
             if (start_login.login_result.Status == 1)
             {
-                HttpHelper.APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
+                LoginHelper.APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
                 ((MainWindow)Application.Current.MainWindow).MyToolBar.SwitchToWatchingBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 RemoveSelf();
             }

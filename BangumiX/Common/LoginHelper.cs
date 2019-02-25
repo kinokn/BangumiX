@@ -4,52 +4,88 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Net;
-using System.Net.Http;
-using Newtonsoft.Json;
 using CefSharp;
 using CefSharp.OffScreen;
 
 using BangumiX.Properties;
 using System.Windows.Media.Imaging;
+using Newtonsoft.Json;
+using System.Net.Http;
 
-namespace BangumiX.API
+namespace BangumiX.Common
 {
-    public class HttpHelper
+    public class LoginHelper : WebHelper
     {
-        public static readonly HttpClient APIclient = new HttpClient()
+        public class RefreshTokenResult : HttpResult
         {
-            BaseAddress = new Uri("https://api.bgm.tv/")
-        };
-        public static readonly HttpClient TokenClient = new HttpClient()
-        {
-            BaseAddress = new Uri("http://47.101.195.180:5000/")
-        };
-
-        public class HttpResult
-        {
-            public int Status { get; set; }
-            public string ErrorMessage { get; set; }
-            public HttpResult()
-            {
-                Status = 0;
-                ErrorMessage = String.Empty;
-            }
+            public Model.Token Token { get; set; }
         }
-
         public class CaptchaSrcResult : HttpResult
         {
             public BitmapImage CaptchaSrc { get; set; }
         }
         public class LoginResult : HttpResult
         {
-            public Token Token { get; set; }
+            public Model.Token Token { get; set; }
         }
+
+        public static async Task<HttpResult> CheckLogin()
+        {
+            HttpResult check_login_result = new HttpResult();
+            if (Settings.Default.NeverAsk == true)
+            {
+                check_login_result.Status = 1;
+                return check_login_result;
+            }
+            if (Settings.Default.AccessToken != String.Empty)
+            {
+                var time_remain = (int)(DateTime.Now - Settings.Default.TokenTime).TotalSeconds;
+                if (time_remain < Settings.Default.Expire / 2)
+                {
+                    APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
+                    check_login_result.Status = 1;
+                    return check_login_result;
+                }
+                else
+                {
+                    var refresh_token_result = await StartRefreshToken();
+                    if (refresh_token_result.Status == 1)
+                    {
+                        check_login_result.Status = 1;
+                        return check_login_result;
+                    }
+                    else Console.WriteLine("Refresh Failed");
+                }
+            }
+            return check_login_result;
+        }
+
+        public static async Task<RefreshTokenResult> StartRefreshToken()
+        {
+            RefreshTokenResult refresh_token_result = new RefreshTokenResult();
+            try
+            {
+                string url = String.Format("callback?refresh_token={0}", Settings.Default.RefreshToken);
+                HttpResponseMessage response = await TokenClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                refresh_token_result.Token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                refresh_token_result.Status = 1;
+                return refresh_token_result;
+            }
+            catch (HttpRequestException e)
+            {
+                refresh_token_result.Status = -1;
+                refresh_token_result.ErrorMessage = e.Message;
+                return refresh_token_result;
+            }
+        }
+
         public class StartLogin
         {
             public ChromiumWebBrowser browser;
             public string login_uri;
-            public Login login;
+            public Model.Login login;
             public CaptchaSrcResult captcha_src_result;
             public LoginResult login_result;
             public StartLogin()
@@ -61,8 +97,8 @@ namespace BangumiX.API
                 {
                     System.Threading.Thread.Sleep(100);
                 }
-                
-                login = new Login();
+
+                login = new Model.Login();
                 captcha_src_result = new CaptchaSrcResult();
                 login_result = new LoginResult();
             }
@@ -147,7 +183,7 @@ namespace BangumiX.API
                         var response = t.Result;
                         if (response.Success && response.Result != null)
                         {
-                            login_result.Token = JsonConvert.DeserializeObject<Token>(response.Result.ToString());
+                            login_result.Token = JsonConvert.DeserializeObject<Model.Token>(response.Result.ToString());
                             login_result.Token.token_time = DateTime.Now;
                         }
                     }
@@ -157,7 +193,6 @@ namespace BangumiX.API
 
                 return;
             }
-
 
             public static Task LoadPageAsync(IWebBrowser browser, string address = null)
             {
@@ -180,112 +215,6 @@ namespace BangumiX.API
                     browser.Load(address);
                 }
                 return tcs.Task;
-            }
-        }
-
-        public class RefreshTokenResult : HttpResult
-        {
-            public Token Token { get; set; }
-        }
-        public static async Task<RefreshTokenResult> StartRefreshToken()
-        {
-            RefreshTokenResult refresh_token_result = new RefreshTokenResult();
-            try
-            {
-                string url = String.Format("callback?refresh_token={0}", Settings.Default.RefreshToken);
-                HttpResponseMessage response = await TokenClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                refresh_token_result.Token = JsonConvert.DeserializeObject<Token>(response_body);
-                refresh_token_result.Status = 1;
-                return refresh_token_result;
-            }
-            catch (HttpRequestException e)
-            {
-                refresh_token_result.Status = -1;
-                refresh_token_result.ErrorMessage = e.Message;
-                return refresh_token_result;
-            }
-        }
-
-        public class WatchingResult : HttpResult
-        {
-            public List<Collection> Watching { get; set; }
-        }
-        public static async Task<WatchingResult> GetWatching(uint id, string cat = "watching")
-        {
-            WatchingResult watching_result = new WatchingResult();
-            try
-            {
-                string url = String.Format("user/{0}/collection?app_id={1}&cat={2}", id, Settings.Default.ClientID, cat);
-                HttpResponseMessage response = await APIclient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                watching_result.Watching = JsonConvert.DeserializeObject<List<Collection>>(response_body);
-                watching_result.Status = 1;
-                return watching_result;
-            }
-            catch (HttpRequestException e)
-            {
-                watching_result.Status = -1;
-                watching_result.ErrorMessage = e.Message;
-                return watching_result;
-            }
-        }
-
-        public class CollectionResult : HttpResult
-        {
-            public List<CollectsWrapper> CollectWrapper { get; set; }
-        }
-        public static async Task<CollectionResult> GetCollection(uint id, string subject_type = "anime")
-        {
-            CollectionResult collection_result = new CollectionResult();
-            try
-            {
-                string url = String.Format("user/{0}/collections/{1}?app_id={2}", id, subject_type, Settings.Default.ClientID);
-                HttpResponseMessage response = await APIclient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                collection_result.CollectWrapper = JsonConvert.DeserializeObject<List<CollectsWrapper>>(response_body);
-                collection_result.Status = 1;
-                return collection_result;
-            }
-            catch (HttpRequestException e)
-            {
-                collection_result.Status = -1;
-                collection_result.ErrorMessage = e.Message;
-                return collection_result;
-            }
-        }
-
-        public class SubjectResult : HttpResult
-        {
-            public dynamic Subject { get; set; }
-            public SubjectResult()
-            {
-                Subject = new SubjectSmall();
-            }
-        }
-        public static async Task<SubjectResult> GetSubject(uint id, string response_group = "large")
-        {
-            SubjectResult subject_result = new SubjectResult();
-            try
-            {
-                string url = String.Format("subject/{0}?responseGroup={1}", id, response_group);
-                HttpResponseMessage response = await APIclient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                if (response_group == "small") subject_result.Subject = JsonConvert.DeserializeObject<SubjectSmall>(response_body);
-                else if (response_group == "medium") subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                else if (response_group == "large") subject_result.Subject = JsonConvert.DeserializeObject<SubjectLarge>(response_body);
-                subject_result.Status = 1;
-                return subject_result;
-            }
-            catch (HttpRequestException e)
-            {
-                subject_result.Status = -1;
-                subject_result.ErrorMessage = e.Message;
-                return subject_result;
             }
         }
     }
