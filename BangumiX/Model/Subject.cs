@@ -7,6 +7,24 @@ using System.Threading.Tasks;
 
 namespace BangumiX.Model
 {
+    public class SubjectProgress
+    {
+        public uint subject_id { get; set; }
+        public List<EpProgress> eps { get; set; }
+    }
+    public class EpProgress
+    {
+        public uint id { get; set; }
+        public EpStatus status { get; set; }
+    }
+    public class EpStatus
+    {
+        public uint id { get; set; }
+        public string css_name { get; set; }
+        public string url_name { get; set; }
+        public string cn_name { get; set; }
+    }
+
     public class SubjectSmall
     {
         public uint id { get; set; }
@@ -156,11 +174,28 @@ namespace BangumiX.Model
         public uint comment { get; set; }
         public string desc { get; set; }
         public string status { get; set; }
+        public uint ep_status { get; set; }
     }
     public class Rating
     {
         public uint total { get; set; }
         public Dictionary<string, uint> count { get; set; }
+        public Dictionary<string, float> _count_p { get; set; }
+        public Dictionary<string, float> count_p
+        {
+            get
+            {
+                if (_count_p == null)
+                {
+                    _count_p = new Dictionary<string, float>();
+                    foreach (var c in count.Keys)
+                    {
+                        _count_p.Add(c, (float)count[c] / (float)total * 100);
+                    }
+                }
+                return _count_p;
+            }
+        }
         public float score { get; set; }
     }
     public class Character

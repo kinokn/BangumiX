@@ -9,7 +9,15 @@
              d:DesignHeight="900" d:DesignWidth="1136">
 
     <UserControl.Resources>
-        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}"/>
+        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseListViewItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}"/>
         <Style TargetType="DockPanel" x:Key="DockPanelCollection">
             <Setter Property="Height" Value="105"/>
@@ -42,7 +50,63 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                    <TextBox Margin="5 0" BorderBrush="DimGray" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="#AF2F2F2F" FontSize="16" Foreground="Silver" />
+                    <ListView x:Name="NavigationListView" Style="{StaticResource NavigationListView}">
+                        <ListView.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource NavigationButton}">
+                                <Setter Property="Height" Value="56"/>
+                                <Setter Property="Width" Value="48"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <DockPanel LastChildFill="False"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListViewItem>
+                            <Button Click="WishButtonClick">
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="想看"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                        <ListViewItem IsSelected="True">
+                            <Button x:Name="WatchingButton" Click="WatchingButtonClick">
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="在看"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <Button Click="WatchedButtonClick">
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="看过"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <Button Click="HoldButtonClick">
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="搁置"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <Button Click="DropButtonClick">
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="抛弃"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                        <ListViewItem DockPanel.Dock="Right">
+                            <Button>
+                                <Border BorderThickness="0 0 0 2" Height="32" Width="24" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                                    <TextBlock VerticalAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="搜索"/>
+                                </Border>
+                            </Button>
+                        </ListViewItem>
+                    </ListView>
                 </Border>
                 <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}">
                     <ListView.ItemTemplate>
@@ -53,6 +117,7 @@
                                     <TextBlock Text="{Binding subject.name_cn}"/>
                                     <TextBlock Text="{Binding subject.name}"/>
                                 </StackPanel>
+                                <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" Width="35" FontSize="20" Background="Black" Content="…"/>
                             </DockPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

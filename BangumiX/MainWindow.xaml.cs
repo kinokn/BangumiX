@@ -14,9 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-using System.Windows.Media.Effects;
-using BangumiX.Properties;
-
 using BangumiX.Common;
 
 namespace BangumiX
@@ -43,7 +40,6 @@ namespace BangumiX
             }
             else
             {
-                //GridMain.Effect = new BlurEffect();
                 var login_popup = new Views.Login(ref start_login);
                 GridMain.Children.Add(login_popup);
                 Grid.SetRowSpan(login_popup, 2);
@@ -55,7 +51,7 @@ namespace BangumiX
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             AcrylicEffect.EnableBlur(this);
-            if (await CheckLogin()) MyToolBar.SwitchToWatchingBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            if (await CheckLogin()) MyToolBar.SwitchToRecentBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

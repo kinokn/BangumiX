@@ -21,6 +21,45 @@
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
             <Setter Property="FontSize" Value="25"/>
         </Style>
+        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource BaseListViewItem}">
+                        <Setter Property="Margin" Value="0 4 4 4"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundCornerButton" TargetType="{x:Type Button}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="GhostWhite"/>
+            <Setter Property="MinWidth" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border x:Name="border" CornerRadius="2" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="GhostWhite"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Name="GridMain">
@@ -36,9 +75,80 @@
                 <ColumnDefinition Width="500"/>
             </Grid.ColumnDefinitions>
             <Image Margin="0 0 0 26" Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <StackPanel Style="{StaticResource StackPanelTitle}" Grid.Column="1">
+            <StackPanel Grid.Column="1" Style="{StaticResource StackPanelTitle}">
                 <TextBlock Margin="0 0 0 5" FontSize="28" Text="{Binding name}"/>
                 <TextBlock Margin="4 0 0 0" FontSize="20" Text="{Binding name_cn}"/>
+                <Grid Grid.Column="1" Margin="0 20 0 0" Height="125">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="225"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Margin="0 0 0 10" Text="观看进度管理"/>
+                        <ListView ItemsSource="{Binding eps}" HorizontalAlignment="Left">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" Width="225"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Name="ProgressBtn" Style="{StaticResource RoundCornerButton}">
+                                        <TextBlock Text="{Binding sort}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Button>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding status}" Value="Air">
+                                            <Setter TargetName="ProgressBtn" Property="Background" Value="#4093FF"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding status}" Value="NA">
+                                            <Setter TargetName="ProgressBtn" Property="Background" Value="#7F3F3F3F"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ep_status}" Value="2">
+                                            <Setter TargetName="ProgressBtn" Property="Background" Value="#004EB4"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                    <DockPanel Grid.Column="1" HorizontalAlignment="Center" LastChildFill="False">
+                        <DockPanel Margin="0 0 0 10" LastChildFill="False" DockPanel.Dock="Top">
+                            <TextBlock Text="评分"/>
+                            <TextBlock Text="{Binding rating.score}" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding rating.count_p}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel VerticalAlignment="Bottom">
+                                        <Border Name="br" Margin="2"
+                                        Background="DimGray"
+                                        Width="15" BorderBrush="White"  
+                                        BorderThickness="1" 
+                                        Height="{Binding Value}">
+                                        </Border>
+                                        <!--<TextBlock HorizontalAlignment="Center" FontWeight="Bold" 
+                                           FontFamily="Latha" Text="{Binding Value}">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform Y="0"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>-->
+                                        <TextBlock HorizontalAlignment="Center" Foreground="GhostWhite"
+                                           Text="{Binding Key}">
+                                            <TextBlock.RenderTransform>
+                                                <TranslateTransform Y="0"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
+                </Grid>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
@@ -58,6 +168,6 @@
             <Button Name="buttonReview" Grid.Column="5" Click="ReviewClick" Content="评论"/>
         </Grid>
         <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
-        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/> 
+        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
     </Grid>
 </UserControl>

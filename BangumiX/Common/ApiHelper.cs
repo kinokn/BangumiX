@@ -91,5 +91,30 @@ namespace BangumiX.Common
                 return subject_result;
             }
         }
+
+        public class ProgressResult : HttpResult
+        {
+            public Model.SubjectProgress SubjectProgress { get; set; }
+        }
+        public static async Task<ProgressResult> GetProgress(uint u_id, uint s_id)
+        {
+            ProgressResult progress_result = new ProgressResult();
+            try
+            {
+                string url = String.Format("user/{0}/progress?subject_id={1}", u_id, s_id);
+                HttpResponseMessage response = await APIclient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                progress_result.SubjectProgress = JsonConvert.DeserializeObject<Model.SubjectProgress>(response_body);
+                progress_result.Status = 1;
+                return progress_result;
+            }
+            catch (HttpRequestException e)
+            {
+                progress_result.Status = -1;
+                progress_result.ErrorMessage = e.Message;
+                return progress_result;
+            }
+        }
     }
 }

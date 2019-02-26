@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BangumiX", "BangumiX\BangumiX.csproj", "{83C98305-9B15-4639-962E-9CE8C86A3D11}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{AF3D17D2-1682-4D55-BA4A-8BC525207443}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{83C98305-9B15-4639-962E-9CE8C86A3D11}.Release|x64.Build.0 = Release|x64
 		{83C98305-9B15-4639-962E-9CE8C86A3D11}.Release|x86.ActiveCfg = Release|x86
 		{83C98305-9B15-4639-962E-9CE8C86A3D11}.Release|x86.Build.0 = Release|x86
+		{AF3D17D2-1682-4D55-BA4A-8BC525207443}.Debug|x64.ActiveCfg = Debug
+		{AF3D17D2-1682-4D55-BA4A-8BC525207443}.Debug|x86.ActiveCfg = Debug
+		{AF3D17D2-1682-4D55-BA4A-8BC525207443}.Release|x64.ActiveCfg = Release
+		{AF3D17D2-1682-4D55-BA4A-8BC525207443}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,7 +28,7 @@
                     <Setter Property="Margin" Value="10 0 0 0"/>
                 </Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
-                    <Setter Property="Margin" Value="0 0 0 5"/>
+                    <Setter Property="Margin" Value="0"/>
                     <Setter Property="FontFamily" Value="SimSun"/>
                     <Setter Property="FontSize" Value="16"/>
                 </Style>
