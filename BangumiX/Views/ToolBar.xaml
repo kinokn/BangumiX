@@ -52,31 +52,23 @@
             </Style>
         </ListView.Resources>
         <ListViewItem>
-            <ListViewItem>
-                <Button x:Name="SwitchToDailyBtn" Click="SwitchToDailyClick">
-                    <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
-                        <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="每日"/>
-                    </Border>
-                </Button>
-            </ListViewItem>
+            <Button x:Name="SwitchToSearchBtn" Click="SwitchToSearchClick">
+                <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                    <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="搜索"/>
+                </Border>
+            </Button>
         </ListViewItem>
         <ListViewItem>
             <Button x:Name="SwitchToWatchingBtn" Click="SwitchToWatchingClick">
                 <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
-                    <!--<Viewbox Width="49.000" Height="39.280">
-                        <Canvas Width="49.000" Height="39.280">
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Data="F1 M 3.510,3.000 C 3.228,3.000 3.000,3.228 3.000,3.510 L 3.000,3.510 L 3.000,29.740 C 3.000,30.022 3.228,30.250 3.510,30.250 L 3.510,30.250 L 45.510,30.250 C 45.792,30.250 46.020,30.022 46.020,29.740 L 46.020,3.510 C 46.020,3.232 45.798,3.005 45.520,3.000 L 3.510,3.000 Z M 45.520,33.250 L 3.520,33.250 C 1.580,33.250 0.006,31.680 0.000,29.740 L 0.000,3.510 C 0.005,1.574 1.574,0.005 3.510,0.000 L 45.510,0.000 C 47.438,0.016 48.995,1.582 49.000,3.510 L 49.000,29.740 C 48.995,31.665 47.445,33.228 45.520,33.250 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" Data="F1 M 36.680,39.280 L 12.350,39.280 C 11.522,39.280 10.850,38.608 10.850,37.780 C 10.850,36.952 11.522,36.280 12.350,36.280 L 36.680,36.280 C 37.508,36.280 38.180,36.952 38.180,37.780 C 38.180,38.608 37.508,39.280 36.680,39.280 Z"/>
-                        </Canvas>
-                    </Viewbox>-->
                     <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="在看"/>
                 </Border>
             </Button>
         </ListViewItem>
         <ListViewItem>
-            <Button x:Name="SwitchToRecentBtn" Click="SwitchToRecentClick">
+            <Button x:Name="SwitchToDailyBtn" Click="SwitchToDailyClick">
                 <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
-                    <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="历史"/>
+                    <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="每日"/>
                 </Border>
             </Button>
         </ListViewItem>
@@ -88,16 +80,23 @@
             </Button>
         </ListViewItem>
         <ListViewItem DockPanel.Dock="Bottom">
-            <Button Click="SwitchToRecentClick">
+            <Button>
                 <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
                     <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="头像"/>
                 </Border>
             </Button>
         </ListViewItem>
         <ListViewItem DockPanel.Dock="Bottom">
-            <Button Click="SwitchToRecentClick">
+            <Button>
                 <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
                     <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="设置"/>
+                </Border>
+            </Button>
+        </ListViewItem>
+        <ListViewItem DockPanel.Dock="Bottom">
+            <Button>
+                <Border BorderThickness="4 0 0 0" Width="64" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}">
+                    <TextBlock TextAlignment="Center" Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Text="恰饭"/>
                 </Border>
             </Button>
         </ListViewItem>

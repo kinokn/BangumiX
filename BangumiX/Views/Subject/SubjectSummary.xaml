@@ -87,8 +87,8 @@
                 </Border>
                 <Border Style="{StaticResource BorderDetail}" Margin="0 0 0 10">
                     <DockPanel>
-                        <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="当前放送"/>
-                        <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding rating.score}"/>
+                        <TextBlock Style="{StaticResource TextBlockDetailLeft}" Text="热度"/>
+                        <TextBlock Style="{StaticResource TextBlockDetailRight}" Text="{Binding collection_total}"/>
                     </DockPanel>
                 </Border>
             </StackPanel>

@@ -6,14 +6,24 @@ using System.Threading.Tasks;
 
 namespace BangumiX.Model
 {
-    public class CollectsWrapper
+    public class SearchCollection
+    {
+        public uint results { get; set; }
+        public List<SubjectSmall> list { get; set; }
+    }
+    public class DailyCollection
+    {
+        public Dictionary<string, dynamic> weekday { get; set; }
+        public List<SubjectSmall> items { get; set; }
+    }
+    public class MyCollectionWrapper
     {
         public uint type { get; set; }
         public string name { get; set; }
         public string name_cn { get; set; }
-        public List<Collects> collects { get; set; }
+        public List<MyCollection> collects { get; set; }
     }
-    public class Collects
+    public class MyCollection
     {
         public Dictionary<string, dynamic> status { get; set; }
         public string count { get; set; }
@@ -27,5 +37,13 @@ namespace BangumiX.Model
         public ulong lasttouch { get; set; }
         public SubjectSmall subject { get; set; }
         public SubjectLarge subject_detail { get; set; }
+
+        public Collection() { }
+        public Collection(SubjectSmall s)
+        {
+            name = s.name;
+            subject_id = s.id;
+            subject = s;
+        }
     }
 }

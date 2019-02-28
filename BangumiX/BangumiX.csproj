@@ -113,28 +113,34 @@
     <Compile Include="Common\WebHelper.cs" />
     <Compile Include="Model\Collection.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Views\CurrentCollection.xaml.cs">
-      <DependentUpon>CurrentCollection.xaml</DependentUpon>
+    <Compile Include="Views\Collection\DailyCollection.xaml.cs">
+      <DependentUpon>DailyCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyCollections.xaml.cs">
-      <DependentUpon>MyCollections.xaml</DependentUpon>
+    <Compile Include="Views\Collection\SearchCollection.xaml.cs">
+      <DependentUpon>SearchCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Collection\WatchingCollection.xaml.cs">
+      <DependentUpon>WatchingCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Collection\MyCollection.xaml.cs">
+      <DependentUpon>MyCollection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectCharacters.xaml.cs">
+    <Compile Include="Views\Subject\SubjectCharacters.xaml.cs">
       <DependentUpon>SubjectCharacters.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectCharactersDetails.xaml.cs">
+    <Compile Include="Views\Subject\SubjectCharactersDetails.xaml.cs">
       <DependentUpon>SubjectCharactersDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectEpisodes.xaml.cs">
+    <Compile Include="Views\Subject\SubjectEpisodes.xaml.cs">
       <DependentUpon>SubjectEpisodes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubjectSummary.xaml.cs">
+    <Compile Include="Views\Subject\SubjectSummary.xaml.cs">
       <DependentUpon>SubjectSummary.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Subject.xaml.cs">
+    <Compile Include="Views\Subject\Subject.xaml.cs">
       <DependentUpon>Subject.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolBar.xaml.cs">
@@ -158,11 +164,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CurrentCollection.xaml">
+    <Page Include="Views\Collection\DailyCollection.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MyCollections.xaml">
+    <Page Include="Views\Collection\SearchCollection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Collection\WatchingCollection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Collection\MyCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,23 +184,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectCharacters.xaml">
+    <Page Include="Views\Subject\SubjectCharacters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectCharactersDetails.xaml">
+    <Page Include="Views\Subject\SubjectCharactersDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectEpisodes.xaml">
+    <Page Include="Views\Subject\SubjectEpisodes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubjectSummary.xaml">
+    <Page Include="Views\Subject\SubjectSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Subject.xaml">
+    <Page Include="Views\Subject\Subject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

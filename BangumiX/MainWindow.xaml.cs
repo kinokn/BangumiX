@@ -51,7 +51,7 @@ namespace BangumiX
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             AcrylicEffect.EnableBlur(this);
-            if (await CheckLogin()) MyToolBar.SwitchToRecentBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            if (await CheckLogin()) MyToolBar.SwitchToMineBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

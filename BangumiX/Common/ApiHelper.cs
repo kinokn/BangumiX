@@ -38,7 +38,7 @@ namespace BangumiX.Common
 
         public class RecentCollectionResult : HttpResult
         {
-            public List<Model.CollectsWrapper> CollectWrapper { get; set; }
+            public List<Model.MyCollectionWrapper> CollectWrapper { get; set; }
         }
         public static async Task<RecentCollectionResult> GetRecentCollection(uint id, string subject_type = "anime")
         {
@@ -49,7 +49,7 @@ namespace BangumiX.Common
                 HttpResponseMessage response = await APIclient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string response_body = await response.Content.ReadAsStringAsync();
-                collection_result.CollectWrapper = JsonConvert.DeserializeObject<List<Model.CollectsWrapper>>(response_body);
+                collection_result.CollectWrapper = JsonConvert.DeserializeObject<List<Model.MyCollectionWrapper>>(response_body);
                 collection_result.Status = 1;
                 return collection_result;
             }
@@ -116,5 +116,56 @@ namespace BangumiX.Common
                 return progress_result;
             }
         }
+
+        public class DailyResult : HttpResult
+        {
+            public List<Model.DailyCollection> DailyCollections { get; set; }
+        }
+        public static async Task<DailyResult> GetDaily()
+        {
+            DailyResult daily_result = new DailyResult();
+            try
+            {
+                string url = String.Format("calendar");
+                HttpResponseMessage response = await APIclient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                daily_result.DailyCollections = JsonConvert.DeserializeObject<List<Model.DailyCollection>>(response_body);
+                daily_result.Status = 1;
+                return daily_result;
+            }
+            catch (HttpRequestException e)
+            {
+                daily_result.Status = -1;
+                daily_result.ErrorMessage = e.Message;
+                return daily_result;
+            }
+        }
+
+        public class SearchResult : HttpResult
+        {
+            public Model.SearchCollection SearchCollections { get; set; }
+        }
+        public static async Task<SearchResult> GetSearch(string keyword, uint start = 0)
+        {
+            SearchResult search_result = new SearchResult();
+            try
+            {
+                string url = String.Format("search/subject/{0}?max_results=25&start={1}", keyword, start);
+                HttpResponseMessage response = await APIclient.GetAsync(Uri.EscapeUriString(url));
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                search_result.SearchCollections = JsonConvert.DeserializeObject<Model.SearchCollection>(response_body);
+                search_result.Status = 1;
+                return search_result;
+            }
+            catch (HttpRequestException e)
+            {
+                search_result.Status = -1;
+                search_result.ErrorMessage = e.Message;
+                return search_result;
+            }
+        }
+
     }
 }

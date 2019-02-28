@@ -158,14 +158,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick" Content="概览"/>
             <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick" Content="章节"/>
             <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick" Content="角色"/>
             <Button Name="buttonDetail" Grid.Column="3" Click="DetailClick" Content="制作"/>
             <Button Name="buttonComment" Grid.Column="4" Click="CommentClick" Content="吐槽"/>
-            <Button Name="buttonReview" Grid.Column="5" Click="ReviewClick" Content="评论"/>
         </Grid>
         <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
         <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>

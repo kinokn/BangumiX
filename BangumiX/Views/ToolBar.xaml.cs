@@ -29,24 +29,51 @@ namespace BangumiX.Views
             InitializeComponent();
         }
 
-        private async void SwitchToWatchingClick(object sender, RoutedEventArgs e)
+        private void SwitchToSearchClick(object sender, RoutedEventArgs e)
         {
-            //var subject_list = await Switch(0);
-            //((MainWindow)Application.Current.MainWindow).MyCollections.Switch(ref subject_list);
-            var subject_list = await SwitchToWatching();
-            //var MyCollections_Navigation = new MyCollectionsNavigation();
-            //MyCollections_Navigation.DataContext = subject_list;
-            //((MainWindow)Application.Current.MainWindow).CurrentCollection.Switch(ref subject_list);
-            //((MainWindow)Application.Current.MainWindow).MyCollections.MyCollectionsNavigationContent.Content = MyCollections_Navigation;
-            var current_collection = new CurrentCollection();
-            current_collection.Switch(ref subject_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = current_collection;
+            var search_collection = new SearchCollection();
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = search_collection;
             ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
 
-        private async void SwitchToRecentClick(object sender, RoutedEventArgs e)
+        private async void SwitchToDailyClick(object sender, RoutedEventArgs e)
         {
-            var collects_list = await SwitchToRecent();
+            var daily_list = await SwitchToDaily();
+            Dictionary<uint, List<Model.Collection>> ordered_daily_list = new Dictionary<uint, List<Model.Collection>>()
+            {
+                { 1, new List<Model.Collection>() },
+                { 2, new List<Model.Collection>() },
+                { 3, new List<Model.Collection>() },
+                { 4, new List<Model.Collection>() },
+                { 5, new List<Model.Collection>() },
+                { 6, new List<Model.Collection>() },
+                { 7, new List<Model.Collection>() }
+            };
+            foreach (var d in daily_list)
+            {
+                foreach (var s in d.items)
+                {
+                    ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
+                }
+            }
+            var daily_collection = new DailyCollection();
+            daily_collection.Switch(ref ordered_daily_list);
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
+        }
+
+        private async void SwitchToWatchingClick(object sender, RoutedEventArgs e)
+        {
+            var subject_list = await SwitchToWatching();
+            var watching_collection = new WatchingCollection();
+            watching_collection.Switch(ref subject_list);
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
+        }
+
+        private async void SwitchToMineClick(object sender, RoutedEventArgs e)
+        {
+            var collects_list = await SwitchToMine();
             Dictionary<uint, List<Model.Collection>> ordered_collects_list = new Dictionary<uint, List<Model.Collection>>()
             {
                 { 1, null },
@@ -59,11 +86,21 @@ namespace BangumiX.Views
             {
                 ordered_collects_list[(uint)c.status["id"]] = c.list;
             }
-            var my_collections = new MyCollections();
-            my_collections.Switch(ref ordered_collects_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collections;
-            //((MainWindow)Application.Current.MainWindow).MyCollections.Switch(ref ordered_collects_list);
+            var my_collection = new MyCollection();
+            my_collection.Switch(ref ordered_collects_list);
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
             ToolBarListView.SelectedItem = ((Button)sender).Parent;
+        }
+
+        private async Task<List<Model.DailyCollection>> SwitchToDaily()
+        {
+            List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
+            var daily_result = await ApiHelper.GetDaily();
+            if (daily_result.Status == 1)
+            {
+                daily_list = daily_result.DailyCollections;
+            }
+            return daily_list;
         }
 
         private async Task<List<Model.Collection>> SwitchToWatching()
@@ -77,9 +114,9 @@ namespace BangumiX.Views
             return subject_list;
         }
 
-        private async Task<List<Model.Collects>> SwitchToRecent()
+        private async Task<List<Model.MyCollection>> SwitchToMine()
         {
-            List<Model.Collects> subject_list = new List<Model.Collects>();
+            List<Model.MyCollection> subject_list = new List<Model.MyCollection>();
             var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
             if (recent_result.Status == 1)
             {
@@ -88,39 +125,5 @@ namespace BangumiX.Views
             return subject_list;
         }
 
-        private async Task<List<Model.Collection>> Switch(int type)
-        {
-            List<Model.Collection> subject_list = new List<Model.Collection>();
-            if (type == 0)
-            {
-                var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
-                if (watching_result.Status == 1)
-                {
-                    subject_list = watching_result.Watching;
-                }
-            }
-            else if (type == 1)
-            {
-                var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
-                if (recent_result.Status == 1)
-                {
-                    foreach (var c in recent_result.CollectWrapper[0].collects)
-                    {
-                        subject_list.AddRange(c.list);
-                    }
-                }
-            }
-            return subject_list;
-        }
-
-        private void SwitchToMineClick(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SwitchToDailyClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

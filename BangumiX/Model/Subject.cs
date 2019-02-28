@@ -70,6 +70,10 @@ namespace BangumiX.Model
         public int rank { get; set; }
         public Dictionary<string, string> images { get; set; }
         public Dictionary<string, uint> collection { get; set; }
+        public uint collection_total { get
+            {
+                return (uint)collection.Sum(x => x.Value);
+            } }
 
         private static string ParseType(int type)
         {

@@ -21,12 +21,12 @@ namespace BangumiX.Views
     /// <summary>
     /// Interaction logic for Collection.xaml
     /// </summary>
-    public partial class MyCollections : UserControl
+    public partial class MyCollection : UserControl
     {
         public Dictionary<uint, List<Model.Collection>> collect_list;
         public List<Model.Collection> subject_list;
         public Subject SubjectControl;
-        public MyCollections()
+        public MyCollection()
         {
             InitializeComponent();
             ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
@@ -35,11 +35,11 @@ namespace BangumiX.Views
         public void Switch(ref Dictionary<uint, List<Model.Collection>> ref_ordered_collects)
         {
             collect_list = ref_ordered_collects;
-            subject_list = collect_list[3];
+            subject_list = collect_list[1];
             DataContext = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
             else ListViewCollections.SelectedIndex = 0;
-            NavigationListView.SelectedItem = WatchingButton.Parent;
+            NavigationListView.SelectedItem = WishButton.Parent;
             return;
         }
 
