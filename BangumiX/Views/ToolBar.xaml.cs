@@ -136,9 +136,5 @@ namespace BangumiX.Views
             return subject_list;
         }
 
-        private void OptionDetailBtnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

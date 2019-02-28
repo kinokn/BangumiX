@@ -4,11 +4,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
+             x:Name="_this"
              mc:Ignorable="d" 
              Background="#01000000"
+             Width="64"
              d:DesignHeight="900" d:DesignWidth="64">
 
     <UserControl.Resources>
+        <Storyboard x:Key="ToolBarDetails">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="_this" Storyboard.TargetProperty="Width"
+                             BeginTime="00:00:00" Duration="00:00:0.31">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="64"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:0.3" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:0.31" Value="1200"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ColorAnimation Storyboard.TargetName="BlurBackground" Storyboard.TargetProperty="Background.Color"
+                            From="#00000000" To="#CC000000" BeginTime="00:00:00" Duration="00:00:0.1"/>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+            </BooleanAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger2" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+            </BooleanAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="OptionDetailBtn" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ToolBarRestore">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="_this" Storyboard.TargetProperty="Width"
+                             BeginTime="00:00:00" Duration="00:00:0.3">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1200"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:0.01" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:0.3" Value="64"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ColorAnimation Storyboard.TargetName="BlurBackground" Storyboard.TargetProperty="Background.Color"
+                            From="#CC000000" To="#00000000" BeginTime="00:00:00" Duration="00:00:0.3"/>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger2" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
+            </BooleanAnimationUsingKeyFrames>
+            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="OptionDetailBtn" Storyboard.TargetProperty="IsHitTestVisible"
+                            BeginTime="00:00:00" Duration="00:00:00">
+                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
+            </BooleanAnimationUsingKeyFrames>
+        </Storyboard>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <BitmapImage x:Key="DonationIcon" UriSource="../Resources/Donation.png"/>
         <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}">
@@ -34,7 +80,7 @@
                         </Style.Resources>
                         <Setter Property="DockPanel.Dock" Value="Top"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="0 0 0 0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Foreground" Value="Silver"/>
                         <Setter Property="Margin" Value="0"/>
@@ -74,128 +120,199 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <ListView x:Name="ToolBarListView">
-        <ListView.ItemsPanel>
-            <ItemsPanelTemplate>
-                <DockPanel LastChildFill="False"/>
-            </ItemsPanelTemplate>
-        </ListView.ItemsPanel>
-        <ListView.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Height" Value="64"/>
-                <Setter Property="Width" Value="64"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ButtonBase}">
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ListView.Resources>
-        <ListViewItem>
-            <Button x:Name="OptionDetailBtn" Click="OptionDetailBtnClick">
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox Width="18.157" Height="15.772">
-                        <Canvas Width="18.157" Height="15.772">
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,1.482 L 0.741,1.482 C 0.332,1.482 0.000,1.151 0.000,0.741 C 0.000,0.332 0.332,0.000 0.741,0.000 L 17.416,0.000 C 17.825,0.000 18.157,0.332 18.157,0.741 C 18.157,1.151 17.825,1.482 17.416,1.482 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,15.772 L 0.741,15.772 C 0.332,15.772 0.000,15.440 0.000,15.030 C 0.000,14.621 0.332,14.289 0.741,14.289 L 17.416,14.289 C 17.825,14.289 18.157,14.621 18.157,15.030 C 18.157,15.440 17.825,15.772 17.416,15.772 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,8.717 L 0.741,8.717 C 0.332,8.717 0.000,8.385 0.000,7.976 C 0.000,7.567 0.332,7.235 0.741,7.235 L 17.416,7.235 C 17.825,7.235 18.157,7.567 18.157,7.976 C 18.157,8.385 17.825,8.717 17.416,8.717 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem>
-            <Button x:Name="SwitchToSearchBtn" Click="SwitchToSearchClick">
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox HorizontalAlignment="Left" Width="41.646" Height="20.000">
-                        <Canvas Width="41.646" Height="20.000">
-                            <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 24.136,3.569 C 23.686,3.569 23.319,3.936 23.319,4.386 L 23.319,16.223 C 23.319,16.674 23.686,17.040 24.136,17.040 L 39.635,17.040 C 40.085,17.040 40.451,16.674 40.451,16.223 L 40.451,4.386 C 40.451,3.936 40.085,3.569 39.635,3.569 L 24.136,3.569 Z M 39.635,18.234 L 24.136,18.234 C 23.027,18.234 22.125,17.332 22.125,16.223 L 22.125,4.386 C 22.125,3.277 23.027,2.375 24.136,2.375 L 39.635,2.375 C 40.744,2.375 41.646,3.277 41.646,4.386 L 41.646,16.223 C 41.646,17.332 40.744,18.234 39.635,18.234 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.777,6.556 L 25.498,6.556 C 25.168,6.556 24.901,6.289 24.901,5.959 C 24.901,5.629 25.168,5.361 25.498,5.361 L 34.777,5.361 C 35.107,5.361 35.375,5.629 35.375,5.959 C 35.375,6.289 35.107,6.556 34.777,6.556 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 28.731,10.394 L 25.498,10.394 C 25.168,10.394 24.901,10.127 24.901,9.797 C 24.901,9.467 25.168,9.200 25.498,9.200 L 28.731,9.200 C 29.060,9.200 29.328,9.467 29.328,9.797 C 29.328,10.127 29.060,10.394 28.731,10.394 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.165,8.828 C 32.490,8.828 31.126,10.192 31.126,11.867 C 31.126,13.543 32.490,14.906 34.165,14.906 C 35.841,14.906 37.204,13.543 37.204,11.867 C 37.204,10.192 35.841,8.828 34.165,8.828 Z M 34.165,16.101 C 31.831,16.101 29.932,14.202 29.932,11.867 C 29.932,9.533 31.831,7.634 34.165,7.634 C 36.500,7.634 38.399,9.533 38.399,11.867 C 38.399,14.202 36.500,16.101 34.165,16.101 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 39.042,18.017 C 38.877,18.017 38.713,17.949 38.595,17.815 L 36.114,15.008 C 35.895,14.761 35.918,14.384 36.166,14.165 C 36.413,13.947 36.790,13.969 37.009,14.217 L 39.490,17.024 C 39.708,17.271 39.685,17.649 39.438,17.867 C 39.324,17.968 39.183,18.017 39.042,18.017 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem>
-            <Button x:Name="SwitchToWatchingBtn" Click="SwitchToWatchingClick">
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox HorizontalAlignment="Left" Width="41.775" Height="20.000">
-                        <Canvas Width="41.775" Height="20.000">
-                            <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 23.533,3.596 C 23.419,3.596 23.327,3.689 23.327,3.802 L 23.327,14.312 C 23.327,14.425 23.419,14.518 23.533,14.518 L 40.367,14.518 C 40.480,14.518 40.572,14.425 40.572,14.312 L 40.572,3.802 C 40.572,3.689 40.480,3.596 40.367,3.596 L 23.533,3.596 Z M 40.367,15.720 L 23.533,15.720 C 22.756,15.720 22.125,15.088 22.125,14.312 L 22.125,3.802 C 22.125,3.026 22.756,2.394 23.533,2.394 L 40.367,2.394 C 41.143,2.394 41.775,3.026 41.775,3.802 L 41.775,14.312 C 41.775,15.088 41.143,15.720 40.367,15.720 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 36.826,18.137 L 27.074,18.137 C 26.742,18.137 26.473,17.868 26.473,17.536 C 26.473,17.204 26.742,16.935 27.074,16.935 L 36.826,16.935 C 37.158,16.935 37.427,17.204 37.427,17.536 C 37.427,17.868 37.158,18.137 36.826,18.137 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 30.663,7.417 L 30.663,10.963 C 30.663,11.176 30.897,11.305 31.077,11.192 L 33.911,9.419 C 34.081,9.313 34.081,9.066 33.911,8.960 L 31.077,7.187 C 30.897,7.074 30.663,7.204 30.663,7.417 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem>
-            <Button x:Name="SwitchToDailyBtn" Click="SwitchToDailyClick">
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox HorizontalAlignment="Left" Width="41.750" Height="20.000">
-                        <Canvas Width="41.750" Height="20.000">
-                            <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 24.147,3.880 C 23.694,3.880 23.326,4.248 23.326,4.701 L 23.326,16.601 C 23.326,17.054 23.694,17.422 24.147,17.422 L 39.728,17.422 C 40.181,17.422 40.549,17.054 40.549,16.601 L 40.549,4.701 C 40.549,4.248 40.181,3.880 39.728,3.880 L 24.147,3.880 Z M 39.728,18.623 L 24.147,18.623 C 23.032,18.623 22.125,17.716 22.125,16.601 L 22.125,4.701 C 22.125,3.586 23.032,2.679 24.147,2.679 L 39.728,2.679 C 40.843,2.679 41.750,3.586 41.750,4.701 L 41.750,16.601 C 41.750,17.716 40.843,18.623 39.728,18.623 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 36.109,3.880 C 35.778,3.880 35.509,3.611 35.509,3.279 L 35.509,1.878 C 35.509,1.547 35.778,1.278 36.109,1.278 C 36.441,1.278 36.709,1.547 36.709,1.878 L 36.709,3.279 C 36.709,3.611 36.441,3.880 36.109,3.880 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 27.770,3.738 C 27.439,3.738 27.170,3.469 27.170,3.138 L 27.170,1.878 C 27.170,1.547 27.439,1.278 27.770,1.278 C 28.102,1.278 28.371,1.547 28.371,1.878 L 28.371,3.138 C 28.371,3.469 28.102,3.738 27.770,3.738 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 40.913,8.216 L 22.962,8.216 C 22.630,8.216 22.361,7.947 22.361,7.616 C 22.361,7.284 22.630,7.015 22.962,7.015 L 40.913,7.015 C 41.245,7.015 41.514,7.284 41.514,7.616 C 41.514,7.947 41.245,8.216 40.913,8.216 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.069,10.663 C 34.069,10.739 34.067,10.805 34.062,10.861 C 34.057,10.916 34.049,10.969 34.040,11.017 C 34.031,11.065 34.019,11.111 34.003,11.154 C 33.987,11.197 33.969,11.243 33.948,11.293 L 32.283,15.151 C 32.267,15.185 32.247,15.212 32.222,15.233 C 32.198,15.253 32.163,15.270 32.119,15.282 C 32.075,15.293 32.018,15.301 31.949,15.305 C 31.880,15.309 31.794,15.311 31.693,15.311 C 31.555,15.311 31.445,15.306 31.364,15.297 C 31.284,15.288 31.225,15.274 31.187,15.254 C 31.149,15.235 31.129,15.210 31.126,15.180 C 31.123,15.150 31.133,15.113 31.153,15.068 L 32.944,11.121 L 30.817,11.121 C 30.762,11.121 30.721,11.085 30.694,11.013 C 30.667,10.941 30.653,10.827 30.653,10.671 C 30.653,10.593 30.657,10.526 30.665,10.470 C 30.673,10.414 30.684,10.367 30.698,10.331 C 30.712,10.295 30.729,10.268 30.749,10.253 C 30.768,10.237 30.791,10.229 30.817,10.229 L 33.823,10.229 C 33.870,10.229 33.909,10.234 33.940,10.243 C 33.972,10.252 33.996,10.272 34.015,10.304 C 34.033,10.335 34.047,10.379 34.056,10.436 C 34.065,10.494 34.069,10.569 34.069,10.663 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem>
-            <Button x:Name="SwitchToMineBtn" Click="SwitchToMineClick">
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox HorizontalAlignment="Left" Width="41.749" Height="20.000">
-                        <Canvas Width="41.749" Height="20.000">
-                            <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.927,17.395 L 37.596,17.395 L 37.596,10.682 C 37.596,10.325 37.902,10.035 38.279,10.035 L 40.383,10.035 L 40.383,9.529 L 31.937,2.803 L 23.492,9.529 L 23.492,10.035 L 25.595,10.035 C 25.973,10.035 26.278,10.325 26.278,10.682 L 26.278,17.395 L 28.948,17.395 L 28.948,13.953 C 28.948,12.394 30.289,11.126 31.937,11.126 C 33.586,11.126 34.927,12.394 34.927,13.953 L 34.927,17.395 Z M 38.279,18.688 L 34.244,18.688 C 33.866,18.688 33.560,18.398 33.560,18.041 L 33.560,13.953 C 33.560,13.106 32.832,12.418 31.937,12.418 C 31.042,12.418 30.314,13.106 30.314,13.953 L 30.314,18.041 C 30.314,18.398 30.009,18.688 29.631,18.688 L 25.595,18.688 C 25.218,18.688 24.912,18.398 24.912,18.041 L 24.912,11.328 L 22.808,11.328 C 22.431,11.328 22.125,11.038 22.125,10.682 L 22.125,9.228 C 22.125,9.037 22.214,8.856 22.368,8.733 L 31.497,1.464 C 31.751,1.262 32.123,1.262 32.377,1.464 L 41.506,8.733 C 41.660,8.856 41.749,9.037 41.749,9.228 L 41.749,10.682 C 41.749,11.038 41.444,11.328 41.066,11.328 L 38.963,11.328 L 38.963,18.041 C 38.963,18.398 38.657,18.688 38.279,18.688 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem DockPanel.Dock="Bottom">
-            <Button>
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Border>
-                        <Border.Clip>
-                            <EllipseGeometry Center="32,32" RadiusX="16" RadiusY="16" />
-                        </Border.Clip>
-                        <Image Source="{Binding avatar[small]}" Width="32" Height="32"/>
+    <Grid>
+        <Button BorderThickness="0" x:Name="RestoreTrigger" Background="#00000000" Width="1200" IsHitTestVisible="False" Panel.ZIndex="2">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click" >
+                    <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+        <Button BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="RestoreTrigger2" Background="Transparent" IsHitTestVisible="False" Width="65" Height="65" Panel.ZIndex="99">
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click" >
+                    <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
+                </EventTrigger>
+            </Button.Triggers>
+        </Button>
+        <Canvas HorizontalAlignment="Left" x:Name="BlurBackground" Background="#00000000" Width="200" Panel.ZIndex="1"/>
+        <ListView x:Name="ToolBarListView" Width="200" HorizontalAlignment="Left" Panel.ZIndex="3">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel LastChildFill="False"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Height" Value="64"/>
+                    <Setter Property="Width" Value="164"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ButtonBase}">
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+            <ListViewItem HorizontalAlignment="Left" Width="64">
+                <Button Width="64" x:Name="OptionDetailBtn" Panel.ZIndex="-99">
+                    <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
+                        <Viewbox Width="18.157" Height="15.772">
+                            <Canvas Width="18.157" Height="15.772">
+                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,1.482 L 0.741,1.482 C 0.332,1.482 0.000,1.151 0.000,0.741 C 0.000,0.332 0.332,0.000 0.741,0.000 L 17.416,0.000 C 17.825,0.000 18.157,0.332 18.157,0.741 C 18.157,1.151 17.825,1.482 17.416,1.482 Z"/>
+                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,15.772 L 0.741,15.772 C 0.332,15.772 0.000,15.440 0.000,15.030 C 0.000,14.621 0.332,14.289 0.741,14.289 L 17.416,14.289 C 17.825,14.289 18.157,14.621 18.157,15.030 C 18.157,15.440 17.825,15.772 17.416,15.772 Z"/>
+                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,8.717 L 0.741,8.717 C 0.332,8.717 0.000,8.385 0.000,7.976 C 0.000,7.567 0.332,7.235 0.741,7.235 L 17.416,7.235 C 17.825,7.235 18.157,7.567 18.157,7.976 C 18.157,8.385 17.825,8.717 17.416,8.717 Z"/>
+                            </Canvas>
+                        </Viewbox>
                     </Border>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem DockPanel.Dock="Bottom">
-            <Button>
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Image Source="{StaticResource DonationIcon}"/>
-                </Border>
-            </Button>
-        </ListViewItem>
-        <ListViewItem DockPanel.Dock="Bottom">
-            <Button>
-                <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
-                    <Viewbox Width="19.446" Height="19.447">
-                        <Canvas Width="19.446" Height="19.447">
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 9.723,13.364 C 7.710,13.364 6.082,11.736 6.082,9.723 C 6.082,7.710 7.710,6.082 9.723,6.082 C 11.736,6.082 13.364,7.710 13.364,9.723 C 13.364,11.736 11.736,13.364 9.723,13.364 Z M 9.723,4.797 C 7.024,4.797 4.797,7.024 4.797,9.723 C 4.797,12.422 7.024,14.649 9.723,14.649 C 12.422,14.649 14.649,12.422 14.649,9.723 C 14.649,7.024 12.422,4.797 9.723,4.797 Z"/>
-                            <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.476,13.835 C 16.448,13.664 15.420,14.007 14.692,14.735 C 13.964,15.463 13.621,16.491 13.792,17.519 C 13.321,17.776 12.807,17.990 12.293,18.162 C 11.694,17.348 10.751,16.834 9.680,16.834 C 8.652,16.834 7.710,17.305 7.067,18.162 C 6.553,17.990 6.039,17.776 5.568,17.519 C 5.739,16.491 5.397,15.463 4.668,14.735 C 3.940,14.007 2.912,13.664 1.884,13.835 C 1.627,13.364 1.413,12.850 1.242,12.336 C 2.055,11.736 2.570,10.794 2.570,9.723 C 2.570,8.695 2.098,7.753 1.242,7.110 C 1.413,6.596 1.627,6.082 1.884,5.611 C 2.912,5.782 3.940,5.440 4.668,4.711 C 5.397,3.983 5.739,2.955 5.568,1.927 C 6.039,1.670 6.553,1.456 7.067,1.284 C 7.667,2.098 8.609,2.612 9.680,2.612 C 10.708,2.612 11.651,2.141 12.293,1.284 C 12.807,1.456 13.321,1.670 13.792,1.927 C 13.621,2.955 13.964,3.983 14.692,4.711 C 15.420,5.440 16.448,5.782 17.476,5.611 C 17.733,6.082 17.948,6.596 18.119,7.110 C 17.305,7.710 16.791,8.652 16.791,9.723 C 16.791,10.751 17.262,11.694 18.119,12.336 C 17.948,12.850 17.733,13.364 17.476,13.835 Z M 18.976,11.351 C 18.419,11.008 18.076,10.408 18.076,9.723 C 18.076,9.038 18.419,8.481 18.976,8.095 C 19.361,7.838 19.532,7.367 19.404,6.896 C 19.190,6.168 18.890,5.482 18.547,4.840 C 18.333,4.454 17.862,4.197 17.391,4.326 C 16.748,4.454 16.106,4.283 15.634,3.812 C 15.163,3.341 14.992,2.698 15.120,2.055 C 15.206,1.627 14.992,1.156 14.606,0.899 C 13.964,0.513 13.236,0.256 12.550,0.042 C 12.122,-0.086 11.608,0.085 11.351,0.471 C 11.008,1.027 10.408,1.370 9.723,1.370 C 9.038,1.370 8.481,1.027 8.095,0.471 C 7.838,0.085 7.367,-0.086 6.896,0.042 C 6.168,0.256 5.482,0.556 4.840,0.899 C 4.454,1.113 4.197,1.584 4.326,2.055 C 4.454,2.698 4.283,3.383 3.812,3.812 C 3.341,4.283 2.698,4.454 2.055,4.326 C 1.627,4.240 1.156,4.454 0.899,4.840 C 0.513,5.482 0.256,6.211 0.042,6.896 C -0.086,7.324 0.085,7.838 0.471,8.095 C 1.027,8.438 1.370,9.038 1.370,9.723 C 1.370,10.408 1.027,10.965 0.471,11.351 C 0.085,11.608 -0.086,12.079 0.042,12.550 C 0.256,13.278 0.556,13.964 0.899,14.606 C 1.113,14.992 1.584,15.206 2.055,15.120 C 2.698,14.992 3.383,15.163 3.812,15.634 C 4.283,16.106 4.454,16.748 4.326,17.391 C 4.240,17.819 4.454,18.290 4.840,18.547 C 5.482,18.933 6.211,19.190 6.896,19.404 C 7.324,19.532 7.838,19.361 8.095,18.976 C 8.438,18.419 9.038,18.076 9.723,18.076 C 10.408,18.076 10.965,18.419 11.351,18.976 C 11.565,19.275 11.908,19.447 12.250,19.447 C 12.336,19.447 12.465,19.447 12.550,19.404 C 13.278,19.190 13.964,18.890 14.606,18.547 C 14.992,18.333 15.249,17.862 15.120,17.391 C 14.992,16.748 15.163,16.063 15.634,15.634 C 16.106,15.163 16.748,14.992 17.391,15.120 C 17.819,15.206 18.290,14.992 18.547,14.606 C 18.933,13.964 19.190,13.236 19.404,12.550 C 19.532,12.079 19.361,11.608 18.976,11.351 Z"/>
-                        </Canvas>
-                    </Viewbox>
-                </Border>
-            </Button>
-        </ListViewItem>
-    </ListView>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click" >
+                            <BeginStoryboard Storyboard="{StaticResource ToolBarDetails}"/>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </ListViewItem>
+            <ListViewItem>
+                <Button x:Name="SwitchToSearchBtn" Click="SwitchToSearchClick">
+                    <Border BorderThickness="0" Height="64" Width="164" Background="#01000000">
+                        <Viewbox HorizontalAlignment="Left" Width="164" Height="64.000">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Canvas HorizontalAlignment="Left" Width="41.646" Height="20.000">
+                                    <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 24.136,3.569 C 23.686,3.569 23.319,3.936 23.319,4.386 L 23.319,16.223 C 23.319,16.674 23.686,17.040 24.136,17.040 L 39.635,17.040 C 40.085,17.040 40.451,16.674 40.451,16.223 L 40.451,4.386 C 40.451,3.936 40.085,3.569 39.635,3.569 L 24.136,3.569 Z M 39.635,18.234 L 24.136,18.234 C 23.027,18.234 22.125,17.332 22.125,16.223 L 22.125,4.386 C 22.125,3.277 23.027,2.375 24.136,2.375 L 39.635,2.375 C 40.744,2.375 41.646,3.277 41.646,4.386 L 41.646,16.223 C 41.646,17.332 40.744,18.234 39.635,18.234 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.777,6.556 L 25.498,6.556 C 25.168,6.556 24.901,6.289 24.901,5.959 C 24.901,5.629 25.168,5.361 25.498,5.361 L 34.777,5.361 C 35.107,5.361 35.375,5.629 35.375,5.959 C 35.375,6.289 35.107,6.556 34.777,6.556 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 28.731,10.394 L 25.498,10.394 C 25.168,10.394 24.901,10.127 24.901,9.797 C 24.901,9.467 25.168,9.200 25.498,9.200 L 28.731,9.200 C 29.060,9.200 29.328,9.467 29.328,9.797 C 29.328,10.127 29.060,10.394 28.731,10.394 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.165,8.828 C 32.490,8.828 31.126,10.192 31.126,11.867 C 31.126,13.543 32.490,14.906 34.165,14.906 C 35.841,14.906 37.204,13.543 37.204,11.867 C 37.204,10.192 35.841,8.828 34.165,8.828 Z M 34.165,16.101 C 31.831,16.101 29.932,14.202 29.932,11.867 C 29.932,9.533 31.831,7.634 34.165,7.634 C 36.500,7.634 38.399,9.533 38.399,11.867 C 38.399,14.202 36.500,16.101 34.165,16.101 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 39.042,18.017 C 38.877,18.017 38.713,17.949 38.595,17.815 L 36.114,15.008 C 35.895,14.761 35.918,14.384 36.166,14.165 C 36.413,13.947 36.790,13.969 37.009,14.217 L 39.490,17.024 C 39.708,17.271 39.685,17.649 39.438,17.867 C 39.324,17.968 39.183,18.017 39.042,18.017 Z"/>
+                                </Canvas>
+                                <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="搜索" FontSize="20" Foreground="White"/>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </Button>
+            </ListViewItem>
+            <ListViewItem>
+                <Button x:Name="SwitchToWatchingBtn" Click="SwitchToWatchingClick">
+                    <Border BorderThickness="0" Height="64" Width="164" Background="#01000000">
+                        <Viewbox HorizontalAlignment="Left" Width="164" Height="64.000">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Canvas HorizontalAlignment="Left" Width="41.775" Height="20.000">
+                                    <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 23.533,3.596 C 23.419,3.596 23.327,3.689 23.327,3.802 L 23.327,14.312 C 23.327,14.425 23.419,14.518 23.533,14.518 L 40.367,14.518 C 40.480,14.518 40.572,14.425 40.572,14.312 L 40.572,3.802 C 40.572,3.689 40.480,3.596 40.367,3.596 L 23.533,3.596 Z M 40.367,15.720 L 23.533,15.720 C 22.756,15.720 22.125,15.088 22.125,14.312 L 22.125,3.802 C 22.125,3.026 22.756,2.394 23.533,2.394 L 40.367,2.394 C 41.143,2.394 41.775,3.026 41.775,3.802 L 41.775,14.312 C 41.775,15.088 41.143,15.720 40.367,15.720 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 36.826,18.137 L 27.074,18.137 C 26.742,18.137 26.473,17.868 26.473,17.536 C 26.473,17.204 26.742,16.935 27.074,16.935 L 36.826,16.935 C 37.158,16.935 37.427,17.204 37.427,17.536 C 37.427,17.868 37.158,18.137 36.826,18.137 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 30.663,7.417 L 30.663,10.963 C 30.663,11.176 30.897,11.305 31.077,11.192 L 33.911,9.419 C 34.081,9.313 34.081,9.066 33.911,8.960 L 31.077,7.187 C 30.897,7.074 30.663,7.204 30.663,7.417 Z"/>
+                                </Canvas>
+                                <TextBlock Grid.Column="1" Margin="10 0 0 0"  VerticalAlignment="Center" Text="在看" FontSize="20" Foreground="White"/>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </Button>
+            </ListViewItem>
+            <ListViewItem>
+                <Button x:Name="SwitchToDailyBtn" Click="SwitchToDailyClick">
+                    <Border BorderThickness="0" Height="64" Width="164" Background="#01000000">
+                        <Viewbox HorizontalAlignment="Left" Width="164" Height="64.000">
+                            <Grid Width="164">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Canvas HorizontalAlignment="Left" Width="41.750" Height="20.000">
+                                    <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 24.147,3.880 C 23.694,3.880 23.326,4.248 23.326,4.701 L 23.326,16.601 C 23.326,17.054 23.694,17.422 24.147,17.422 L 39.728,17.422 C 40.181,17.422 40.549,17.054 40.549,16.601 L 40.549,4.701 C 40.549,4.248 40.181,3.880 39.728,3.880 L 24.147,3.880 Z M 39.728,18.623 L 24.147,18.623 C 23.032,18.623 22.125,17.716 22.125,16.601 L 22.125,4.701 C 22.125,3.586 23.032,2.679 24.147,2.679 L 39.728,2.679 C 40.843,2.679 41.750,3.586 41.750,4.701 L 41.750,16.601 C 41.750,17.716 40.843,18.623 39.728,18.623 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 36.109,3.880 C 35.778,3.880 35.509,3.611 35.509,3.279 L 35.509,1.878 C 35.509,1.547 35.778,1.278 36.109,1.278 C 36.441,1.278 36.709,1.547 36.709,1.878 L 36.709,3.279 C 36.709,3.611 36.441,3.880 36.109,3.880 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 27.770,3.738 C 27.439,3.738 27.170,3.469 27.170,3.138 L 27.170,1.878 C 27.170,1.547 27.439,1.278 27.770,1.278 C 28.102,1.278 28.371,1.547 28.371,1.878 L 28.371,3.138 C 28.371,3.469 28.102,3.738 27.770,3.738 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 40.913,8.216 L 22.962,8.216 C 22.630,8.216 22.361,7.947 22.361,7.616 C 22.361,7.284 22.630,7.015 22.962,7.015 L 40.913,7.015 C 41.245,7.015 41.514,7.284 41.514,7.616 C 41.514,7.947 41.245,8.216 40.913,8.216 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.069,10.663 C 34.069,10.739 34.067,10.805 34.062,10.861 C 34.057,10.916 34.049,10.969 34.040,11.017 C 34.031,11.065 34.019,11.111 34.003,11.154 C 33.987,11.197 33.969,11.243 33.948,11.293 L 32.283,15.151 C 32.267,15.185 32.247,15.212 32.222,15.233 C 32.198,15.253 32.163,15.270 32.119,15.282 C 32.075,15.293 32.018,15.301 31.949,15.305 C 31.880,15.309 31.794,15.311 31.693,15.311 C 31.555,15.311 31.445,15.306 31.364,15.297 C 31.284,15.288 31.225,15.274 31.187,15.254 C 31.149,15.235 31.129,15.210 31.126,15.180 C 31.123,15.150 31.133,15.113 31.153,15.068 L 32.944,11.121 L 30.817,11.121 C 30.762,11.121 30.721,11.085 30.694,11.013 C 30.667,10.941 30.653,10.827 30.653,10.671 C 30.653,10.593 30.657,10.526 30.665,10.470 C 30.673,10.414 30.684,10.367 30.698,10.331 C 30.712,10.295 30.729,10.268 30.749,10.253 C 30.768,10.237 30.791,10.229 30.817,10.229 L 33.823,10.229 C 33.870,10.229 33.909,10.234 33.940,10.243 C 33.972,10.252 33.996,10.272 34.015,10.304 C 34.033,10.335 34.047,10.379 34.056,10.436 C 34.065,10.494 34.069,10.569 34.069,10.663 Z"/>
+                                </Canvas>
+                                <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="每日" FontSize="20" Foreground="White"/>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </Button>
+            </ListViewItem>
+            <ListViewItem>
+                <Button x:Name="SwitchToMineBtn" Click="SwitchToMineClick">
+                    <Border BorderThickness="0" Height="64" Width="164" Background="#01000000">
+                        <Viewbox HorizontalAlignment="Left" Width="164" Height="64.000">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Canvas HorizontalAlignment="Left" Width="41.749" Height="20.000">
+                                    <Path Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem},Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 0.942,20.000 L 0.000,20.000 L 0.000,0.000 L 0.907,0.000 C 1.749,0.000 2.431,0.682 2.431,1.524 L 2.431,18.511 C 2.431,19.333 1.765,20.000 0.942,20.000 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 34.927,17.395 L 37.596,17.395 L 37.596,10.682 C 37.596,10.325 37.902,10.035 38.279,10.035 L 40.383,10.035 L 40.383,9.529 L 31.937,2.803 L 23.492,9.529 L 23.492,10.035 L 25.595,10.035 C 25.973,10.035 26.278,10.325 26.278,10.682 L 26.278,17.395 L 28.948,17.395 L 28.948,13.953 C 28.948,12.394 30.289,11.126 31.937,11.126 C 33.586,11.126 34.927,12.394 34.927,13.953 L 34.927,17.395 Z M 38.279,18.688 L 34.244,18.688 C 33.866,18.688 33.560,18.398 33.560,18.041 L 33.560,13.953 C 33.560,13.106 32.832,12.418 31.937,12.418 C 31.042,12.418 30.314,13.106 30.314,13.953 L 30.314,18.041 C 30.314,18.398 30.009,18.688 29.631,18.688 L 25.595,18.688 C 25.218,18.688 24.912,18.398 24.912,18.041 L 24.912,11.328 L 22.808,11.328 C 22.431,11.328 22.125,11.038 22.125,10.682 L 22.125,9.228 C 22.125,9.037 22.214,8.856 22.368,8.733 L 31.497,1.464 C 31.751,1.262 32.123,1.262 32.377,1.464 L 41.506,8.733 C 41.660,8.856 41.749,9.037 41.749,9.228 L 41.749,10.682 C 41.749,11.038 41.444,11.328 41.066,11.328 L 38.963,11.328 L 38.963,18.041 C 38.963,18.398 38.657,18.688 38.279,18.688 Z"/>
+                                </Canvas>
+                                <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="我的" FontSize="20" Foreground="White"/>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </Button>
+            </ListViewItem>
+            <ListViewItem DockPanel.Dock="Bottom">
+                <Button>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
+                            <Border>
+                                <Border.Clip>
+                                    <EllipseGeometry Center="32,32" RadiusX="16" RadiusY="16" />
+                                </Border.Clip>
+                                <Image Source="{Binding avatar[small]}" Width="32" Height="32"/>
+                            </Border>
+                        </Border>
+                        <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding nickname}" FontSize="20" Foreground="White"/>
+                    </Grid>
+                </Button>
+            </ListViewItem>
+            <ListViewItem DockPanel.Dock="Bottom">
+                <Button>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0" Height="64" Width="64" Background="#01000000">
+                            <Image Source="{StaticResource DonationIcon}"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="恰饭" FontSize="20" Foreground="White"/>
+                    </Grid>
+                </Button>
+            </ListViewItem>
+            <ListViewItem DockPanel.Dock="Bottom">
+                <Button>
+                    <Border BorderThickness="0" Height="64" Width="164" Background="#01000000">
+                        <Viewbox Width="164" Height="64">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Canvas HorizontalAlignment="Center" Width="19.446" Height="19.447">
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 9.723,13.364 C 7.710,13.364 6.082,11.736 6.082,9.723 C 6.082,7.710 7.710,6.082 9.723,6.082 C 11.736,6.082 13.364,7.710 13.364,9.723 C 13.364,11.736 11.736,13.364 9.723,13.364 Z M 9.723,4.797 C 7.024,4.797 4.797,7.024 4.797,9.723 C 4.797,12.422 7.024,14.649 9.723,14.649 C 12.422,14.649 14.649,12.422 14.649,9.723 C 14.649,7.024 12.422,4.797 9.723,4.797 Z"/>
+                                    <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.476,13.835 C 16.448,13.664 15.420,14.007 14.692,14.735 C 13.964,15.463 13.621,16.491 13.792,17.519 C 13.321,17.776 12.807,17.990 12.293,18.162 C 11.694,17.348 10.751,16.834 9.680,16.834 C 8.652,16.834 7.710,17.305 7.067,18.162 C 6.553,17.990 6.039,17.776 5.568,17.519 C 5.739,16.491 5.397,15.463 4.668,14.735 C 3.940,14.007 2.912,13.664 1.884,13.835 C 1.627,13.364 1.413,12.850 1.242,12.336 C 2.055,11.736 2.570,10.794 2.570,9.723 C 2.570,8.695 2.098,7.753 1.242,7.110 C 1.413,6.596 1.627,6.082 1.884,5.611 C 2.912,5.782 3.940,5.440 4.668,4.711 C 5.397,3.983 5.739,2.955 5.568,1.927 C 6.039,1.670 6.553,1.456 7.067,1.284 C 7.667,2.098 8.609,2.612 9.680,2.612 C 10.708,2.612 11.651,2.141 12.293,1.284 C 12.807,1.456 13.321,1.670 13.792,1.927 C 13.621,2.955 13.964,3.983 14.692,4.711 C 15.420,5.440 16.448,5.782 17.476,5.611 C 17.733,6.082 17.948,6.596 18.119,7.110 C 17.305,7.710 16.791,8.652 16.791,9.723 C 16.791,10.751 17.262,11.694 18.119,12.336 C 17.948,12.850 17.733,13.364 17.476,13.835 Z M 18.976,11.351 C 18.419,11.008 18.076,10.408 18.076,9.723 C 18.076,9.038 18.419,8.481 18.976,8.095 C 19.361,7.838 19.532,7.367 19.404,6.896 C 19.190,6.168 18.890,5.482 18.547,4.840 C 18.333,4.454 17.862,4.197 17.391,4.326 C 16.748,4.454 16.106,4.283 15.634,3.812 C 15.163,3.341 14.992,2.698 15.120,2.055 C 15.206,1.627 14.992,1.156 14.606,0.899 C 13.964,0.513 13.236,0.256 12.550,0.042 C 12.122,-0.086 11.608,0.085 11.351,0.471 C 11.008,1.027 10.408,1.370 9.723,1.370 C 9.038,1.370 8.481,1.027 8.095,0.471 C 7.838,0.085 7.367,-0.086 6.896,0.042 C 6.168,0.256 5.482,0.556 4.840,0.899 C 4.454,1.113 4.197,1.584 4.326,2.055 C 4.454,2.698 4.283,3.383 3.812,3.812 C 3.341,4.283 2.698,4.454 2.055,4.326 C 1.627,4.240 1.156,4.454 0.899,4.840 C 0.513,5.482 0.256,6.211 0.042,6.896 C -0.086,7.324 0.085,7.838 0.471,8.095 C 1.027,8.438 1.370,9.038 1.370,9.723 C 1.370,10.408 1.027,10.965 0.471,11.351 C 0.085,11.608 -0.086,12.079 0.042,12.550 C 0.256,13.278 0.556,13.964 0.899,14.606 C 1.113,14.992 1.584,15.206 2.055,15.120 C 2.698,14.992 3.383,15.163 3.812,15.634 C 4.283,16.106 4.454,16.748 4.326,17.391 C 4.240,17.819 4.454,18.290 4.840,18.547 C 5.482,18.933 6.211,19.190 6.896,19.404 C 7.324,19.532 7.838,19.361 8.095,18.976 C 8.438,18.419 9.038,18.076 9.723,18.076 C 10.408,18.076 10.965,18.419 11.351,18.976 C 11.565,19.275 11.908,19.447 12.250,19.447 C 12.336,19.447 12.465,19.447 12.550,19.404 C 13.278,19.190 13.964,18.890 14.606,18.547 C 14.992,18.333 15.249,17.862 15.120,17.391 C 14.992,16.748 15.163,16.063 15.634,15.634 C 16.106,15.163 16.748,14.992 17.391,15.120 C 17.819,15.206 18.290,14.992 18.547,14.606 C 18.933,13.964 19.190,13.236 19.404,12.550 C 19.532,12.079 19.361,11.608 18.976,11.351 Z"/>
+                                </Canvas>
+                                <TextBlock Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Center" Text="设置" FontSize="20" Foreground="White"/>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </Button>
+            </ListViewItem>
+        </ListView>
+    </Grid>
 </UserControl>

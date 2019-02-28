@@ -160,7 +160,6 @@
                                         <MultiTrigger.Conditions>
                                             <Condition Property="IsMouseOver" Value="True"/>
                                         </MultiTrigger.Conditions>
-                                        <!--<Setter Property="BorderBrush" Value="{StaticResource Item.MouseOver.Border}"/>-->
                                         <Setter Property="Foreground" Value="GhostWhite"/>
                                     </MultiTrigger>
                                     <MultiTrigger>
@@ -168,7 +167,6 @@
                                             <Condition Property="Selector.IsSelectionActive" Value="False"/>
                                             <Condition Property="IsSelected" Value="True"/>
                                         </MultiTrigger.Conditions>
-                                        <!--<Setter Property="BorderBrush" Value="{StaticResource Item.SelectedInactive.Border}"/>-->
                                         <Setter Property="Foreground" Value="GhostWhite"/>
                                     </MultiTrigger>
                                     <MultiTrigger>
@@ -176,7 +174,6 @@
                                             <Condition Property="Selector.IsSelectionActive" Value="True"/>
                                             <Condition Property="IsSelected" Value="True"/>
                                         </MultiTrigger.Conditions>
-                                        <!--<Setter Property="BorderBrush" Value="{StaticResource Item.SelectedActive.Border}"/>-->
                                         <Setter Property="Foreground" Value="GhostWhite"/>
                                     </MultiTrigger>
                                 </ControlTemplate.Triggers>

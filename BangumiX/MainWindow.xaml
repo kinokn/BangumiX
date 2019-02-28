@@ -27,7 +27,7 @@
             <ColumnDefinition Width="64"/>
             <ColumnDefinition Width="1136"/>
         </Grid.ColumnDefinitions>
-        <views:ToolBar x:Name="MyToolBar" Grid.Row="1"/>
+        <views:ToolBar x:Name="MyToolBar" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Panel.ZIndex="1"/>
         <Border BorderBrush="Black" BorderThickness="0 0 0 1" Grid.ColumnSpan="3" Panel.ZIndex="99">
             <DockPanel Background="#A7292929">
                 <TextBlock Grid.ColumnSpan="2" Style="{StaticResource BaseTextBlock}" VerticalAlignment="Center" Foreground="Silver" FontFamily="Arial" Text="  BangumiX"/>
