@@ -167,5 +167,29 @@ namespace BangumiX.Common
             }
         }
 
+        public class UserResult : HttpResult
+        {
+            public Model.User User { get; set; }
+        }
+        public static async Task<UserResult> GetUser(uint id)
+        {
+            UserResult user_result = new UserResult();
+            try
+            {
+                string url = String.Format("user/{0}", id);
+                HttpResponseMessage response = await APIclient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string response_body = await response.Content.ReadAsStringAsync();
+                user_result.User = JsonConvert.DeserializeObject<Model.User>(response_body);
+                user_result.Status = 1;
+                return user_result;
+            }
+            catch (HttpRequestException e)
+            {
+                user_result.Status = -1;
+                user_result.ErrorMessage = e.Message;
+                return user_result;
+            }
+        }
     }
 }

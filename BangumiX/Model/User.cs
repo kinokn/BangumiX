@@ -10,9 +10,9 @@ namespace BangumiX.Model
 {
     public class User
     {
-        public string UserName { get; set; }
-        public string NickName { get; set; }
-        public string Avator { get; set; }
+        public string username { get; set; }
+        public string nickname { get; set; }
+        public Dictionary<string, string> avatar { get; set; }
     }
 
     public class Login

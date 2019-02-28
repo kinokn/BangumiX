@@ -24,9 +24,20 @@ namespace BangumiX.Views
     /// </summary>
     public partial class ToolBar : UserControl
     {
+        public Model.User User;
         public ToolBar()
         {
             InitializeComponent();
+        }
+
+        public async void GetUser()
+        {
+            if (Settings.Default.AccessToken != null)
+            {
+                var user_result = await ApiHelper.GetUser(Settings.Default.UserID);
+                User = user_result.User;
+            }
+            DataContext = User;
         }
 
         private void SwitchToSearchClick(object sender, RoutedEventArgs e)
@@ -125,5 +136,9 @@ namespace BangumiX.Views
             return subject_list;
         }
 
+        private void OptionDetailBtnClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
