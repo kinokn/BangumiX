@@ -53,7 +53,8 @@ namespace BangumiX
             AcrylicEffect.EnableBlur(this);
             if (await CheckLogin())
             {
-                MyToolBar.SwitchToMineBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                LoginHelper.APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Properties.Settings.Default.TokenType, Properties.Settings.Default.AccessToken);
+                MyToolBar.ToMineBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 MyToolBar.GetUser();
             }
         }

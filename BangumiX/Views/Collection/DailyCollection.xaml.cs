@@ -132,11 +132,14 @@ namespace BangumiX.Views
             {
                 if (progress_result.SubjectProgress != null)
                 {
-                    foreach (var ep in progress_result.SubjectProgress.eps)
+                    if (progress_result.SubjectProgress.eps != null)
                     {
-                        foreach (var ep_src in subject_result.Subject.eps)
+                        foreach (var ep in progress_result.SubjectProgress.eps)
                         {
-                            if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
+                            foreach (var ep_src in subject_result.Subject.eps)
+                            {
+                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
+                            }
                         }
                     }
                 }

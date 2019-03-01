@@ -60,7 +60,7 @@ namespace BangumiX.Views
             if (start_login.login_result.Status == 1)
             {
                 LoginHelper.APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
-                ((MainWindow)Application.Current.MainWindow).MyToolBar.SwitchToWatchingBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                ((MainWindow)Application.Current.MainWindow).MyToolBar.ToMineBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 RemoveSelf();
             }
             else Console.WriteLine("Login Failed");

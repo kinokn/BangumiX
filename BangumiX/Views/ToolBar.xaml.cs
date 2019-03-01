@@ -25,9 +25,11 @@ namespace BangumiX.Views
     public partial class ToolBar : UserControl
     {
         public Model.User User;
+        public bool ToolBarExpanded;
         public ToolBar()
         {
             InitializeComponent();
+            ToolBarExpanded = false;
         }
 
         public async void GetUser()
@@ -40,16 +42,86 @@ namespace BangumiX.Views
             DataContext = User;
         }
 
-        private void SwitchToSearchClick(object sender, RoutedEventArgs e)
+        private void ExpandBtnClick(object sender, RoutedEventArgs e)
+        {
+            ToolBarExpanded = true;
+        }
+
+        private void ToSearchClick(object sender, RoutedEventArgs e)
+        {
+            if (ToolBarExpanded)
+            {
+                ToSearchTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
+            }
+            ToSearch();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+        }
+        private void ToSearchTextClick(object sender, RoutedEventArgs e)
+        {
+            ToSearch();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+            ToolBarExpanded = false;
+        }
+        private void ToSearch()
         {
             var search_collection = new SearchCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = search_collection;
-            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
 
-        private async void SwitchToDailyClick(object sender, RoutedEventArgs e)
+        private async void ToWatchingClick(object sender, RoutedEventArgs e)
         {
-            var daily_list = await SwitchToDaily();
+            if (ToolBarExpanded)
+            {
+                ToWatchingTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
+            }
+            await ToWatching();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+        }
+        private async void ToWatchingTextClick(object sender, RoutedEventArgs e)
+        {
+            await ToWatching();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+            ToolBarExpanded = false;
+        }
+        private async Task ToWatching()
+        {
+            List<Model.Collection> subject_list = new List<Model.Collection>();
+            var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
+            if (watching_result.Status == 1)
+            {
+                subject_list = watching_result.Watching;
+            }
+            var watching_collection = new WatchingCollection();
+            watching_collection.Switch(ref subject_list);
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
+        }
+
+        private async void ToDailyClick(object sender, RoutedEventArgs e)
+        {
+            if (ToolBarExpanded)
+            {
+                ToDailyTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
+            }
+            await ToDaily();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+        }
+        private async void SwitchToDailyTextClick(object sender, RoutedEventArgs e)
+        {
+            await ToDaily();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+            ToolBarExpanded = false;
+        }
+        private async Task ToDaily()
+        {
+            List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
+            var daily_result = await ApiHelper.GetDaily();
+            if (daily_result.Status == 1)
+            {
+                daily_list = daily_result.DailyCollections;
+            }
             Dictionary<uint, List<Model.Collection>> ordered_daily_list = new Dictionary<uint, List<Model.Collection>>()
             {
                 { 1, new List<Model.Collection>() },
@@ -70,21 +142,32 @@ namespace BangumiX.Views
             var daily_collection = new DailyCollection();
             daily_collection.Switch(ref ordered_daily_list);
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
-            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
 
-        private async void SwitchToWatchingClick(object sender, RoutedEventArgs e)
+        private async void ToMineClick(object sender, RoutedEventArgs e)
         {
-            var subject_list = await SwitchToWatching();
-            var watching_collection = new WatchingCollection();
-            watching_collection.Switch(ref subject_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
-            ToolBarListView.SelectedItem = ((Button)sender).Parent;
+            if (ToolBarExpanded)
+            {
+                ToMineTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
+            }
+            await ToMine();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
         }
-
-        private async void SwitchToMineClick(object sender, RoutedEventArgs e)
+        private async void ToMineTextClick(object sender, RoutedEventArgs e)
         {
-            var collects_list = await SwitchToMine();
+            await ToMine();
+            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
+            ToolBarExpanded = false;
+        }
+        private async Task ToMine()
+        {
+            List<Model.MyCollection> collects_list = new List<Model.MyCollection>();
+            var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
+            if (recent_result.Status == 1)
+            {
+                collects_list = recent_result.CollectWrapper[0].collects;
+            }
             Dictionary<uint, List<Model.Collection>> ordered_collects_list = new Dictionary<uint, List<Model.Collection>>()
             {
                 { 1, null },
@@ -100,41 +183,53 @@ namespace BangumiX.Views
             var my_collection = new MyCollection();
             my_collection.Switch(ref ordered_collects_list);
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
-            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
 
-        private async Task<List<Model.DailyCollection>> SwitchToDaily()
+        private void AvatarClick(object sender, RoutedEventArgs e)
         {
-            List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
-            var daily_result = await ApiHelper.GetDaily();
-            if (daily_result.Status == 1)
+            if (ToolBarExpanded)
             {
-                daily_list = daily_result.DailyCollections;
+                AvatarTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
             }
-            return daily_list;
+            return;
         }
-
-        private async Task<List<Model.Collection>> SwitchToWatching()
+        private void AvatarTextClick(object sender, RoutedEventArgs e)
         {
-            List<Model.Collection> subject_list = new List<Model.Collection>();
-            var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
-            if (watching_result.Status == 1)
-            {
-                subject_list = watching_result.Watching;
-            }
-            return subject_list;
+            ToolBarExpanded = false;
         }
 
-        private async Task<List<Model.MyCollection>> SwitchToMine()
+        private void DonationClick(object sender, RoutedEventArgs e)
         {
-            List<Model.MyCollection> subject_list = new List<Model.MyCollection>();
-            var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
-            if (recent_result.Status == 1)
+            if (ToolBarExpanded)
             {
-                subject_list = recent_result.CollectWrapper[0].collects;
+                DonationTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
             }
-            return subject_list;
+            return;
+        }
+        private void DonationTextClick(object sender, RoutedEventArgs e)
+        {
+            ToolBarExpanded = false;
         }
 
+        private void SettingClick(object sender, RoutedEventArgs e)
+        {
+            if (ToolBarExpanded)
+            {
+                SettingTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                return;
+            }
+            return;
+        }
+        private void SettingTextClick(object sender, RoutedEventArgs e)
+        {
+            ToolBarExpanded = false;
+        }
+
+        private void RestoreClick(object sender, RoutedEventArgs e)
+        {
+            ToolBarExpanded = false;
+        }
     }
 }
