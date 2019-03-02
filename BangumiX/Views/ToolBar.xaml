@@ -24,14 +24,6 @@
                             BeginTime="00:00:00" Duration="00:00:00">
                 <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
             </BooleanAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger2" Storyboard.TargetProperty="IsHitTestVisible"
-                            BeginTime="00:00:00" Duration="00:00:00">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
-            </BooleanAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ExpandBtn" Storyboard.TargetProperty="IsHitTestVisible"
-                            BeginTime="00:00:00" Duration="00:00:00">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-            </BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="ToolBarRestore">
             <DoubleAnimation Storyboard.TargetName="_this" Storyboard.TargetProperty="Width"
@@ -43,14 +35,6 @@
             <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger" Storyboard.TargetProperty="IsHitTestVisible"
                             BeginTime="00:00:00" Duration="00:00:00">
                 <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-            </BooleanAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="RestoreTrigger2" Storyboard.TargetProperty="IsHitTestVisible"
-                            BeginTime="00:00:00" Duration="00:00:00">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="False"/>
-            </BooleanAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ExpandBtn" Storyboard.TargetProperty="IsHitTestVisible"
-                            BeginTime="00:00:00" Duration="00:00:00">
-                <DiscreteBooleanKeyFrame KeyTime="00:00:00" Value="True"/>
             </BooleanAnimationUsingKeyFrames>
         </Storyboard>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -101,21 +85,8 @@
     </UserControl.Resources>
 
     <Grid>
-        <Button BorderThickness="0" x:Name="RestoreTrigger" Background="Transparent" Width="1200" IsHitTestVisible="False" Panel.ZIndex="2" Click="RestoreClick">
-            <Button.Triggers>
-                <EventTrigger RoutedEvent="Button.Click" >
-                    <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                </EventTrigger>
-            </Button.Triggers>
-        </Button>
-        <Button BorderThickness="0" x:Name="RestoreTrigger2" Background="Transparent" IsHitTestVisible="False" Width="65" Height="65" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="99" Click="RestoreClick">
-            <Button.Triggers>
-                <EventTrigger RoutedEvent="Button.Click" >
-                    <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                </EventTrigger>
-            </Button.Triggers>
-        </Button>
-        <ListView x:Name="ToolBarListView" HorizontalAlignment="Left" Panel.ZIndex="3">
+        <Button BorderThickness="0" x:Name="RestoreTrigger" Background="Transparent" Width="1200" IsHitTestVisible="False" Click="RestoreClick"/>
+        <ListView x:Name="ToolBarListView" HorizontalAlignment="Left" Panel.ZIndex="1">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <DockPanel LastChildFill="False"/>
@@ -123,10 +94,7 @@
             </ListView.ItemsPanel>
             <ListView.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Height" Value="64"/>
-                    <Setter Property="Width" Value="64"/>
+                    <Setter Property="Padding" Value="0"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -135,6 +103,12 @@
                         </Setter.Value>
                     </Setter>
                     <Style.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="Width" Value="250"/>
+                            <Setter Property="Background" Value="#01000000"/>
+                            <Setter Property="Orientation" Value="Horizontal"/>
+                        </Style>
                         <Style TargetType="Viewbox">
                             <Setter Property="HorizontalAlignment" Value="Left"/>
                         </Style>
@@ -143,7 +117,6 @@
                         </Style>
                         <Style TargetType="Border">
                             <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Background" Value="#01000000"/>
                             <Setter Property="Height" Value="64"/>
                             <Setter Property="Width" Value="64"/>
                         </Style>
@@ -157,30 +130,44 @@
                 </Style>
             </ListView.Resources>
             <ListViewItem HorizontalAlignment="Left" Width="64">
-                <Button x:Name="ExpandBtn" Click="ExpandBtnClick" Panel.ZIndex="-99">
-                    <Border>
-                        <Viewbox HorizontalAlignment="Center" Width="18.157" Height="15.772">
-                            <Canvas Width="18.157" Height="15.772">
-                                <Path Data="F1 M 17.416,1.482 L 0.741,1.482 C 0.332,1.482 0.000,1.151 0.000,0.741 C 0.000,0.332 0.332,0.000 0.741,0.000 L 17.416,0.000 C 17.825,0.000 18.157,0.332 18.157,0.741 C 18.157,1.151 17.825,1.482 17.416,1.482 Z"/>
-                                <Path Data="F1 M 17.416,15.772 L 0.741,15.772 C 0.332,15.772 0.000,15.440 0.000,15.030 C 0.000,14.621 0.332,14.289 0.741,14.289 L 17.416,14.289 C 17.825,14.289 18.157,14.621 18.157,15.030 C 18.157,15.440 17.825,15.772 17.416,15.772 Z"/>
-                                <Path Data="F1 M 17.416,8.717 L 0.741,8.717 C 0.332,8.717 0.000,8.385 0.000,7.976 C 0.000,7.567 0.332,7.235 0.741,7.235 L 17.416,7.235 C 17.825,7.235 18.157,7.567 18.157,7.976 C 18.157,8.385 17.825,8.717 17.416,8.717 Z"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Border>
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click" >
+                <ToggleButton x:Name="ExpandBtn" IsChecked="False">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Border Height="64" Width="64" Background="#01000000" BorderThickness="0">
+                                        <Viewbox HorizontalAlignment="Center" Width="18.157" Height="15.772">
+                                            <Canvas Width="18.157" Height="15.772">
+                                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,1.482 L 0.741,1.482 C 0.332,1.482 0.000,1.151 0.000,0.741 C 0.000,0.332 0.332,0.000 0.741,0.000 L 17.416,0.000 C 17.825,0.000 18.157,0.332 18.157,0.741 C 18.157,1.151 17.825,1.482 17.416,1.482 Z"/>
+                                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,15.772 L 0.741,15.772 C 0.332,15.772 0.000,15.440 0.000,15.030 C 0.000,14.621 0.332,14.289 0.741,14.289 L 17.416,14.289 C 17.825,14.289 18.157,14.621 18.157,15.030 C 18.157,15.440 17.825,15.772 17.416,15.772 Z"/>
+                                                <Path Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}}" Data="F1 M 17.416,8.717 L 0.741,8.717 C 0.332,8.717 0.000,8.385 0.000,7.976 C 0.000,7.567 0.332,7.235 0.741,7.235 L 17.416,7.235 C 17.825,7.235 18.157,7.567 18.157,7.976 C 18.157,8.385 17.825,8.717 17.416,8.717 Z"/>
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Border>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked" >
                             <BeginStoryboard Storyboard="{StaticResource ToolBarExpand}"/>
                         </EventTrigger>
-                    </Button.Triggers>
-                </Button>
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked" >
+                            <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
+                        </EventTrigger>
+                    </ToggleButton.Triggers>
+                </ToggleButton>
             </ListViewItem>
             <ListViewItem>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="ToSearchBtn" Click="ToSearchClick">
+                <Button x:Name="ToSearchBtn" Click="ToSearchClick">
+                    <StackPanel>
                         <Border>
                             <Viewbox Width="41.646" Height="20">
                                 <Canvas Width="41.646" Height="20">
@@ -193,26 +180,13 @@
                                 </Canvas>
                             </Viewbox>
                         </Border>
-                    </Button>
-                    <Button x:Name="ToSearchTextBtn" Grid.Column="1" Width="100" Click="ToSearchTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="搜索"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="搜索"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="ToWatchingBtn" Click="ToWatchingClick">
+                <Button x:Name="ToWatchingBtn" Click="ToWatchingClick">
+                    <StackPanel>
                         <Border>
                             <Viewbox Width="41.775" Height="20">
                                 <Canvas Width="41.775" Height="20">
@@ -223,26 +197,13 @@
                                 </Canvas>
                             </Viewbox>
                         </Border>
-                    </Button>
-                    <Button x:Name="ToWatchingTextBtn" Grid.Column="1" Width="100" Click="ToWatchingTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="在看"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="在看"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="ToDailyBtn" Click="ToDailyClick">
+                <Button x:Name="ToDailyBtn" Click="ToDailyClick">
+                    <StackPanel>
                         <Border>
                             <Viewbox Width="41.750" Height="20">
                                 <Canvas Width="41.750" Height="20">
@@ -255,26 +216,13 @@
                                 </Canvas>
                             </Viewbox>
                         </Border>
-                    </Button>
-                    <Button x:Name="ToDailyTextBtn" Grid.Column="1" Width="100" Click="SwitchToDailyTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="每日"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="每日"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="ToMineBtn" Click="ToMineClick">
+                <Button x:Name="ToMineBtn" Click="ToMineClick">
+                    <StackPanel>
                         <Border>
                             <Viewbox Width="41.749" Height="20">
                                 <Canvas Width="41.749" Height="20">
@@ -283,75 +231,36 @@
                                 </Canvas>
                             </Viewbox>
                         </Border>
-                    </Button>
-                    <Button x:Name="ToMineTextBtn" Grid.Column="1" Width="100" Click="ToMineTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="我的"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="我的"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem DockPanel.Dock="Bottom">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="AvatarBtn" Click="AvatarClick">
+                <Button x:Name="AvatarBtn" Click="AvatarClick">
+                    <StackPanel>
                         <Border>
                             <Border.Clip>
                                 <EllipseGeometry Center="32,32" RadiusX="16" RadiusY="16" />
                             </Border.Clip>
                             <Image Source="{Binding avatar[small]}" Width="32" Height="32"/>
                         </Border>
-                    </Button>
-                    <Button x:Name="AvatarTextBtn" Grid.Column="1" Width="100" Click="AvatarTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="{Binding nickname}"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="{Binding nickname}"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem DockPanel.Dock="Bottom">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="DonationBtn" Click="DonationClick">
+                <Button x:Name="DonationBtn" Click="DonationClick">
+                    <StackPanel>
                         <Border>
                             <Image Source="{StaticResource DonationIcon}"/>
                         </Border>
-                    </Button>
-                    <Button x:Name="DonationTextBtn" Grid.Column="1" Width="100" Click="DonationTextClick">
-                        <Border Width="100">
-                            <TextBlock Text="捐赠"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Text="捐赠"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
             <ListViewItem DockPanel.Dock="Bottom">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="64"/>
-                        <ColumnDefinition Width="100"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="SettingBtn" Click="SettingClick">
+                <Button x:Name="SettingBtn" Click="SettingClick">
+                    <StackPanel>
                         <Border>
                             <Viewbox HorizontalAlignment="Center" Width="19.446" Height="19.447">
                                 <Canvas Width="19.446" Height="19.447">
@@ -360,18 +269,9 @@
                                 </Canvas>
                             </Viewbox>
                         </Border>
-                    </Button>
-                    <Button x:Name="SettingTextBtn" Grid.Column="1" Width="100" Click="SettingTextClick">
-                        <Border Width="100">
-                            <TextBlock Grid.Column="1" Text="设置"/>
-                        </Border>
-                        <Button.Triggers>
-                            <EventTrigger RoutedEvent="Button.Click">
-                                <BeginStoryboard Storyboard="{StaticResource ToolBarRestore}"/>
-                            </EventTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                        <TextBlock Grid.Column="1" Text="设置"/>
+                    </StackPanel>
+                </Button>
             </ListViewItem>
         </ListView>
     </Grid>

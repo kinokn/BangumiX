@@ -46,9 +46,9 @@
                                 <DockPanel Style="{StaticResource DockPanelEpisode}">
                                     <TextBlock Text="{Binding sort}" Margin="5 0 0 0"/>
                                     <TextBlock Text="."/>
-                                    <TextBlock Text="{Binding name_cn}"/>
+                                    <TextBlock Text="{Binding name_cn}" Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
                                     <TextBlock Text=" / " Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
-                                    <TextBlock Text="{Binding name}"/>
+                                    <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
                                     <Button Width="30" DockPanel.Dock="Right" Content="Play"/>
                                 </DockPanel>
                             </Border>

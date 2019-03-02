@@ -23,13 +23,11 @@ namespace BangumiX.Views
     /// </summary>
     public partial class SearchCollection : UserControl
     {
-        //public Dictionary<uint, List<Model.Collection>> collect_list;
         public List<Model.Collection> subject_list;
         public Subject SubjectControl;
         public SearchCollection()
         {
             InitializeComponent();
-            subject_list = new List<Model.Collection>();
             ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
         }
 
@@ -47,16 +45,32 @@ namespace BangumiX.Views
             ListViewCollections.ItemsSource = subject_list;
         }
 
-        private async void ListViewCollectionsSelectedIndexChanged(object sender, EventArgs e)
+        public async void ListViewCollectionsSelectedIndexChanged(object sender, EventArgs e)
         {
             if (subject_list == null) return;
             var index = ListViewCollections.SelectedIndex;
             if (index == -1) return;
-            //if (subject_list[index].subject_detail == null)
-            //{
+            var subject = subject_list[index];
             ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
             subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
             if (subject_result.Status != 1) return;
+
+            subject_list[index].subject_detail = subject_result.Subject;
+            if (SubjectControl == null)
+            {
+                SubjectControl = new Subject();
+                Grid.SetColumn(SubjectControl, 1);
+                GridMain.Children.Add(SubjectControl);
+                //SubjectControl.DataContext = subject_list[index].subject_detail;
+                SubjectControl.DataContext = subject;
+                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else
+            {
+                //SubjectControl.DataContext = subject_list[index].subject_detail;
+                SubjectControl.DataContext = subject;
+                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
 
             ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
             progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject_result.Subject.id);
@@ -66,35 +80,18 @@ namespace BangumiX.Views
                 {
                     if (progress_result.SubjectProgress.eps != null)
                     {
-                        foreach (var ep in progress_result.SubjectProgress.eps)
+                        foreach (var ep_src in subject_result.Subject.eps_2)
                         {
-                            foreach (var ep_src in subject_result.Subject.eps)
+                            foreach (var ep in progress_result.SubjectProgress.eps)
                             {
-                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
+                                if (ep.id == ep_src.ID) ep_src.EpStatus = ep.status.id;
                             }
                         }
                     }
                 }
             }
-
-            subject_list[index].subject_detail = subject_result.Subject;
-            //}
-            if (SubjectControl == null)
-            {
-                SubjectControl = new Subject();
-                Grid.SetColumn(SubjectControl, 1);
-                GridMain.Children.Add(SubjectControl);
-                SubjectControl.DataContext = subject_list[index].subject_detail;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            }
-            else
-            {
-                SubjectControl.DataContext = subject_list[index].subject_detail;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            }
             return;
         }
-
 
     }
 }

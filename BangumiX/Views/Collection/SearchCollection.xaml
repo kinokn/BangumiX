@@ -4,38 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
+             xmlns:common="clr-namespace:BangumiX.Common"
              mc:Ignorable="d" 
              Background="#01000000"
              d:DesignHeight="900" d:DesignWidth="1136">
 
     <UserControl.Resources>
-        <Style TargetType="ListView" BasedOn="{StaticResource BaseListView}">
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseListViewItem}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}"/>
-        <Style TargetType="DockPanel" x:Key="DockPanelCollection">
-            <Setter Property="Height" Value="100"/>
-            <Setter Property="LastChildFill" Value="False"/>
-            <Style.Resources>
-                <Style TargetType="StackPanel">
-                    <Setter Property="DockPanel.Dock" Value="top"/>
-                    <Setter Property="Orientation" Value="Horizontal"/>
-                    <Setter Property="Margin" Value="10 0 0 0"/>
-                </Style>
-                <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlock}">
-                    <Setter Property="Margin" Value="0 0 0 5"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="TextWrapping" Value="Wrap"/>
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                </Style>
-            </Style.Resources>
-        </Style>
     </UserControl.Resources>
 
     <Grid x:Name="GridMain">
@@ -62,14 +37,17 @@
                         </Button>
                     </DockPanel>
                 </Border>
-                <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}">
+                <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}" Style="{StaticResource CollectionListView}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Style="{StaticResource DockPanelCollection}">
+                            <DataTemplate.Resources>
+                                <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+                            </DataTemplate.Resources>
+                            <DockPanel Style="{StaticResource CollectionDockPanel}">
                                 <Image DockPanel.Dock="Left" Width="78" Stretch="Uniform" Source="{Binding subject.images[small]}"/>
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding subject.name_cn}"/>
-                                    <TextBlock Text="{Binding subject.name}"/>
+                                    <TextBlock Text="{Binding subject.name_cn}" Visibility="{Binding subject.name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                    <TextBlock Text="{Binding subject.name}" FontFamily="Yu Gothic" FontSize="14"/>
                                 </StackPanel>
                                 <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" Width="35" FontSize="20" Background="Black" Content="…"/>
                             </DockPanel>

@@ -70,6 +70,7 @@ namespace BangumiX.Common
                 response.EnsureSuccessStatusCode();
                 string response_body = await response.Content.ReadAsStringAsync();
                 refresh_token_result.Token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                refresh_token_result.Token.token_time = DateTime.Now;
                 refresh_token_result.Status = 1;
                 return refresh_token_result;
             }

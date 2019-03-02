@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BangumiX.Views"
              mc:Ignorable="d" 
              Background="#AF0F0F0F"
-             Padding="26 26 26 0"
+             Padding="10 10 10 0"
              d:DesignHeight="900" d:DesignWidth="790">
 
     <UserControl.Resources>
@@ -64,20 +64,20 @@
 
     <Grid Name="GridMain">
         <Grid.RowDefinitions>
-            <RowDefinition Height="363"/>
+            <RowDefinition Height="410"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="264"/>
-                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="490"/>
             </Grid.ColumnDefinitions>
-            <Image Margin="0 0 0 26" Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <StackPanel Grid.Column="1" Style="{StaticResource StackPanelTitle}">
-                <TextBlock Margin="0 0 0 5" FontSize="28" Text="{Binding name}"/>
-                <TextBlock Margin="4 0 0 0" FontSize="20" Text="{Binding name_cn}"/>
+            <Image Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality"/>
+            <StackPanel Width="490" Margin="10 0 0 0" Grid.Column="1" Style="{StaticResource StackPanelTitle}">
+                <TextBlock Margin="0 0 0 5" HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{Binding name}" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                <TextBlock Margin="0 0 0 0" HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{Binding name_cn}"/>
                 <Grid Grid.Column="1" Margin="0 20 0 0" Height="125">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="225"/>
@@ -85,7 +85,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Margin="0 0 0 10" Text="观看进度管理"/>
-                        <ListView ItemsSource="{Binding eps}" HorizontalAlignment="Left">
+                        <ListView ItemsSource="{Binding eps_2}" HorizontalAlignment="Left">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" Width="225"/>

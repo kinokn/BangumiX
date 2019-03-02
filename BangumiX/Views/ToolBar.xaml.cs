@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using BangumiX.Properties;
 using BangumiX.Common;
 using System.Collections.ObjectModel;
+using System.Windows.Controls.Primitives;
 
 namespace BangumiX.Views
 {
@@ -25,11 +26,9 @@ namespace BangumiX.Views
     public partial class ToolBar : UserControl
     {
         public Model.User User;
-        public bool ToolBarExpanded;
         public ToolBar()
         {
             InitializeComponent();
-            ToolBarExpanded = false;
         }
 
         public async void GetUser()
@@ -42,26 +41,15 @@ namespace BangumiX.Views
             DataContext = User;
         }
 
-        private void ExpandBtnClick(object sender, RoutedEventArgs e)
-        {
-            ToolBarExpanded = true;
-        }
-
         private void ToSearchClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                ToSearchTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
             ToSearch();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-        }
-        private void ToSearchTextClick(object sender, RoutedEventArgs e)
-        {
-            ToSearch();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-            ToolBarExpanded = false;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private void ToSearch()
         {
@@ -71,51 +59,41 @@ namespace BangumiX.Views
 
         private async void ToWatchingClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                ToWatchingTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
             await ToWatching();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-        }
-        private async void ToWatchingTextClick(object sender, RoutedEventArgs e)
-        {
-            await ToWatching();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-            ToolBarExpanded = false;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToWatching()
         {
+            var watching_collection = new WatchingCollection();
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
             List<Model.Collection> subject_list = new List<Model.Collection>();
             var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
             if (watching_result.Status == 1)
             {
                 subject_list = watching_result.Watching;
             }
-            var watching_collection = new WatchingCollection();
             watching_collection.Switch(ref subject_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
         }
 
         private async void ToDailyClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                ToDailyTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
             await ToDaily();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-        }
-        private async void SwitchToDailyTextClick(object sender, RoutedEventArgs e)
-        {
-            await ToDaily();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-            ToolBarExpanded = false;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToDaily()
         {
+            var daily_collection = new DailyCollection();
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
             List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
             var daily_result = await ApiHelper.GetDaily();
             if (daily_result.Status == 1)
@@ -139,29 +117,23 @@ namespace BangumiX.Views
                     ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
                 }
             }
-            var daily_collection = new DailyCollection();
             daily_collection.Switch(ref ordered_daily_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
         }
 
         private async void ToMineClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                ToMineTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
             await ToMine();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-        }
-        private async void ToMineTextClick(object sender, RoutedEventArgs e)
-        {
-            await ToMine();
-            ToolBarListView.SelectedItem = ((Grid)((Button)sender).Parent).Parent;
-            ToolBarExpanded = false;
+            ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToMine()
         {
+            var my_collection = new MyCollection();
+            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
             List<Model.MyCollection> collects_list = new List<Model.MyCollection>();
             var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
             if (recent_result.Status == 1)
@@ -180,56 +152,40 @@ namespace BangumiX.Views
             {
                 ordered_collects_list[(uint)c.status["id"]] = c.list;
             }
-            var my_collection = new MyCollection();
             my_collection.Switch(ref ordered_collects_list);
-            ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
         }
 
         private void AvatarClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                AvatarTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
-            return;
-        }
-        private void AvatarTextClick(object sender, RoutedEventArgs e)
-        {
-            ToolBarExpanded = false;
         }
 
         private void DonationClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                DonationTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
-            return;
-        }
-        private void DonationTextClick(object sender, RoutedEventArgs e)
-        {
-            ToolBarExpanded = false;
         }
 
         private void SettingClick(object sender, RoutedEventArgs e)
         {
-            if (ToolBarExpanded)
+            if ((bool)ExpandBtn.IsChecked)
             {
-                SettingTextBtn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                return;
+                ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+                ExpandBtn.IsChecked = false;
             }
-            return;
-        }
-        private void SettingTextClick(object sender, RoutedEventArgs e)
-        {
-            ToolBarExpanded = false;
         }
 
         private void RestoreClick(object sender, RoutedEventArgs e)
         {
-            ToolBarExpanded = false;
+            ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
+            ExpandBtn.IsChecked = false;
         }
     }
 }

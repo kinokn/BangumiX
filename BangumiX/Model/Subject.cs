@@ -25,7 +25,7 @@ namespace BangumiX.Model
         public string cn_name { get; set; }
     }
 
-    public class SubjectSmall
+    public class SubjectSmall : Common.ObservableViewModelBase
     {
         public uint id { get; set; }
         public string url { get; set; }
@@ -135,8 +135,16 @@ namespace BangumiX.Model
         public List<Staff> staff { get; set; }
         public List<Topic> topic { get; set; }
         public List<Blog> blog { get; set; }
+        
+        public List<Episode> eps_2
+        {
+            get
+            {
+                return 27 > eps.Count ? eps : eps.GetRange(0, 26);
+            }
+        }
     }
-    public class Episode
+    public class Episode : Common.ObservableViewModelBase
     {
         public uint id { get; set; }
         public string url { get; set; }
@@ -178,7 +186,20 @@ namespace BangumiX.Model
         public uint comment { get; set; }
         public string desc { get; set; }
         public string status { get; set; }
-        public uint ep_status { get; set; }
+        //public uint ep_status { get; set; }
+        public uint _ep_status { get; set; }
+        public uint ep_status
+        {
+            get
+            {
+                return _ep_status;
+            }
+            set
+            {
+                _ep_status = value;
+                OnPropertyChanged("ep_status");
+            }
+        }
     }
     public class Rating
     {

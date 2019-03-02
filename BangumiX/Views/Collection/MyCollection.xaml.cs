@@ -38,7 +38,11 @@ namespace BangumiX.Views
             subject_list = collect_list[1];
             DataContext = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = WishButton.Parent;
             return;
         }
@@ -49,7 +53,11 @@ namespace BangumiX.Views
             subject_list = collect_list[1];
             ListViewCollections.ItemsSource = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
@@ -59,7 +67,11 @@ namespace BangumiX.Views
             subject_list = collect_list[3];
             ListViewCollections.ItemsSource = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
@@ -69,7 +81,11 @@ namespace BangumiX.Views
             subject_list = collect_list[2];
             ListViewCollections.ItemsSource = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
@@ -79,7 +95,11 @@ namespace BangumiX.Views
             subject_list = collect_list[4];
             ListViewCollections.ItemsSource = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
@@ -89,7 +109,11 @@ namespace BangumiX.Views
             subject_list = collect_list[5];
             ListViewCollections.ItemsSource = subject_list;
             if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else ListViewCollections.SelectedIndex = 0;
+            else
+            {
+                ListViewCollections.SelectedIndex = 0;
+                ListViewCollections.ScrollIntoView(subject_list[0]);
+            }
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
@@ -100,33 +124,11 @@ namespace BangumiX.Views
             if (subject_list == null) return;
             var index = ListViewCollections.SelectedIndex;
             if (index == -1) return;
-            //if (subject_list[index].subject_detail == null) return;
-                //{
             ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
             subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
             if (subject_result.Status != 1) return;
 
-            ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
-            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject_result.Subject.id);
-            if (progress_result.Status == 1)
-            {
-                if (progress_result.SubjectProgress != null)
-                {
-                    if (progress_result.SubjectProgress.eps != null)
-                    {
-                        foreach (var ep in progress_result.SubjectProgress.eps)
-                        {
-                            foreach (var ep_src in subject_result.Subject.eps)
-                            {
-                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
-                            }
-                        }
-                    }
-                }
-            }
-
             subject_list[index].subject_detail = subject_result.Subject;
-            //}
             if (SubjectControl == null)
             {
                 SubjectControl = new Subject();
@@ -140,6 +142,26 @@ namespace BangumiX.Views
                 SubjectControl.DataContext = subject_list[index].subject_detail;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
+
+            ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
+            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject_result.Subject.id);
+            if (progress_result.Status == 1)
+            {
+                if (progress_result.SubjectProgress != null)
+                {
+                    if (progress_result.SubjectProgress.eps != null)
+                    {
+                        foreach (var ep_src in subject_result.Subject.eps_2)
+                        {
+                            foreach (var ep in progress_result.SubjectProgress.eps)
+                            {
+                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
+                            }
+                        }
+                    }
+                }
+            }
+
             return;
         }
     }
