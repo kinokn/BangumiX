@@ -25,7 +25,7 @@ namespace BangumiX.Model
         public string cn_name { get; set; }
     }
 
-    public class SubjectSmall : Common.ObservableViewModelBase
+    public class SubjectSmall
     {
         public uint id { get; set; }
         public string url { get; set; }
@@ -140,7 +140,13 @@ namespace BangumiX.Model
         {
             get
             {
-                return 27 > eps.Count ? eps : eps.GetRange(0, 26);
+                if (eps == null) return eps;
+                if (eps.Count < 27) return eps;
+                var eps_shrink = eps.GetRange(0, 26);
+                eps_shrink.Add(new Episode());
+                eps_shrink[26].sort = "…";
+                eps_shrink[26].status = eps_shrink[25].status;
+                return eps_shrink;
             }
         }
     }
@@ -149,7 +155,7 @@ namespace BangumiX.Model
         public uint id { get; set; }
         public string url { get; set; }
         public int type { get; set; }
-        public float sort { get; set; }
+        public string sort { get; set; }
 
         //public string name { get; set; }
         private string _name { get; set; }

@@ -34,6 +34,17 @@ namespace BangumiX.Common
         }
     }
 
+    public static class Ancestor
+    {
+        public static T GetAncestorOfType<T>(FrameworkElement child) where T : FrameworkElement
+        {
+            var parent = System.Windows.Media.VisualTreeHelper.GetParent(child);
+            if (parent != null && !(parent is T))
+                return (T)GetAncestorOfType<T>((FrameworkElement)parent);
+            return (T)parent;
+        }
+    }
+
     public static class AcrylicEffect
     {
         [DllImport("user32.dll")]

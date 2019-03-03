@@ -29,6 +29,7 @@ namespace BangumiX.Views
         public ToolBar()
         {
             InitializeComponent();
+            ExpandBtn.IsChecked = false;
         }
 
         public async void GetUser()
@@ -94,27 +95,28 @@ namespace BangumiX.Views
         {
             var daily_collection = new DailyCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
+            Dictionary<uint, List<Model.Collection>> ordered_daily_list = new Dictionary<uint, List<Model.Collection>>()
+            {
+                    { 1, new List<Model.Collection>() },
+                    { 2, new List<Model.Collection>() },
+                    { 3, new List<Model.Collection>() },
+                    { 4, new List<Model.Collection>() },
+                    { 5, new List<Model.Collection>() },
+                    { 6, new List<Model.Collection>() },
+                    { 7, new List<Model.Collection>() }
+            };
             List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
             var daily_result = await ApiHelper.GetDaily();
             if (daily_result.Status == 1)
             {
                 daily_list = daily_result.DailyCollections;
-            }
-            Dictionary<uint, List<Model.Collection>> ordered_daily_list = new Dictionary<uint, List<Model.Collection>>()
-            {
-                { 1, new List<Model.Collection>() },
-                { 2, new List<Model.Collection>() },
-                { 3, new List<Model.Collection>() },
-                { 4, new List<Model.Collection>() },
-                { 5, new List<Model.Collection>() },
-                { 6, new List<Model.Collection>() },
-                { 7, new List<Model.Collection>() }
-            };
-            foreach (var d in daily_list)
-            {
-                foreach (var s in d.items)
+
+                foreach (var d in daily_list)
                 {
-                    ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
+                    foreach (var s in d.items)
+                    {
+                        ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
+                    }
                 }
             }
             daily_collection.Switch(ref ordered_daily_list);
@@ -135,11 +137,6 @@ namespace BangumiX.Views
             var my_collection = new MyCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
             List<Model.MyCollection> collects_list = new List<Model.MyCollection>();
-            var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
-            if (recent_result.Status == 1)
-            {
-                collects_list = recent_result.CollectWrapper[0].collects;
-            }
             Dictionary<uint, List<Model.Collection>> ordered_collects_list = new Dictionary<uint, List<Model.Collection>>()
             {
                 { 1, null },
@@ -148,9 +145,14 @@ namespace BangumiX.Views
                 { 4, null },
                 { 5, null }
             };
-            foreach (var c in collects_list)
+            var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
+            if (recent_result.Status == 1)
             {
-                ordered_collects_list[(uint)c.status["id"]] = c.list;
+                collects_list = recent_result.CollectWrapper[0].collects;
+                foreach (var c in collects_list)
+                {
+                    ordered_collects_list[(uint)c.status["id"]] = c.list;
+                }
             }
             my_collection.Switch(ref ordered_collects_list);
         }

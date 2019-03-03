@@ -33,13 +33,14 @@ namespace BangumiX.Views
 
         private async void SearchButtonClick(object sender, RoutedEventArgs e)
         {
+            subject_list = new List<Model.Collection>();
             ListViewCollections.ItemsSource = null;
             var search_result = await ApiHelper.GetSearch(KeywordTextBox.Text);
             if (search_result.Status == 1)
             {
                 foreach (var s in search_result.SearchCollections.list)
                 {
-                    subject_list.Add(new Model.Collection(s));
+                   subject_list.Add(new Model.Collection(s));
                 }
             }
             ListViewCollections.ItemsSource = subject_list;
@@ -50,7 +51,7 @@ namespace BangumiX.Views
             if (subject_list == null) return;
             var index = ListViewCollections.SelectedIndex;
             if (index == -1) return;
-            var subject = subject_list[index];
+            if (SubjectControl != null) SubjectControl.DataContext = null;
             ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
             subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
             if (subject_result.Status != 1) return;
@@ -61,14 +62,12 @@ namespace BangumiX.Views
                 SubjectControl = new Subject();
                 Grid.SetColumn(SubjectControl, 1);
                 GridMain.Children.Add(SubjectControl);
-                //SubjectControl.DataContext = subject_list[index].subject_detail;
-                SubjectControl.DataContext = subject;
+                SubjectControl.DataContext = subject_list[index].subject_detail;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             else
             {
-                //SubjectControl.DataContext = subject_list[index].subject_detail;
-                SubjectControl.DataContext = subject;
+                SubjectControl.DataContext = subject_list[index].subject_detail;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
 
@@ -84,7 +83,7 @@ namespace BangumiX.Views
                         {
                             foreach (var ep in progress_result.SubjectProgress.eps)
                             {
-                                if (ep.id == ep_src.ID) ep_src.EpStatus = ep.status.id;
+                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
                             }
                         }
                     }
@@ -93,5 +92,40 @@ namespace BangumiX.Views
             return;
         }
 
+        private async void WishCollectClick(object sender, RoutedEventArgs e)
+        {
+            var item = Ancestor.GetAncestorOfType<ListViewItem>(sender as Button);
+            var index = ListViewCollections.Items.IndexOf(item);
+            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "wish");
+            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+        }
+        private async void WatchingCollectClick(object sender, RoutedEventArgs e)
+        {
+            var item = Ancestor.GetAncestorOfType<ListViewItem>(sender as Button);
+            var index = ListViewCollections.Items.IndexOf(item);
+            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "do");
+            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+        }
+        private async void WatchedCollectClick(object sender, RoutedEventArgs e)
+        {
+            var item = Ancestor.GetAncestorOfType<ListViewItem>(sender as Button);
+            var index = ListViewCollections.Items.IndexOf(item);
+            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "collect");
+            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+        }
+        private async void HoldCollectClick(object sender, RoutedEventArgs e)
+        {
+            var item = Ancestor.GetAncestorOfType<ListViewItem>(sender as Button);
+            var index = ListViewCollections.Items.IndexOf(item);
+            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "on_hold");
+            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+        }
+        private async void DropCollectClick(object sender, RoutedEventArgs e)
+        {
+            var item = Ancestor.GetAncestorOfType<ListViewItem>(sender as Button);
+            var index = ListViewCollections.Items.IndexOf(item);
+            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "dropped");
+            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+        }
     }
 }

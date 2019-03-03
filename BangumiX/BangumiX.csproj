@@ -128,6 +128,16 @@
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Subject\SubjectStaffDetails.xaml.cs">
+      <DependentUpon>SubjectStaffDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Subject\SubjectComment.xaml.cs">
+      <DependentUpon>SubjectComment.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\Subject\SubjectStaff.xaml.cs">
+      <DependentUpon>SubjectStaff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Subject\SubjectCharacters.xaml.cs">
       <DependentUpon>SubjectCharacters.xaml</DependentUpon>
     </Compile>
@@ -183,6 +193,18 @@
     <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Subject\SubjectStaffDetails.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Subject\SubjectComment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Views\Subject\SubjectStaff.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Subject\SubjectCharacters.xaml">
       <SubType>Designer</SubType>

@@ -23,6 +23,8 @@ namespace BangumiX.Views
         public static SubjectSummary subject_summary;
         public static SubjectEpisodes subject_episodes;
         public static SubjectCharacters subject_characters;
+        public static SubjectStaff subject_staff;
+        public static SubjectComment subject_comment;
 
         public Subject()
         {
@@ -30,6 +32,8 @@ namespace BangumiX.Views
             subject_summary = new SubjectSummary();
             subject_episodes = new SubjectEpisodes();
             subject_characters = new SubjectCharacters();
+            subject_staff = new SubjectStaff();
+            subject_comment = new SubjectComment();
 
             SubjectContentCtrl.Content = subject_summary;
         }
@@ -49,19 +53,14 @@ namespace BangumiX.Views
             SubjectContentCtrl.Content = subject_characters;
         }
 
-        private void DetailClick(object sender, RoutedEventArgs e)
+        private void StuffClick(object sender, RoutedEventArgs e)
         {
-
+            SubjectContentCtrl.Content = subject_staff;
         }
 
         private void CommentClick(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void ReviewClick(object sender, RoutedEventArgs e)
-        {
-
+            SubjectContentCtrl.Content = subject_comment;
         }
     }
 }

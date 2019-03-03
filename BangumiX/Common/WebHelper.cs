@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,8 @@ namespace BangumiX.Common
     {
         public static readonly HttpClient APIclient = new HttpClient()
         {
-            BaseAddress = new Uri("https://api.bgm.tv/")
+            BaseAddress = new Uri("https://api.bgm.tv/"),
+            Timeout = new TimeSpan(0, 0, 10)
         };
         public static readonly HttpClient TokenClient = new HttpClient()
         {
@@ -33,5 +35,6 @@ namespace BangumiX.Common
                 ErrorMessage = String.Empty;
             }
         }
+
     }
 }

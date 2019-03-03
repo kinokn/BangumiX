@@ -151,7 +151,7 @@ namespace BangumiX.Common
             SearchResult search_result = new SearchResult();
             try
             {
-                string url = String.Format("search/subject/{0}?max_results=25&start={1}", keyword, start);
+                string url = String.Format("search/subject/{0}?max_results=25&start={1}&type=2", keyword, start);
                 HttpResponseMessage response = await APIclient.GetAsync(Uri.EscapeUriString(url));
                 response.EnsureSuccessStatusCode();
                 string response_body = await response.Content.ReadAsStringAsync();
@@ -160,6 +160,12 @@ namespace BangumiX.Common
                 return search_result;
             }
             catch (HttpRequestException e)
+            {
+                search_result.Status = -1;
+                search_result.ErrorMessage = e.Message;
+                return search_result;
+            }
+            catch (Exception e)
             {
                 search_result.Status = -1;
                 search_result.ErrorMessage = e.Message;
@@ -189,6 +195,30 @@ namespace BangumiX.Common
                 user_result.Status = -1;
                 user_result.ErrorMessage = e.Message;
                 return user_result;
+            }
+        }
+
+        public static async Task<HttpResult> UpdateCollection(uint id, string type)
+        {
+            HttpResult update_collection_result = new HttpResult();
+            try
+            {
+                Dictionary<string, string> Data = new Dictionary<string, string>()
+                {
+                    { "status", type }
+                };
+                FormUrlEncodedContent content = new FormUrlEncodedContent(Data);
+                string url = String.Format("/collection/{0}/update", id);
+                HttpResponseMessage response = await APIclient.PostAsync(url, content);
+                response.EnsureSuccessStatusCode();
+                update_collection_result.Status = 1;
+                return update_collection_result;
+            }
+            catch (HttpRequestException e)
+            {
+                update_collection_result.Status = -1;
+                update_collection_result.ErrorMessage = e.Message;
+                return update_collection_result;
             }
         }
     }

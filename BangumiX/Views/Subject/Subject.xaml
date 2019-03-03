@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BangumiX.Views"
+             xmlns:common="clr-namespace:BangumiX.Common"
              mc:Ignorable="d" 
              Background="#AF0F0F0F"
              Padding="10 10 10 0"
              d:DesignHeight="900" d:DesignWidth="790">
 
     <UserControl.Resources>
+        <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <Style TargetType="StackPanel" x:Key="StackPanelTitle">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Style.Resources>
@@ -43,8 +45,8 @@
             <Setter Property="Padding" Value="1"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Foreground" Value="GhostWhite"/>
-            <Setter Property="MinWidth" Value="20"/>
-            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="MinWidth" Value="24"/>
+            <Setter Property="MinHeight" Value="24"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ButtonBase}">
@@ -64,31 +66,31 @@
 
     <Grid Name="GridMain">
         <Grid.RowDefinitions>
-            <RowDefinition Height="410"/>
+            <RowDefinition Height="320"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280"/>
-                <ColumnDefinition Width="490"/>
+                <ColumnDefinition Width="224"/>
+                <ColumnDefinition Width="546"/>
             </Grid.ColumnDefinitions>
             <Image Source="{Binding images[large]}" HorizontalAlignment="Left" VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality"/>
-            <StackPanel Width="490" Margin="10 0 0 0" Grid.Column="1" Style="{StaticResource StackPanelTitle}">
-                <TextBlock Margin="0 0 0 5" HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{Binding name}" FontFamily="Yu Gothic" FontWeight="Bold"/>
-                <TextBlock Margin="0 0 0 0" HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{Binding name_cn}"/>
-                <Grid Grid.Column="1" Margin="0 20 0 0" Height="125">
+            <StackPanel Width="526" Margin="20 0 0 0" Grid.Column="1" Style="{StaticResource StackPanelTitle}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{Binding name}" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{Binding name_cn}"/>
+                <Grid Grid.Column="1" Margin="0 20 0 0" Height="125" Width="526">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="225"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="226"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Margin="0 0 0 10" Text="观看进度管理"/>
+                        <TextBlock Margin="0 0 0 10" Text="观看进度管理：" FontSize="14" Foreground="Silver"/>
                         <ListView ItemsSource="{Binding eps_2}" HorizontalAlignment="Left">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" Width="225"/>
+                                    <WrapPanel Orientation="Horizontal" Width="300"/>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
@@ -111,12 +113,15 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </StackPanel>
-                    <DockPanel Grid.Column="1" HorizontalAlignment="Center" LastChildFill="False">
-                        <DockPanel Margin="0 0 0 10" LastChildFill="False" DockPanel.Dock="Top">
-                            <TextBlock Text="评分"/>
-                            <TextBlock Text="{Binding rating.score}" DockPanel.Dock="Right"/>
-                        </DockPanel>
-                        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding rating.count_p}" HorizontalAlignment="Center">
+                    <DockPanel Width="226" Grid.Column="1" HorizontalAlignment="Center" LastChildFill="False">
+                        <StackPanel Margin="0 0 0 10" DockPanel.Dock="Top">
+                            <TextBlock Margin="0 0 0 10" Text="评分：" FontSize="14" Foreground="Silver"/>
+                            <DockPanel Width="226" LastChildFill="False">
+                                <TextBlock Text="{Binding rating.score}" FontSize="28"/>
+                                <TextBlock Text="{Binding rating.total, StringFormat={}{0}人投票}" FontSize="14" Foreground="Silver" VerticalAlignment="Bottom" DockPanel.Dock="Right"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding rating.count_p}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
@@ -125,18 +130,11 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <Border Name="br" Margin="2"
-                                        Background="DimGray"
-                                        Width="15" BorderBrush="White"  
-                                        BorderThickness="1" 
+                                        <Border Name="br" Margin="5 2"
+                                        Background="GhostWhite"
+                                        Width="12"
                                         Height="{Binding Value}">
                                         </Border>
-                                        <!--<TextBlock HorizontalAlignment="Center" FontWeight="Bold" 
-                                           FontFamily="Latha" Text="{Binding Value}">
-                                        <TextBlock.RenderTransform>
-                                            <TranslateTransform Y="0"/>
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>-->
                                         <TextBlock HorizontalAlignment="Center" Foreground="GhostWhite"
                                            Text="{Binding Key}">
                                             <TextBlock.RenderTransform>
@@ -162,7 +160,7 @@
             <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick" Content="概览"/>
             <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick" Content="章节"/>
             <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick" Content="角色"/>
-            <Button Name="buttonDetail" Grid.Column="3" Click="DetailClick" Content="制作"/>
+            <Button Name="buttonStuff" Grid.Column="3" Click="StuffClick" Content="制作"/>
             <Button Name="buttonComment" Grid.Column="4" Click="CommentClick" Content="吐槽"/>
         </Grid>
         <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
