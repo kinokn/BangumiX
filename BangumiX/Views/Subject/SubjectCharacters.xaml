@@ -50,13 +50,14 @@
                 <DataTemplate>
                     <DockPanel Style="{StaticResource DockPanelCharacter}">
                         <Border Width="75">
-                            <Image Source="{Binding images[grid]}"/>
+                            <Image Source="{Binding ImageGrid}"/>
                         </Border>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding name_cn}"/>
                             <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="CV: " FontFamily="Yu Gothic" Style="{StaticResource TextBlockCV}"/>
                             <ItemsControl ItemsSource="{Binding actors}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -65,7 +66,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="0 0 10 0" Text="{Binding name, StringFormat={}CV：{0} }" FontFamily="Yu Gothic" Style="{StaticResource TextBlockCV}"/>
+                                        <TextBlock Margin="0 0 10 0" Text="{Binding name, StringFormat={}{0} }" FontFamily="Yu Gothic" Style="{StaticResource TextBlockCV}"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

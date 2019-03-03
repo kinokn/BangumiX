@@ -50,15 +50,15 @@
                 <DataTemplate>
                     <DockPanel Style="{StaticResource DockPanelCharacter}">
                         <Border Width="75">
-                            <Image Source="{Binding images[grid]}"/>
+                            <Image Source="{Binding ImageGrid}"/>
                         </Border>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding name_cn}"/>
                             <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
                         </StackPanel>
-                        <!--<StackPanel Orientation="Horizontal">
-                            <TextBlock Text="CV: " Style="{StaticResource TextBlockCV}"/>
-                            <ItemsControl ItemsSource="{Binding actors}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Jobs, StringFormat={}职业：{0}}" Style="{StaticResource TextBlockCV}"/>
+                            <!--<ItemsControl ItemsSource="{Binding actors}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Horizontal"/>
@@ -69,8 +69,8 @@
                                         <TextBlock Margin="0 0 10 0" Text="{Binding name, StringFormat={}{0} }" Style="{StaticResource TextBlockCV}"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>-->
+                            </ItemsControl>-->
+                        </StackPanel>
                     </DockPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

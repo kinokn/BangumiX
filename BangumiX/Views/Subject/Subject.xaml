@@ -87,7 +87,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <TextBlock Margin="0 0 0 10" Text="观看进度管理：" FontSize="14" Foreground="Silver"/>
-                        <ListView ItemsSource="{Binding eps_2}" HorizontalAlignment="Left">
+                        <ListView ItemsSource="{Binding eps_sub}" HorizontalAlignment="Left">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal" Width="300"/>
@@ -95,11 +95,14 @@
                             </ListView.ItemsPanel>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Name="ProgressBtn" Style="{StaticResource RoundCornerButton}">
+                                    <Button Name="ProgressBtn" Style="{StaticResource RoundCornerButton}" Click="ProgressBtnClick">
                                         <TextBlock Text="{Binding sort}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Button>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding status}" Value="Air">
+                                            <Setter TargetName="ProgressBtn" Property="Background" Value="#4093FF"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding status}" Value="Today">
                                             <Setter TargetName="ProgressBtn" Property="Background" Value="#4093FF"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding status}" Value="NA">

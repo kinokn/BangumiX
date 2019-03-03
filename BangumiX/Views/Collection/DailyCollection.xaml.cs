@@ -157,30 +157,30 @@ namespace BangumiX.Views
             subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
             if (subject_result.Status != 1) return;
 
-            subject_list[index].subject_detail = subject_result.Subject;
+            var subject = subject_result.Subject;
             if (SubjectControl == null)
             {
                 SubjectControl = new Subject();
                 Grid.SetColumn(SubjectControl, 1);
                 GridMain.Children.Add(SubjectControl);
-                SubjectControl.DataContext = subject_list[index].subject_detail;
+                SubjectControl.DataContext = subject;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
             else
             {
-                SubjectControl.DataContext = subject_list[index].subject_detail;
+                SubjectControl.DataContext = subject;
                 SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
 
             ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
-            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject_result.Subject.id);
+            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject.id);
             if (progress_result.Status == 1)
             {
                 if (progress_result.SubjectProgress != null)
                 {
                     if (progress_result.SubjectProgress.eps != null)
                     {
-                        foreach (var ep_src in subject_result.Subject.eps_2)
+                        foreach (var ep_src in subject.eps)
                         {
                             foreach (var ep in progress_result.SubjectProgress.eps)
                             {
@@ -190,6 +190,8 @@ namespace BangumiX.Views
                     }
                 }
             }
+            subject.eps_filter();
+            SubjectControl.subject_episodes.EpisodeItemsControl.ItemsSource = subject.eps_normal;
             return;
         }
 

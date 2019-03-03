@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace BangumiX.Model
 {
     public class SubjectProgress
@@ -25,7 +24,7 @@ namespace BangumiX.Model
         public string cn_name { get; set; }
     }
 
-    public class SubjectSmall
+    public class SubjectSmall : Common.ObservableViewModelBase
     {
         public uint id { get; set; }
         public string url { get; set; }
@@ -70,10 +69,13 @@ namespace BangumiX.Model
         public int rank { get; set; }
         public Dictionary<string, string> images { get; set; }
         public Dictionary<string, uint> collection { get; set; }
-        public uint collection_total { get
+        public uint collection_total
+        {
+            get
             {
                 return (uint)collection.Sum(x => x.Value);
-            } }
+            }
+        }
 
         private static string ParseType(int type)
         {
@@ -135,20 +137,70 @@ namespace BangumiX.Model
         public List<Staff> staff { get; set; }
         public List<Topic> topic { get; set; }
         public List<Blog> blog { get; set; }
-        
-        public List<Episode> eps_2
+
+        public int eps_offset { get; set; }
+        public List<Episode> eps_normal { get; set; }
+        public List<Episode> eps_special { get; set; }
+        public List<Episode> eps_sub { get; set; }
+        public void eps_filter()
         {
-            get
+            if (eps == null) return;
+            eps_normal = new List<Episode>();
+            eps_special = new List<Episode>();
+            eps_sub = new List<Episode>();
+            bool offset_flag = true;
+            foreach (var e in eps)
             {
-                if (eps == null) return eps;
-                if (eps.Count < 27) return eps;
-                var eps_shrink = eps.GetRange(0, 26);
-                eps_shrink.Add(new Episode());
-                eps_shrink[26].sort = "…";
-                eps_shrink[26].status = eps_shrink[25].status;
-                return eps_shrink;
+                if (e.type == 0)
+                {
+                    if (offset_flag)
+                    {
+                        eps_offset = Convert.ToInt16(e.sort);
+                        eps_offset = eps_offset < 0 ? 0 : eps_offset;
+                        offset_flag = false;
+                    }
+                    if (eps_sub.Count < 27)
+                    {
+                        eps_sub.Add(e);
+                    }
+                    eps_normal.Add(e);
+                }
+                else
+                {
+                    eps_special.Add(e);
+                }
             }
+            if (eps_sub.Count > 26)
+            {
+                eps_sub.Add(new Episode() { sort = "…", status = "Air" });
+            }
+            OnPropertyChanged("eps_sub");
+            OnPropertyChanged("eps_normal");
+            OnPropertyChanged("eps_special");
+
+            button_count = new Dictionary<int, string>();
+            int n = eps_normal.Count;
+            int button_n = 0;
+            while (n > 0)
+            {
+                int start = button_n * 100 + eps_offset;
+                button_n += 1;
+                int end = n < 100 ? (button_n - 1) * 100 + n + eps_offset - 1 : button_n * 100 + eps_offset - 1;
+                button_count.Add(button_n, String.Format("{0} - {1}", start, end));
+                n -= 100;
+            }
+            button_n += 1;
+            if (eps_special.Count > 0)
+            {
+                button_count.Add(button_n, "SP");
+            }
+            if (button_count.Count > 1) button_visibility = System.Windows.Visibility.Visible;
+            else button_visibility = System.Windows.Visibility.Collapsed;
+            OnPropertyChanged("button_visibility");
+            OnPropertyChanged("button_count");
         }
+        public System.Windows.Visibility button_visibility { get; set; }
+        public Dictionary<int, string> button_count { get; set; }
     }
     public class Episode : Common.ObservableViewModelBase
     {
@@ -184,6 +236,24 @@ namespace BangumiX.Model
             {
                 if (value == String.Empty) _name_cn = null;
                 else _name_cn = value;
+            }
+        }
+
+        public string full_name
+        {
+            get
+            {
+                string s = sort + ". ";
+                if (name_cn != string.Empty) s = s + name_cn + " \\ ";
+                s += name;
+                return s;
+            }
+        }
+        public System.Windows.Visibility full_name_flag
+        {
+            get
+            {
+                return full_name.Length > 43 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -241,6 +311,15 @@ namespace BangumiX.Model
         public uint collcts { get; set; }
         public Info info { get; set; }
         public List<Actor> actors { get; set; }
+        public string ImageGrid
+        {
+            get
+            {
+                if (images == null) return "https://bangumi.tv/img/info_only.png";
+                images.TryGetValue("grid", out string img);
+                return img == null ? "https://bangumi.tv/img/info_only.png" : img;
+            }
+        }
     }
     public class Info
     {
@@ -269,10 +348,25 @@ namespace BangumiX.Model
         public string url { get; set; }
         public string name { get; set; }
         public Dictionary<string, string> images { get; set; }
+        public string ImageGrid
+        {
+            get
+            {
+                images.TryGetValue("grid", out string img);
+                return img == null ? "https://bangumi.tv/img/info_only.png" : img;
+            }
+        }
     }
     public class Staff : Character
     {
         public List<string> jobs { get; set; }
+        public string Jobs
+        {
+            get
+            {
+                return String.Join(" ", jobs.ToArray());
+            }
+        }
     }
     public class Topic
     {

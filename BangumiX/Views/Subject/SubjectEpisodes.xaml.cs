@@ -24,5 +24,19 @@ namespace BangumiX.Views
         {
             InitializeComponent();
         }
+
+        private void SwitchButtonClick(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var subject = (Model.SubjectLarge)DataContext;
+            if (button.Content.ToString() == "SP") EpisodeItemsControl.ItemsSource = subject.eps_special;
+            else
+            {
+                var item = (sender as FrameworkElement).DataContext;
+                var index = SwitchButtonListView.Items.IndexOf(item);
+                EpisodeItemsControl.ItemsSource = subject.eps_normal;
+                EpisodeList.ScrollToVerticalOffset(index * 100  * 40);
+            }
+        }
     }
 }

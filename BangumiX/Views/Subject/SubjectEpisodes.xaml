@@ -29,8 +29,24 @@
     </UserControl.Resources>
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-            <ItemsControl ItemsSource="{Binding eps}" AlternationCount="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ListView Style="{StaticResource BaseListView}" x:Name="SwitchButtonListView" ItemsSource="{Binding button_count}" HorizontalAlignment="Center" Visibility="{Binding button_visibility}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Background="Transparent"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button VerticalAlignment="Center" Content="{Binding Value}" Click="SwitchButtonClick"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ScrollViewer Grid.Row="1" x:Name="EpisodeList" VerticalScrollBarVisibility="Hidden">
+            <ItemsControl x:Name="EpisodeItemsControl" ItemsSource="{Binding eps_normal}" AlternationCount="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel/>
@@ -41,14 +57,21 @@
                         <DataTemplate.Resources>
                             <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
                         </DataTemplate.Resources>
-                        <StackPanel Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Width="770" Visibility="{Binding name, Converter={StaticResource NullToVisibilityConverter}}">
                             <Border x:Name="BorderEpisode" Style="{StaticResource BorderDockPanel}">
                                 <DockPanel Style="{StaticResource DockPanelEpisode}">
-                                    <TextBlock Text="{Binding sort}" Margin="5 0 0 0"/>
-                                    <TextBlock Text="."/>
-                                    <TextBlock Text="{Binding name_cn}" Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
-                                    <TextBlock Text=" / " Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
-                                    <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
+                                    <StackPanel MaxWidth="600" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding sort}" Margin="5 0 0 0"/>
+                                        <TextBlock Text="."/>
+                                        <TextBlock Text="{Binding name_cn}" Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                        <TextBlock Text=" / " Visibility="{Binding name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
+                                        <StackPanel.ToolTip>
+                                            <ToolTip Background="#EF000000" Placement="Mouse" HorizontalOffset="200" Visibility="{Binding full_name_flag}">
+                                                <TextBlock Text="{Binding name}" FontFamily="Yu Gothic"/>
+                                            </ToolTip>
+                                        </StackPanel.ToolTip>
+                                    </StackPanel>
                                     <Button Width="30" DockPanel.Dock="Right" Content="Play"/>
                                 </DockPanel>
                             </Border>

@@ -20,20 +20,20 @@ namespace BangumiX.Views
     /// </summary>
     public partial class Subject : UserControl
     {
-        public static SubjectSummary subject_summary;
-        public static SubjectEpisodes subject_episodes;
-        public static SubjectCharacters subject_characters;
-        public static SubjectStaff subject_staff;
-        public static SubjectComment subject_comment;
+        public SubjectSummary subject_summary;
+        public SubjectEpisodes subject_episodes;
+        public SubjectCharacters subject_characters;
+        public SubjectStaff subject_staff;
+        public SubjectComment subject_comment;
 
         public Subject()
         {
-            InitializeComponent();
             subject_summary = new SubjectSummary();
             subject_episodes = new SubjectEpisodes();
             subject_characters = new SubjectCharacters();
             subject_staff = new SubjectStaff();
             subject_comment = new SubjectComment();
+            InitializeComponent();
 
             SubjectContentCtrl.Content = subject_summary;
         }
@@ -61,6 +61,17 @@ namespace BangumiX.Views
         private void CommentClick(object sender, RoutedEventArgs e)
         {
             SubjectContentCtrl.Content = subject_comment;
+        }
+
+        private void ProgressBtnClick(object sender, RoutedEventArgs e)
+        {
+            Model.Episode item = (Model.Episode)(sender as FrameworkElement).DataContext;
+            Model.SubjectLarge subject = (Model.SubjectLarge)DataContext;
+            int index = 0;
+            int offset = subject.eps_offset;
+            if (item.sort != "…") index = Convert.ToInt16(item.sort);
+            SubjectContentCtrl.Content = subject_episodes;
+            subject_episodes.EpisodeList.ScrollToVerticalOffset((index - offset) * 40);
         }
     }
 }
