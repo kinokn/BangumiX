@@ -40,7 +40,7 @@ namespace BangumiX.Model
             }
             set
             {
-                if (value == String.Empty) _name = null;
+                if (value == string.Empty) _name = null;
                 else _name = value;
             }
         }
@@ -55,7 +55,7 @@ namespace BangumiX.Model
             }
             set
             {
-                if (value == String.Empty) _name_cn = null;
+                if (value == string.Empty) _name_cn = null;
                 else _name_cn = value;
             }
         }
@@ -69,6 +69,7 @@ namespace BangumiX.Model
         public int rank { get; set; }
         public Dictionary<string, string> images { get; set; }
         public Dictionary<string, uint> collection { get; set; }
+
         public uint collection_total
         {
             get
@@ -77,56 +78,48 @@ namespace BangumiX.Model
             }
         }
 
-        private static string ParseType(int type)
-        {
-            switch (type)
-            {
-                case 1:
-                    return "Book";
-                case 2:
-                    return "Anime";
-                case 3:
-                    return "Music";
-                case 4:
-                    return "Game";
-                case 6:
-                    return "Real";
-            }
-            return string.Empty;
-        }
         public string type_parsed
         {
             get
             {
-                return ParseType(type);
+                switch (type)
+                {
+                    case 1:
+                        return "Book";
+                    case 2:
+                        return "Anime";
+                    case 3:
+                        return "Music";
+                    case 4:
+                        return "Game";
+                    case 6:
+                        return "Real";
+                }
+                return string.Empty;
             }
-        }
-        private static string ParseDate(int day)
-        {
-            switch (day)
-            {
-                case 1:
-                    return "周一";
-                case 2:
-                    return "周二";
-                case 3:
-                    return "周三";
-                case 4:
-                    return "周四";
-                case 5:
-                    return "周五";
-                case 6:
-                    return "周六";
-                case 7:
-                    return "周日";
-            }
-            return string.Empty;
         }
         public string air_weekday_parsed
         {
             get
             {
-                return ParseDate(air_weekday);
+                switch (air_weekday)
+                {
+                    case 1:
+                        return "周一";
+                    case 2:
+                        return "周二";
+                    case 3:
+                        return "周三";
+                    case 4:
+                        return "周四";
+                    case 5:
+                        return "周五";
+                    case 6:
+                        return "周六";
+                    case 7:
+                        return "周日";
+                }
+                return string.Empty;
             }
         }
     }
@@ -184,12 +177,11 @@ namespace BangumiX.Model
             while (n > 0)
             {
                 int start = button_n * 100 + eps_offset;
+                int end = n < 100 ? button_n * 100 + n + eps_offset - 1 : (button_n + 1) * 100 + eps_offset - 1;
+                button_count.Add(button_n, string.Format("{0} - {1}", start, end));
                 button_n += 1;
-                int end = n < 100 ? (button_n - 1) * 100 + n + eps_offset - 1 : button_n * 100 + eps_offset - 1;
-                button_count.Add(button_n, String.Format("{0} - {1}", start, end));
                 n -= 100;
             }
-            button_n += 1;
             if (eps_special.Count > 0)
             {
                 button_count.Add(button_n, "SP");
@@ -219,7 +211,7 @@ namespace BangumiX.Model
             }
             set
             {
-                if (value == String.Empty) _name = null;
+                if (value == string.Empty) _name = null;
                 else _name = value;
             }
         }
@@ -234,7 +226,7 @@ namespace BangumiX.Model
             }
             set
             {
-                if (value == String.Empty) _name_cn = null;
+                if (value == string.Empty) _name_cn = null;
                 else _name_cn = value;
             }
         }
@@ -364,7 +356,7 @@ namespace BangumiX.Model
         {
             get
             {
-                return String.Join(" ", jobs.ToArray());
+                return string.Join(" ", jobs.ToArray());
             }
         }
     }

@@ -20,6 +20,7 @@ namespace BangumiX.Views
     /// </summary>
     public partial class Subject : UserControl
     {
+        public Model.SubjectLarge subject;
         public SubjectSummary subject_summary;
         public SubjectEpisodes subject_episodes;
         public SubjectCharacters subject_characters;
@@ -28,6 +29,7 @@ namespace BangumiX.Views
 
         public Subject()
         {
+            subject = new Model.SubjectLarge();
             subject_summary = new SubjectSummary();
             subject_episodes = new SubjectEpisodes();
             subject_characters = new SubjectCharacters();
@@ -67,11 +69,16 @@ namespace BangumiX.Views
         {
             Model.Episode item = (Model.Episode)(sender as FrameworkElement).DataContext;
             Model.SubjectLarge subject = (Model.SubjectLarge)DataContext;
-            int index = 0;
             int offset = subject.eps_offset;
-            if (item.sort != "…") index = Convert.ToInt16(item.sort);
+            int index = (item.sort == "…") ? 0 : Convert.ToInt16(item.sort);
             SubjectContentCtrl.Content = subject_episodes;
             subject_episodes.EpisodeList.ScrollToVerticalOffset((index - offset) * 40);
+        }
+
+        public void Reset()
+        {
+            BindingOperations.SetBinding(subject_episodes.EpisodeItemsControl, ItemsControl.ItemsSourceProperty, new Binding("eps_normal"));
+            subject_episodes.EpisodeList.ScrollToTop();
         }
     }
 }

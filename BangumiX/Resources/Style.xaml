@@ -2,13 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:BangumiX.Resources" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
 
+
     <Style x:Key="BaseTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontFamily" Value="SimHei"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="GhostWhite"/>
     </Style>
 
     <Style x:Key="BaseTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FontFamily" Value="SimHei"/>
         <Setter Property="Foreground" Value="GhostWhite"/>
@@ -35,6 +38,7 @@
     </Style>
 
     <Style x:Key="BaseButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Foreground" Value="Silver"/>
@@ -56,23 +60,7 @@
     </Style>
 
     <Style x:Key="BaseListViewItem" TargetType="{x:Type ListViewItem}">
-        <Style.Resources>
-            <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#7F3F3F3F"/>
-            <SolidColorBrush x:Key="Item.MouseOver.Border" Color="Silver"/>
-            <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="DimGray"/>
-            <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="GhostWhite"/>
-            <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="DimGray"/>
-            <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="GhostWhite"/>
-            <Style x:Key="FocusVisual">
-                <Setter Property="Control.Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Style.Resources>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Margin" Value="5 0 5 5"/>
         <Setter Property="Padding" Value="0"/>
@@ -81,7 +69,6 @@
         <Setter Property="Background" Value="#AF1F1F1F"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate x:Name="ListViewItemControl" TargetType="{x:Type ListViewItem}">
@@ -96,8 +83,8 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.MouseOver.Border}"/>
+                            <Setter Property="Background" TargetName="Bd" Value="#7F3F3F3F"/>
+                            <Setter Property="BorderBrush" TargetName="Bd" Value="Silver"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -121,25 +108,6 @@
         </Setter>
     </Style>
 
-
-    <Style x:Key="UpdateCollectionToggleButton" TargetType="ToggleButton">
-        <Setter Property="Height" Value="20"/>
-        <Setter Property="Width" Value="32"/>
-        <Setter Property="Background" Value="Black"/>
-        <Setter Property="Foreground" Value="Silver"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="NavigationListView" TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -150,6 +118,7 @@
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
                     <Setter Property="Width" Value="60"/>
                     <Setter Property="BorderBrush" Value="Transparent"/>
@@ -197,6 +166,7 @@
                 <Setter Property="FontSize" Value="20"/>
             </Style>
         </Style.Resources>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -251,5 +221,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

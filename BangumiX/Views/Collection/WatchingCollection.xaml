@@ -9,93 +9,12 @@
              Background="#01000000"
              d:DesignHeight="900" d:DesignWidth="1136">
 
-    <Grid x:Name="GridMain">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="346"/>
-            <ColumnDefinition Width="790"/>
-        </Grid.ColumnDefinitions>
-        <Border BorderThickness="1 0 1 0" BorderBrush="Black">
-            <Grid Background="#7F0F0F0F">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="56"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-                    <TextBlock Style="{StaticResource BaseTextBlock}" TextAlignment="Center" VerticalAlignment="Center" Margin="5" FontSize="24" Text="乾杯- ( ゜- ゜)つロ"/>
-                </Border>
-                <ListView Grid.Row="1" x:Name="ListViewCollections" ItemsSource="{Binding}" Style="{StaticResource CollectionListView}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <DataTemplate.Resources>
-                                <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
-                                <Storyboard x:Key="CollectsExpand">
-                                    <ThicknessAnimation Storyboard.TargetName="Collects" Storyboard.TargetProperty="Margin" From="0 0 -148 0" To="0 0 32 0" Duration="00:00:0.1"/>
-                                </Storyboard>
-                                <Storyboard x:Key="CollectsRestore">
-                                    <ThicknessAnimation Storyboard.TargetName="Collects" Storyboard.TargetProperty="Margin" From="0 0 32 0" To="0 0 -180 0" Duration="00:00:0.1"/>
-                                </Storyboard>
-                                <Storyboard x:Key="CollectsMouseEnter">
-                                    <ColorAnimation Storyboard.TargetProperty="Foreground.Color" From="Silver" To="GhostWhite" Duration="0"/>
-                                </Storyboard>
-                                <Storyboard x:Key="CollectsMouseLeave">
-                                    <ColorAnimation Storyboard.TargetProperty="Foreground.Color" From="GhostWhite" To="Silver" Duration="0"/>
-                                </Storyboard>
-                                <Storyboard x:Key="RotateIcon">
-                                    <DoubleAnimation Storyboard.TargetName="Icon" Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" From="0" To="45" Duration="00:00:0.1"/>
-                                </Storyboard>
-                                <Storyboard x:Key="RestoreIcon">
-                                    <DoubleAnimation Storyboard.TargetName="Icon" Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" From="45" To="0" Duration="00:00:0.1"/>
-                                </Storyboard>
-                            </DataTemplate.Resources>
-                            <DockPanel Style="{StaticResource CollectionDockPanel}" Width="332">
-                                <Image DockPanel.Dock="Left" Width="78" Stretch="Uniform" Source="{Binding subject.images[small]}"/>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding subject.name_cn}" Visibility="{Binding subject.name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>
-                                    <TextBlock Text="{Binding subject.name}" FontFamily="Yu Gothic" FontSize="14"/>
-                                </StackPanel>
-                                <Grid Height="20" DockPanel.Dock="Bottom"  HorizontalAlignment="Right" >
-                                    <StackPanel Height="20" x:Name="Collects" Orientation="Horizontal" Width="180" Margin="0 0 -180 0">
-                                        <Button Content="想看" Click="WishCollectClick"/>
-                                        <Button Content="在看" Click="WatchingCollectClick"/>
-                                        <Button Content="看过" Click="WatchedCollectClick"/>
-                                        <Button Content="搁置" Click="HoldCollectClick"/>
-                                        <Button Content="抛弃" Click="DropCollectClick"/>
-                                    </StackPanel>
-                                    <ToggleButton Height="20" x:Name="CollectsFlag" Style="{StaticResource UpdateCollectionToggleButton}">
-                                        <Border HorizontalAlignment="Right" Height="20" Width="32" BorderThickness="0" Background="Transparent">
-                                            <Viewbox Width="16.000" Height="15.950">
-                                                <Canvas Width="16.000" Height="15.950">
-                                                    <Path x:Name="Icon" RenderTransformOrigin="0.5, 0.5" Stretch="Uniform" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ToggleButton, Mode=FindAncestor}}" Data="F1 M 16.000,6.975 L 9.000,6.975 L 9.000,0.000 L 7.000,0.000 L 7.000,6.975 L 0.000,6.975 L 0.000,8.975 L 7.000,8.975 L 7.000,15.949 L 9.000,15.949 L 9.000,8.975 L 16.000,8.975 L 16.000,6.975 Z">
-                                                        <Path.RenderTransform>
-                                                            <RotateTransform/>
-                                                        </Path.RenderTransform>
-                                                    </Path>
-                                                </Canvas>
-                                            </Viewbox>
-                                        </Border>
-                                        <ToggleButton.Triggers>
-                                            <EventTrigger RoutedEvent="ToggleButton.Checked">
-                                                <BeginStoryboard Storyboard="{StaticResource CollectsExpand}"/>
-                                                <BeginStoryboard Storyboard="{StaticResource RotateIcon}"/>
-                                            </EventTrigger>
-                                            <EventTrigger RoutedEvent="ToggleButton.Unchecked">
-                                                <BeginStoryboard Storyboard="{StaticResource CollectsRestore}"/>
-                                                <BeginStoryboard Storyboard="{StaticResource RestoreIcon}"/>
-                                            </EventTrigger>
-                                            <EventTrigger RoutedEvent="ToggleButton.MouseEnter">
-                                                <BeginStoryboard Storyboard="{StaticResource CollectsMouseEnter}"/>
-                                            </EventTrigger>
-                                            <EventTrigger RoutedEvent="ToggleButton.MouseLeave">
-                                                <BeginStoryboard Storyboard="{StaticResource CollectsMouseLeave}"/>
-                                            </EventTrigger>
-                                        </ToggleButton.Triggers>
-                                    </ToggleButton>
-                                </Grid>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </Border>
-    </Grid>
+    <Border BorderThickness="1 0 0 0" BorderBrush="Black">
+        <Grid x:Name="GridMain" Height="900" Width="1136">
+            <local:SubjectList x:Name="SubjectListControl"/>
+            <Border Height="56" Width="344" BorderBrush="Black" BorderThickness="0 0 0 1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Style="{StaticResource BaseTextBlock}" TextAlignment="Center" VerticalAlignment="Center" Margin="5" FontSize="24" Text="乾杯- ( ゜- ゜)つロ"/>
+            </Border>
+        </Grid>
+    </Border>
 </UserControl>

@@ -25,182 +25,54 @@ namespace BangumiX.Views
     {
         public Dictionary<uint, List<Model.Collection>> collect_list;
         public List<Model.Collection> subject_list;
-        public Subject SubjectControl;
         public MyCollection()
         {
             InitializeComponent();
-            ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
         }
 
         public void Switch(ref Dictionary<uint, List<Model.Collection>> ref_ordered_collects)
         {
             collect_list = ref_ordered_collects;
             subject_list = collect_list[1];
-            DataContext = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = WishButton.Parent;
             return;
         }
 
         private void WishButtonClick(object sender, RoutedEventArgs e)
         {
-            ListViewCollections.ItemsSource = null;
             subject_list = collect_list[1];
-            ListViewCollections.ItemsSource = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
         private void WatchingButtonClick(object sender, RoutedEventArgs e)
         {
-            ListViewCollections.ItemsSource = null;
             subject_list = collect_list[3];
-            ListViewCollections.ItemsSource = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
         private void WatchedButtonClick(object sender, RoutedEventArgs e)
         {
-            ListViewCollections.ItemsSource = null;
             subject_list = collect_list[2];
-            ListViewCollections.ItemsSource = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
         private void HoldButtonClick(object sender, RoutedEventArgs e)
         {
-            ListViewCollections.ItemsSource = null;
             subject_list = collect_list[4];
-            ListViewCollections.ItemsSource = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
         }
         private void DropButtonClick(object sender, RoutedEventArgs e)
         {
-            ListViewCollections.ItemsSource = null;
             subject_list = collect_list[5];
-            ListViewCollections.ItemsSource = subject_list;
-            if (subject_list == null) ListViewCollections.SelectedIndex = -1;
-            else
-            {
-                ListViewCollections.SelectedIndex = 0;
-                ListViewCollections.ScrollIntoView(subject_list[0]);
-            }
+            SubjectListControl.SwitchList(ref subject_list);
             NavigationListView.SelectedItem = ((Button)sender).Parent;
             return;
-        }
-
-
-        private async void ListViewCollectionsSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (subject_list == null) return;
-            var index = ListViewCollections.SelectedIndex;
-            if (index == -1) return;
-            if (SubjectControl != null) SubjectControl.DataContext = null;
-            ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
-            subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
-            if (subject_result.Status != 1) return;
-
-            var subject = subject_result.Subject;
-            if (SubjectControl == null)
-            {
-                SubjectControl = new Subject();
-                Grid.SetColumn(SubjectControl, 1);
-                GridMain.Children.Add(SubjectControl);
-                SubjectControl.DataContext = subject;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            }
-            else
-            {
-                SubjectControl.DataContext = subject;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-            }
-
-            ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
-            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject.id);
-            if (progress_result.Status == 1)
-            {
-                if (progress_result.SubjectProgress != null)
-                {
-                    if (progress_result.SubjectProgress.eps != null)
-                    {
-                        foreach (var ep_src in subject.eps)
-                        {
-                            foreach (var ep in progress_result.SubjectProgress.eps)
-                            {
-                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
-                            }
-                        }
-                    }
-                }
-            }
-            subject.eps_filter();
-            SubjectControl.subject_episodes.EpisodeItemsControl.ItemsSource = subject.eps_normal;
-            return;
-        }
-
-        private async void WishCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "wish");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void WatchingCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "do");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void WatchedCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "collect");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void HoldCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "on_hold");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void DropCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "dropped");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
         }
     }
 }

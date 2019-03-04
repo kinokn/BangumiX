@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ using System.Windows.Shapes;
 
 using BangumiX.Common;
 using BangumiX.Properties;
+using static BangumiX.Common.WebHelper;
 
 namespace BangumiX.Views
 {
@@ -24,110 +26,37 @@ namespace BangumiX.Views
     public partial class SearchCollection : UserControl
     {
         public List<Model.Collection> subject_list;
-        public Subject SubjectControl;
         public SearchCollection()
         {
             InitializeComponent();
-            ListViewCollections.SelectionChanged += ListViewCollectionsSelectedIndexChanged;
         }
 
         private async void SearchButtonClick(object sender, RoutedEventArgs e)
         {
             subject_list = new List<Model.Collection>();
-            ListViewCollections.ItemsSource = null;
-            var search_result = await ApiHelper.GetSearch(KeywordTextBox.Text);
-            if (search_result.Status == 1)
+            Model.SearchCollection search_collection = new Model.SearchCollection();
+            try
             {
-                foreach (var s in search_result.SearchCollections.list)
-                {
-                   subject_list.Add(new Model.Collection(s));
-                }
+                search_collection = await Retry.Do(() => ApiHelper.GetSearch(KeywordTextBox.Text), TimeSpan.FromSeconds(3));
             }
-            ListViewCollections.ItemsSource = subject_list;
-        }
-
-        public async void ListViewCollectionsSelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (subject_list == null) return;
-            var index = ListViewCollections.SelectedIndex;
-            if (index == -1) return;
-            if (SubjectControl != null) SubjectControl.DataContext = null;
-            ApiHelper.SubjectResult subject_result = new ApiHelper.SubjectResult();
-            subject_result = await ApiHelper.GetSubject(subject_list[index].subject_id);
-            if (subject_result.Status != 1) return;
-
-            var subject = subject_result.Subject;
-            if (SubjectControl == null)
+            catch (WebException web_exception)
             {
-                SubjectControl = new Subject();
-                Grid.SetColumn(SubjectControl, 1);
-                GridMain.Children.Add(SubjectControl);
-                SubjectControl.DataContext = subject;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                Console.WriteLine(web_exception.Message);
             }
-            else
+            catch (AuthorizationException authorization_exception)
             {
-                SubjectControl.DataContext = subject;
-                SubjectControl.buttonSummary.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                Console.WriteLine(authorization_exception.Message);
             }
-
-            ApiHelper.ProgressResult progress_result = new ApiHelper.ProgressResult();
-            progress_result = await ApiHelper.GetProgress(Settings.Default.UserID, subject.id);
-            if (progress_result.Status == 1)
+            catch (EmptySearchException empty_search_exception)
             {
-                if (progress_result.SubjectProgress != null)
-                {
-                    if (progress_result.SubjectProgress.eps != null)
-                    {
-                        foreach (var ep_src in subject.eps)
-                        {
-                            foreach (var ep in progress_result.SubjectProgress.eps)
-                            {
-                                if (ep.id == ep_src.id) ep_src.ep_status = ep.status.id;
-                            }
-                        }
-                    }
-                }
+                Console.WriteLine(empty_search_exception.Message);
+                return;
             }
-            subject.eps_filter();
-            SubjectControl.subject_episodes.EpisodeItemsControl.ItemsSource = subject.eps_normal;
-            return;
-        }
-
-        private async void WishCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "wish");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void WatchingCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "do");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void WatchedCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "collect");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void HoldCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "on_hold");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
-        }
-        private async void DropCollectClick(object sender, RoutedEventArgs e)
-        {
-            var item = (sender as FrameworkElement).DataContext;
-            var index = ListViewCollections.Items.IndexOf(item);
-            var http_result = await ApiHelper.UpdateCollection(subject_list[index].subject_id, "dropped");
-            if (http_result.Status != 1) Console.WriteLine("UpdateFailed");
+            foreach (var s in search_collection.list)
+            {
+                subject_list.Add(new Model.Collection(s));
+            }
+            SubjectListControl.SwitchList(ref subject_list);
         }
     }
 }

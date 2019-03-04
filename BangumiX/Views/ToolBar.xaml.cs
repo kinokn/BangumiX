@@ -17,6 +17,8 @@ using BangumiX.Properties;
 using BangumiX.Common;
 using System.Collections.ObjectModel;
 using System.Windows.Controls.Primitives;
+using System.Net;
+using static BangumiX.Common.WebHelper;
 
 namespace BangumiX.Views
 {
@@ -36,10 +38,20 @@ namespace BangumiX.Views
         {
             if (Settings.Default.AccessToken != null)
             {
-                var user_result = await ApiHelper.GetUser(Settings.Default.UserID);
-                User = user_result.User;
+                try
+                {
+                    User = await Retry.Do(() => ApiHelper.GetUser(Settings.Default.UserID), TimeSpan.FromSeconds(3));
+                }
+                catch (WebException web_exception)
+                {
+                    Console.WriteLine(web_exception.Message);
+                }
+                catch (AuthorizationException authorization_exception)
+                {
+                    Console.WriteLine(authorization_exception.Message);
+                }
+                DataContext = User;
             }
-            DataContext = User;
         }
 
         private void ToSearchClick(object sender, RoutedEventArgs e)
@@ -65,19 +77,25 @@ namespace BangumiX.Views
                 ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
                 ExpandBtn.IsChecked = false;
             }
-            await ToWatching();
+            try
+            {
+                await Retry.Do(() => ToWatching(), TimeSpan.FromSeconds(3));
+            }
+            catch (WebException web_exception)
+            {
+                Console.WriteLine(web_exception.Message);
+            }
+            catch (AuthorizationException authorization_exception)
+            {
+                Console.WriteLine(authorization_exception.Message);
+            }
             ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToWatching()
         {
             var watching_collection = new WatchingCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = watching_collection;
-            List<Model.Collection> subject_list = new List<Model.Collection>();
-            var watching_result = await ApiHelper.GetWatching(Settings.Default.UserID);
-            if (watching_result.Status == 1)
-            {
-                subject_list = watching_result.Watching;
-            }
+            List<Model.Collection> subject_list = await ApiHelper.GetWatching(Settings.Default.UserID);
             watching_collection.Switch(ref subject_list);
         }
 
@@ -88,13 +106,25 @@ namespace BangumiX.Views
                 ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
                 ExpandBtn.IsChecked = false;
             }
-            await ToDaily();
+            try
+            {
+                await Retry.Do(() => ToDaily(), TimeSpan.FromSeconds(3));
+            }
+            catch (WebException web_exception)
+            {
+                Console.WriteLine(web_exception.Message);
+            }
+            catch (AuthorizationException authorization_exception)
+            {
+                Console.WriteLine(authorization_exception.Message);
+            }
             ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToDaily()
         {
             var daily_collection = new DailyCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = daily_collection;
+            List<Model.DailyCollection> daily_list = await ApiHelper.GetDaily();
             Dictionary<uint, List<Model.Collection>> ordered_daily_list = new Dictionary<uint, List<Model.Collection>>()
             {
                     { 1, new List<Model.Collection>() },
@@ -105,18 +135,11 @@ namespace BangumiX.Views
                     { 6, new List<Model.Collection>() },
                     { 7, new List<Model.Collection>() }
             };
-            List<Model.DailyCollection> daily_list = new List<Model.DailyCollection>();
-            var daily_result = await ApiHelper.GetDaily();
-            if (daily_result.Status == 1)
+            foreach (var d in daily_list)
             {
-                daily_list = daily_result.DailyCollections;
-
-                foreach (var d in daily_list)
+                foreach (var s in d.items)
                 {
-                    foreach (var s in d.items)
-                    {
-                        ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
-                    }
+                    ordered_daily_list[(uint)d.weekday["id"]].Add(new Model.Collection(s));
                 }
             }
             daily_collection.Switch(ref ordered_daily_list);
@@ -129,14 +152,25 @@ namespace BangumiX.Views
                 ExpandBtn.RaiseEvent(new RoutedEventArgs(ToggleButton.UncheckedEvent));
                 ExpandBtn.IsChecked = false;
             }
-            await ToMine();
+            try
+            {
+                await Retry.Do(() => ToMine(), TimeSpan.FromSeconds(3));
+            }
+            catch (WebException web_exception)
+            {
+                Console.WriteLine(web_exception.Message);
+            }
+            catch (AuthorizationException authorization_exception)
+            {
+                Console.WriteLine(authorization_exception.Message);
+            }
             ToolBarListView.SelectedItem = ((Button)sender).Parent;
         }
         private async Task ToMine()
         {
             var my_collection = new MyCollection();
             ((MainWindow)Application.Current.MainWindow).CollectionContentControl.Content = my_collection;
-            List<Model.MyCollection> collects_list = new List<Model.MyCollection>();
+            List<Model.MyCollection> collects_list = await ApiHelper.GetMyCollection(Settings.Default.UserID);
             Dictionary<uint, List<Model.Collection>> ordered_collects_list = new Dictionary<uint, List<Model.Collection>>()
             {
                 { 1, null },
@@ -145,14 +179,9 @@ namespace BangumiX.Views
                 { 4, null },
                 { 5, null }
             };
-            var recent_result = await ApiHelper.GetRecentCollection(Settings.Default.UserID);
-            if (recent_result.Status == 1)
+            foreach (var c in collects_list)
             {
-                collects_list = recent_result.CollectWrapper[0].collects;
-                foreach (var c in collects_list)
-                {
-                    ordered_collects_list[(uint)c.status["id"]] = c.list;
-                }
+                ordered_collects_list[(uint)c.status["id"]] = c.list;
             }
             my_collection.Switch(ref ordered_collects_list);
         }
