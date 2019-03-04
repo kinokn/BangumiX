@@ -70,5 +70,7 @@ namespace BangumiX.Views
         {
             RemoveSelf();
         }
+
+
     }
 }

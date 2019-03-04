@@ -24,6 +24,19 @@ namespace BangumiX.Common
         }
     }
 
+    public class LengthVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (value is int && (int)value == 0) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (value is Visibility && (Visibility)value == Visibility.Visible) ? 1 : 0;
+        }
+    }
+
     public class ObservableViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
