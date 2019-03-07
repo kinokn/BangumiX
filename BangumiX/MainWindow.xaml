@@ -9,25 +9,31 @@
         mc:Ignorable="d"
         AllowsTransparency="True"
         WindowStyle="None"
-        Height="932" Width="1200"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
+        MinWidth="{Binding RelativeSource={RelativeSource Self}, Path=ReSizeWidth}"
+        MinHeight="{Binding RelativeSource={RelativeSource Self}, Path=ReSizeHeight}"
+        Width="{Binding RelativeSource={RelativeSource Self}, Path=ReSizeWidth}"
+        Height="{Binding RelativeSource={RelativeSource Self}, Path=ReSizeHeight}"
         Background="#01000000"
         Title="BangumiX"
+        Name="BangumiXMainWindow"
         Loaded="Window_Loaded">
 
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
     </Window.Resources>
-
     <Border BorderBrush="Black" BorderThickness="1">
         <Grid Name="GridMain">
+            <Grid.LayoutTransform>
+                <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding ElementName=BangumiXMainWindow, Path=ScaleValue}" ScaleY="{Binding ElementName=BangumiXMainWindow, Path=ScaleValue}"/>
+            </Grid.LayoutTransform>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
-                <RowDefinition Height="900" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="64"/>
-                <ColumnDefinition Width="1136"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <views:ToolBar x:Name="MyToolBar" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Panel.ZIndex="1"/>
             <Border BorderBrush="Black" BorderThickness="0 0 0 1" Grid.ColumnSpan="3" Panel.ZIndex="99">
@@ -69,7 +75,6 @@
                 </DockPanel>
             </Border>
             <ContentControl x:Name="CollectionContentControl" x:FieldModifier="public" Grid.Row="1" Grid.Column="1"/>
-            <!--<views:MyCollections x:Name="MyCollections" x:FieldModifier="public" Grid.Row="1" Grid.Column="1"/>-->
         </Grid>
     </Border>
 </Window>

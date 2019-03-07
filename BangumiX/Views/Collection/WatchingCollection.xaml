@@ -10,9 +10,13 @@
              d:DesignHeight="900" d:DesignWidth="1136">
 
     <Border BorderThickness="1 0 0 0" BorderBrush="Black">
-        <Grid x:Name="GridMain" Height="900" Width="1136">
-            <local:SubjectList x:Name="SubjectListControl"/>
-            <Border Height="56" Width="344" BorderBrush="Black" BorderThickness="0 0 0 1" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid x:Name="GridMain">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="790"/>
+            </Grid.ColumnDefinitions>
+            <local:SubjectList x:Name="SubjectListControl" Grid.ColumnSpan="2"/>
+            <Border Height="56" BorderBrush="Black" BorderThickness="0 0 0 1" VerticalAlignment="Top">
                 <TextBlock Style="{StaticResource BaseTextBlock}" TextAlignment="Center" VerticalAlignment="Center" Margin="5" FontSize="24" Text="乾杯- ( ゜- ゜)つロ"/>
             </Border>
         </Grid>

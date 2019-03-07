@@ -14,20 +14,24 @@
     </UserControl.Resources>
 
     <Border BorderThickness="1 0 0 0" BorderBrush="Black">
-        <Grid x:Name="GridMain" Height="900" Width="1136">
-            <local:SubjectList x:Name="SubjectListControl"/>
-            <Border Height="56" Width="344" BorderBrush="Black" BorderThickness="0 0 0 1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <DockPanel LastChildFill="False" Margin="5">
-                    <DockPanel.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="790"/>
+            </Grid.ColumnDefinitions>
+            <local:SubjectList x:Name="SubjectListControl" Grid.ColumnSpan="2"/>
+            <Border Height="56" BorderBrush="Black" BorderThickness="0 0 0 1" VerticalAlignment="Top">
+                <StackPanel Width="334" Margin="5" Orientation="Horizontal">
+                    <StackPanel.Resources>
                         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}">
                             <Setter Property="Foreground" Value="GhostWhite"/>
                         </Style>
-                    </DockPanel.Resources>
+                    </StackPanel.Resources>
                     <TextBox x:Name="KeywordTextBox" Width="300" Height="24"/>
                     <Button DockPanel.Dock="Right" Width="32" Click="SearchButtonClick">
                         <TextBlock VerticalAlignment="Center" Text="搜索"/>
                     </Button>
-                </DockPanel>
+                </StackPanel>
             </Border>
         </Grid>
     </Border>

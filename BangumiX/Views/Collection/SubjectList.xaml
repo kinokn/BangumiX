@@ -29,9 +29,9 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="GridMain">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="346"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="790"/>
         </Grid.ColumnDefinitions>
         <local:Subject x:Name="SubjectControl" Grid.Column="1"/>
@@ -65,7 +65,7 @@
                                     <DoubleAnimation Storyboard.TargetName="Icon" Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" From="45" To="0" Duration="00:00:0.1"/>
                                 </Storyboard>
                             </DataTemplate.Resources>
-                            <DockPanel Style="{StaticResource CollectionDockPanel}" Width="332">
+                            <DockPanel Style="{StaticResource CollectionDockPanel}" ClipToBounds="True">
                                 <Image DockPanel.Dock="Left" Width="78" Stretch="Uniform" Source="{Binding subject.images[small]}"/>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding subject.name_cn}" Visibility="{Binding subject.name_cn, Converter={StaticResource NullToVisibilityConverter}}"/>

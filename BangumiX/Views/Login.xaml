@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:BangumiX.Views"
              xmlns:common="clr-namespace:BangumiX.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="360" d:DesignWidth="260"
+             d:DesignHeight="420" d:DesignWidth="560"
              Height="420" Width="560"
-             Background="#0F0F0F"
+             Background="#EF0F0F0F"
              VerticalAlignment="Center"
              HorizontalAlignment="Center">
     <UserControl.Resources>
@@ -63,10 +63,15 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="LoginButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="Background" Value="#0063E6"/>
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
         </Style>
 
     </UserControl.Resources>
@@ -113,7 +118,7 @@
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="4">
-                        <Button Style="{StaticResource LoginButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Height="40" FontSize="18" Content="下一步">
+                        <Button Style="{StaticResource LoginButtonStyle}" Content="下一步">
                             <Button.Triggers>
                                 <EventTrigger RoutedEvent="Button.Click">
                                     <BeginStoryboard>
@@ -165,7 +170,7 @@
                         </Button>
                     </Grid>
                     <Grid Grid.Row="4">
-                        <Button x:Name="LoginButton" Margin="0 0 0 1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="160" Height="40" FontSize="18" Click="LoginClick" Content="授权">
+                        <Button x:Name="LoginButton" Margin="0 0 0 1" Click="LoginClick" Content="授权">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource LoginButtonStyle}">
                                     <Style.Triggers>

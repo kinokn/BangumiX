@@ -68,7 +68,7 @@
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Background" Value="#AF1F1F1F"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate x:Name="ListViewItemControl" TargetType="{x:Type ListViewItem}">
@@ -84,7 +84,8 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
                             <Setter Property="Background" TargetName="Bd" Value="#7F3F3F3F"/>
-                            <Setter Property="BorderBrush" TargetName="Bd" Value="Silver"/>
+                            <!--<Setter Property="BorderThickness" TargetName="Bd" Value="1"/>-->
+                            <!--<Setter Property="BorderBrush" TargetName="Bd" Value="Silver"/>-->
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -110,6 +111,8 @@
 
     <Style x:Key="NavigationListView" TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListBox}}">
         <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>

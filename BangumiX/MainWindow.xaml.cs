@@ -74,6 +74,30 @@ namespace BangumiX
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        public double ReSizeWidth
+        {
+            get
+            {
+                return ((float)SystemParameters.VirtualScreenWidth) * (1500f / 2560f);
+            }
+        }
+
+        public double ReSizeHeight
+        {
+            get
+            {
+                return ReSizeWidth * 0.75f + 32;
+            }
+        }
+
+        public double ScaleValue
+        {
+            get
+            {
+                return ReSizeWidth / 1200;
+            }
+        }
     }
 
 }

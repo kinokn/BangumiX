@@ -40,7 +40,6 @@ namespace BangumiX.Views
             start_login.Shutdown();
             Grid parent = (Grid)this.Parent;
             parent.Children.Remove(this);
-            //parent.Children.OfType<Grid>().First().Effect = null;
         }
 
         private async void CaptchaClick(object sender, RoutedEventArgs e)
