@@ -20,11 +20,6 @@ namespace BangumiX.Common
         {
             BaseAddress = new Uri("http://47.101.195.180:5000/")
         };
-        public static readonly HttpClient HTMLclient = new HttpClient()
-        {
-            BaseAddress = new Uri("https://bangumi.tv/")
-        };
-        public static string host = HTMLclient.BaseAddress.ToString();
 
         public class AuthorizationException : Exception
         {
@@ -37,16 +32,6 @@ namespace BangumiX.Common
             public EmptySearchException() { }
             public EmptySearchException(string message) : base(message) { }
             public EmptySearchException(string message, Exception inner) : base(message, inner) { }
-        }
-        public class HttpResult
-        {
-            public int Status { get; set; }
-            public string ErrorMessage { get; set; }
-            public HttpResult()
-            {
-                Status = 0;
-                ErrorMessage = String.Empty;
-            }
         }
     }
 

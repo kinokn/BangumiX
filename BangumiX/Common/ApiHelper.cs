@@ -1,5 +1,4 @@
-﻿using BangumiX.Properties;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace BangumiX.Common
     {
         public static async Task<List<Model.Collection>> GetWatching(uint id, string cat = "watching")
         {
-            string url = string.Format("user/{0}/collection?app_id={1}&cat={2}", id, Settings.Default.ClientID, cat);
+            string url = string.Format("user/{0}/collection?app_id={1}&cat={2}", id, Settings.ClientID, cat);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
                 try
@@ -44,7 +43,7 @@ namespace BangumiX.Common
 
         public static async Task<List<Model.MyCollection>> GetMyCollection(uint id, string subject_type = "anime")
         {
-            string url = string.Format("user/{0}/collections/{1}?app_id={2}", id, subject_type, Settings.Default.ClientID);
+            string url = string.Format("user/{0}/collections/{1}?app_id={2}", id, subject_type, Settings.ClientID);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
                 try

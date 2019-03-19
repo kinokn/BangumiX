@@ -36,14 +36,5 @@ namespace BangumiX.Model
         public int ep_status { get; set; }
         public ulong lasttouch { get; set; }
         public SubjectSmall subject { get; set; }
-        public SubjectLarge subject_detail { get; set; }
-
-        public Collection() { }
-        public Collection(SubjectSmall s)
-        {
-            name = s.name;
-            subject_id = s.id;
-            subject = s;
-        }
     }
 }

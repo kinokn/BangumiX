@@ -1,222 +1,128 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using CefSharp;
-using CefSharp.OffScreen;
-
-using BangumiX.Properties;
-using System.Windows.Media.Imaging;
-using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.Security.Authentication.Web;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace BangumiX.Common
 {
     public class LoginHelper : WebHelper
     {
-        public class RefreshTokenResult : HttpResult
+        public static async Task<bool> CheckLogin()
         {
-            public Model.Token Token { get; set; }
-        }
-        public class CaptchaSrcResult : HttpResult
-        {
-            public BitmapImage CaptchaSrc { get; set; }
-        }
-        public class LoginResult : HttpResult
-        {
-            public Model.Token Token { get; set; }
+            if (Settings.AccessToken == string.Empty) return false;
+            var time_remain = (int)(Settings.TokenTime - DateTimeOffset.Now).TotalSeconds;
+            if (time_remain > Settings.Expire / 2)
+            {
+                APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    await RefreshToken();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
         }
 
-        public static async Task<HttpResult> CheckLogin()
+        public static async Task RefreshToken()
         {
-            HttpResult check_login_result = new HttpResult();
-            if (Settings.Default.NeverAsk == true)
+            string url = string.Format("callback?refresh_token={0}", Settings.RefreshToken);
+            using (HttpResponseMessage response = await TokenClient.GetAsync(url))
             {
-                check_login_result.Status = 1;
-                return check_login_result;
-            }
-            if (Settings.Default.AccessToken != String.Empty)
-            {
-                var time_remain = (int)(DateTime.Now - Settings.Default.TokenTime).TotalSeconds;
-                if (time_remain < Settings.Default.Expire / 2)
+                try
                 {
-                    APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.Default.TokenType, Settings.Default.AccessToken);
-                    check_login_result.Status = 1;
-                    return check_login_result;
+                    response.EnsureSuccessStatusCode();
+                    string response_body = await response.Content.ReadAsStringAsync();
+                    Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                    token.token_time = DateTime.Now;
                 }
-                else
+                catch (HttpRequestException http_exception)
                 {
-                    var refresh_token_result = await StartRefreshToken();
-                    if (refresh_token_result.Status == 1)
+                    if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        check_login_result.Status = 1;
-                        return check_login_result;
+                        throw new WebException(http_exception.Message);
                     }
-                    else Console.WriteLine("Refresh Failed");
+                    else
+                    {
+                        throw new AuthorizationException(response.StatusCode.ToString());
+                    }
+                }
+                catch (WebException)
+                {
+                    throw;
                 }
             }
-            return check_login_result;
         }
 
-        public static async Task<RefreshTokenResult> StartRefreshToken()
+        public static async Task Login()
         {
-            RefreshTokenResult refresh_token_result = new RefreshTokenResult();
+            string startURL = string.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.ClientID);
+            string endURL = "http://47.101.195.180:5000/callback";
+            Uri startURI = new Uri(startURL);
+            Uri endURI = new Uri(endURL);
+            string result;
             try
             {
-                string url = String.Format("callback?refresh_token={0}", Settings.Default.RefreshToken);
-                HttpResponseMessage response = await TokenClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string response_body = await response.Content.ReadAsStringAsync();
-                refresh_token_result.Token = JsonConvert.DeserializeObject<Model.Token>(response_body);
-                refresh_token_result.Token.token_time = DateTime.Now;
-                refresh_token_result.Status = 1;
-                return refresh_token_result;
+                var webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startURI, endURI);
+
+                switch (webAuthenticationResult.ResponseStatus)
+                {
+                    case WebAuthenticationStatus.Success:
+                        result = webAuthenticationResult.ResponseData.ToString();
+                        break;
+                    case WebAuthenticationStatus.ErrorHttp:
+                        result = webAuthenticationResult.ResponseErrorDetail.ToString();
+                        break;
+                    default:
+                        result = webAuthenticationResult.ResponseData.ToString();
+                        break;
+                }
             }
-            catch (HttpRequestException e)
+            catch (Exception ex)
             {
-                refresh_token_result.Status = -1;
-                refresh_token_result.ErrorMessage = e.Message;
-                return refresh_token_result;
+                result = ex.Message;
+            }
+            string url = "callback" + result.Substring(endURL.Length);
+            using (HttpResponseMessage response = await TokenClient.GetAsync(url))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                    string response_body = await response.Content.ReadAsStringAsync();
+                    Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                    token.token_time = DateTimeOffset.Now;
+                }
+                catch (HttpRequestException http_exception)
+                {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new WebException(http_exception.Message);
+                    }
+                    else
+                    {
+                        throw new AuthorizationException(response.StatusCode.ToString());
+                    }
+                }
+                catch (WebException)
+                {
+                    throw;
+                }
             }
         }
 
-        public class StartLogin
-        {
-            public ChromiumWebBrowser browser;
-            public string login_uri;
-            public Model.Login login;
-            public CaptchaSrcResult captcha_src_result;
-            public LoginResult login_result;
-            public StartLogin()
-            {
-                Cef.Initialize(new CefSettings());
-                login_uri = String.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.Default.ClientID);
-                browser = new ChromiumWebBrowser(browserSettings: new BrowserSettings());
-                while (!browser.IsBrowserInitialized)
-                {
-                    System.Threading.Thread.Sleep(100);
-                }
-
-                login = new Model.Login();
-                captcha_src_result = new CaptchaSrcResult();
-                login_result = new LoginResult();
-            }
-            public void Shutdown()
-            {
-                Cef.Shutdown();
-            }
-            public async Task GetCaptchaSrc()
-            {
-                await LoadPageAsync(browser, login_uri);
-
-                string script = @"(function() {
-                                    var email = document.getElementById('email');
-                                    var password = document.getElementById('password');
-                                    var ev = new Event('input');
-                                    email.value = 1;
-                                    password.value = 1;
-                                    email.dispatchEvent(ev);
-                                })();";
-
-                browser.ExecuteScriptAsync(script);
-                System.Threading.Thread.Sleep(1000);
-
-                string captcha_string = string.Empty;
-                script = @"(function() {var img = document.getElementById('captcha_img_code');
-                                var canvas = document.createElement('canvas');
-                                canvas.width = img.width;
-                                canvas.height = img.height;
-                                var ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0, img.width, img.height);
-                                var ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase();
-                                var dataURL = canvas.toDataURL('image/' + ext);
-                                return dataURL;
-                            })();";
-
-                var task = browser.EvaluateScriptAsync(script);
-                await task.ContinueWith(t =>
-                {
-                    if (!t.IsFaulted)
-                    {
-                        var response = t.Result;
-                        if (response.Success && response.Result != null)
-                        {
-                            captcha_string = response.Result.ToString().Substring(22);
-                        }
-                    }
-                });
-
-                byte[] binaryData = Convert.FromBase64String(captcha_string);
-                BitmapImage bi = new BitmapImage();
-                bi.BeginInit();
-                bi.StreamSource = new System.IO.MemoryStream(binaryData);
-                bi.EndInit();
-                captcha_src_result.CaptchaSrc = bi;
-
-                captcha_src_result.Status = 1;
-                return;
-            }
-
-            public async Task Start()
-            {
-                string script = String.Format(@"(function() {{ var email = document.getElementById('email')
-                                                email.value = '{0}';
-                                                document.getElementById('password').value = '{1}';
-                                                var ev = new Event('input');
-                                                email.dispatchEvent(ev);
-                                                document.getElementById('captcha').value = '{2}';
-                                                document.getElementsByClassName('inputBtn')[0].click();}})();", login.Email, login.Password, login.Captcha);
-                browser.ExecuteScriptAsync(script);
-                await LoadPageAsync(browser);
-
-                script = @"document.getElementsByClassName('btnPink large')[0].click();";
-                browser.ExecuteScriptAsync(script);
-                await LoadPageAsync(browser);
-
-                script = "(function () { return document.documentElement.innerText; })();";
-                var task = browser.EvaluateScriptAsync(script);
-                await task.ContinueWith(t =>
-                {
-                    if (!t.IsFaulted)
-                    {
-                        var response = t.Result;
-                        if (response.Success && response.Result != null)
-                        {
-                            login_result.Token = JsonConvert.DeserializeObject<Model.Token>(response.Result.ToString());
-                            login_result.Token.token_time = DateTime.Now;
-                        }
-                    }
-                });
-
-                login_result.Status = 1;
-
-                return;
-            }
-
-            public static Task LoadPageAsync(IWebBrowser browser, string address = null)
-            {
-                var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-
-                EventHandler<LoadingStateChangedEventArgs> handler = null;
-                handler = (sender, args) =>
-                {
-                    if (!args.IsLoading)
-                    {
-                        browser.LoadingStateChanged -= handler;
-                        tcs.TrySetResult(true);
-                    }
-                };
-
-                browser.LoadingStateChanged += handler;
-
-                if (!string.IsNullOrEmpty(address))
-                {
-                    browser.Load(address);
-                }
-                return tcs.Task;
-            }
-        }
     }
 }
