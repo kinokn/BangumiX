@@ -18,8 +18,8 @@ namespace BangumiX.Common
         public static async Task<bool> CheckLogin()
         {
             if (Settings.AccessToken == string.Empty) return false;
-            var time_remain = (int)(Settings.TokenTime - DateTimeOffset.Now).TotalSeconds;
-            if (time_remain > Settings.Expire / 2)
+            var timePast = (int)(DateTimeOffset.Now - Settings.TokenTime).TotalSeconds;
+            if (timePast < Settings.Expire / 2)
             {
                 APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
                 return true;
@@ -46,15 +46,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.Token token = JsonConvert.DeserializeObject<Model.Token>(responseBody);
                     token.token_time = DateTime.Now;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
                     }
                     else
                     {
@@ -74,54 +74,49 @@ namespace BangumiX.Common
             string endURL = "http://47.101.195.180:5000/callback";
             Uri startURI = new Uri(startURL);
             Uri endURI = new Uri(endURL);
-            string result;
             try
             {
                 var webAuthenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, startURI, endURI);
+                if (webAuthenticationResult.ResponseStatus == WebAuthenticationStatus.Success)
+                {
+                    string url = "callback" + webAuthenticationResult.ResponseData.ToString().Substring(endURL.Length);
+                    using (HttpResponseMessage response = await TokenClient.GetAsync(url))
+                    {
+                        try
+                        {
+                            response.EnsureSuccessStatusCode();
+                            string response_body = await response.Content.ReadAsStringAsync();
+                            Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
+                            token.token_time = DateTimeOffset.Now;
+                        }
+                        catch (HttpRequestException httpException)
+                        {
+                            if (response.StatusCode == HttpStatusCode.NotFound)
+                            {
+                                throw new WebException(httpException.Message);
+                            }
+                            else
+                            {
+                                throw new AuthorizationException(response.StatusCode.ToString());
+                            }
+                        }
+                        catch (WebException)
+                        {
+                            throw;
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception(webAuthenticationResult.ResponseErrorDetail.ToString());
+                }
 
-                switch (webAuthenticationResult.ResponseStatus)
-                {
-                    case WebAuthenticationStatus.Success:
-                        result = webAuthenticationResult.ResponseData.ToString();
-                        break;
-                    case WebAuthenticationStatus.ErrorHttp:
-                        result = webAuthenticationResult.ResponseErrorDetail.ToString();
-                        break;
-                    default:
-                        result = webAuthenticationResult.ResponseData.ToString();
-                        break;
-                }
             }
-            catch (Exception ex)
+            catch
             {
-                result = ex.Message;
+                throw;
             }
-            string url = "callback" + result.Substring(endURL.Length);
-            using (HttpResponseMessage response = await TokenClient.GetAsync(url))
-            {
-                try
-                {
-                    response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
-                    token.token_time = DateTimeOffset.Now;
-                }
-                catch (HttpRequestException http_exception)
-                {
-                    if (response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        throw new WebException(http_exception.Message);
-                    }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
-                }
-                catch (WebException)
-                {
-                    throw;
-                }
-            }
+
         }
 
     }

@@ -141,6 +141,45 @@
     <Compile Include="ViewModel\CollectionViewModel.cs" />
     <Compile Include="ViewModel\SubjectViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
+    <Compile Include="View\Collection\CollectionList.xaml.cs">
+      <DependentUpon>CollectionList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Collection\DailyCollection.xaml.cs">
+      <DependentUpon>DailyCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Collection\MyCollection.xaml.cs">
+      <DependentUpon>MyCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Collection\SearchCollection.xaml.cs">
+      <DependentUpon>SearchCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\Subject.xaml.cs">
+      <DependentUpon>Subject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Collection\WatchingCollection.xaml.cs">
+      <DependentUpon>WatchingCollection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectCharacter.xaml.cs">
+      <DependentUpon>SubjectCharacter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectCharacterDetail.xaml.cs">
+      <DependentUpon>SubjectCharacterDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectComment.xaml.cs">
+      <DependentUpon>SubjectComment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectEpisode.xaml.cs">
+      <DependentUpon>SubjectEpisode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectStaff.xaml.cs">
+      <DependentUpon>SubjectStaff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectStaffDetail.xaml.cs">
+      <DependentUpon>SubjectStaffDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Subject\SubjectSummary.xaml.cs">
+      <DependentUpon>SubjectSummary.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -209,6 +248,58 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Collection\CollectionList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Collection\DailyCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Collection\MyCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Collection\SearchCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\Subject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Collection\WatchingCollection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectCharacter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectCharacterDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectComment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectEpisode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectStaff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectStaffDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Subject\SubjectSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -221,9 +312,7 @@
       <Version>12.0.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -19,15 +19,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    List<Model.Collection> watching = JsonConvert.DeserializeObject<List<Model.Collection>>(response_body);
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    List<Model.Collection> watching = JsonConvert.DeserializeObject<List<Model.Collection>>(responseBody);
                     return watching;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
                     }
                     else
                     {
@@ -49,15 +49,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    List<Model.MyCollectionWrapper> collection_list = JsonConvert.DeserializeObject<List<Model.MyCollectionWrapper>>(response_body);
-                    return collection_list[0].collects;
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    List<Model.MyCollectionWrapper> collectionList = JsonConvert.DeserializeObject<List<Model.MyCollectionWrapper>>(responseBody);
+                    return collectionList[0].collects;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -80,15 +80,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    List<Model.DailyCollection> daily_collections = JsonConvert.DeserializeObject<List<Model.DailyCollection>>(response_body);
-                    return daily_collections;
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    List<Model.DailyCollection> dailyCollections = JsonConvert.DeserializeObject<List<Model.DailyCollection>>(responseBody);
+                    return dailyCollections;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -111,15 +111,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.SearchCollection search_collection = JsonConvert.DeserializeObject<Model.SearchCollection>(response_body);
-                    return search_collection;
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.SearchCollection searchCollection = JsonConvert.DeserializeObject<Model.SearchCollection>(responseBody);
+                    return searchCollection;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -131,9 +131,9 @@ namespace BangumiX.Common
                 {
                     throw;
                 }
-                catch (JsonReaderException json_reader_exception)
+                catch (JsonReaderException jsonReaderException)
                 {
-                    throw new EmptySearchException(json_reader_exception.Message);
+                    throw new EmptySearchException(jsonReaderException.Message);
                 }
             }
         }
@@ -147,15 +147,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.SubjectLarge subject = JsonConvert.DeserializeObject<Model.SubjectLarge>(response_body);
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.SubjectLarge subject = JsonConvert.DeserializeObject<Model.SubjectLarge>(responseBody);
                     return subject;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -178,15 +178,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.SubjectProgress subject_progress = JsonConvert.DeserializeObject<Model.SubjectProgress>(response_body);
-                    return subject_progress;
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.SubjectProgress subjectProgress = JsonConvert.DeserializeObject<Model.SubjectProgress>(responseBody);
+                    return subjectProgress;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -209,15 +209,15 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    string response_body = await response.Content.ReadAsStringAsync();
-                    Model.User user = JsonConvert.DeserializeObject<Model.User>(response_body);
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.User user = JsonConvert.DeserializeObject<Model.User>(responseBody);
                     return user;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else
@@ -247,11 +247,11 @@ namespace BangumiX.Common
                     response.EnsureSuccessStatusCode();
                     return;
                 }
-                catch (HttpRequestException http_exception)
+                catch (HttpRequestException httpException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(http_exception.Message);
+                        throw new WebException(httpException.Message);
 
                     }
                     else

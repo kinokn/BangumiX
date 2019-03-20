@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="BangumiX.View.DailyCollection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BangumiX.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loading="Page_Loading">
+
+    <Grid>
+        <local:CollectionList x:Name="CollectionListControl"/>
+        <Border Height="48" Width="310" Margin="5 5 5 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <RelativePanel>
+                <ListView Margin="0 0 5 0" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" x:Name="myCollectionListView" SelectionChanged="ListView_SelectionChanged">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="MinWidth" Value="0"/>
+                            <Setter Property="Width" Value="32"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListViewItem IsSelected="True" Content="日" Tag="Sun"/>
+                    <ListViewItem Content="一" Tag="Mon"/>
+                    <ListViewItem Content="二" Tag="Tue"/>
+                    <ListViewItem Content="三" Tag="Wed"/>
+                    <ListViewItem Content="四" Tag="Thu"/>
+                    <ListViewItem Content="五" Tag="Fri"/>
+                    <ListViewItem Content="六" Tag="Sat"/>
+                </ListView>
+                <Button Background="Transparent" Margin="0 0 5 0" Padding="0" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Refresh"/>
+                    </Button.Content>
+                </Button>
+            </RelativePanel>
+        </Border>
+    </Grid>
+</Page>

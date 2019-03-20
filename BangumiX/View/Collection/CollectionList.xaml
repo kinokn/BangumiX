@@ -1,0 +1,95 @@
+﻿<UserControl
+    x:Class="BangumiX.View.CollectionList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BangumiX.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common="using:BangumiX.Common"
+    xmlns:vm="using:BangumiX.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="800">
+    <UserControl.Resources>
+        <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <SplitView DisplayMode="Inline"
+                   IsPaneOpen="True">
+            <SplitView.Pane>
+                <ListView x:Name="ListViewCollection"
+                          ItemsSource="{x:Bind collectionVM}"
+                          IsItemClickEnabled="True"
+                          Margin="0 56 0 0">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Margin" Value="5 0 5 5"/>
+                            <Setter Property="Background" Value="#AF1F1F1F"/>
+                            <Setter Property="Height" Value="100"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:SubjectViewModel">
+                            <Grid Height="100" Background="#01000000">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="78"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image VerticalAlignment="Center" Stretch="Uniform" Source="{x:Bind ImageSmall}"/>
+                                <StackPanel Grid.Column="1" Margin="5 0 0 0" Orientation="Vertical">
+                                    <TextBlock TextWrapping="Wrap" Text="{x:Bind NameCN}" Visibility="{x:Bind NameCN, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{x:Bind Name}" FontFamily="Yu Gothic" FontSize="12"/>
+                                </StackPanel>
+                                <Grid.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="想看" Click="WishBtn_Click"/>
+                                        <MenuFlyoutItem Text="在看" Click="WatchingBtn_Click"/>
+                                        <MenuFlyoutItem Text="看过" Click="WatchedBtn_Click"/>
+                                        <MenuFlyoutItem Text="搁置" Click="HoldBtn_Click"/>
+                                        <MenuFlyoutItem Text="抛弃" Click="DropBtn_Click"/>
+                                    </MenuFlyout>
+                                </Grid.ContextFlyout>
+
+                                <!--<Grid Height="20" RelativePanel.AlignBottomWithPanel="True" HorizontalAlignment="Right" >
+                                <StackPanel Height="20" x:Name="Collects" Orientation="Horizontal" Width="180" Margin="0 0 -180 0">
+                                    <Button Content="想看" Click="WishBtn_Click"/>
+                                    <Button Content="在看" Click="WatchingBtn_Click"/>
+                                    <Button Content="看过" Click="WatchedBtn_Click"/>
+                                    <Button Content="搁置" Click="HoldBtn_Click"/>
+                                    <Button Content="抛弃" Click="DropBtn_Click"/>
+                                </StackPanel>
+                                <ToggleButton Height="20" x:Name="CollectsFlag">
+                                    -->
+                                <!--<ToggleButton.Triggers>
+                                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                            <BeginStoryboard Storyboard="{StaticResource CollectsExpand}"/>
+                                            <BeginStoryboard Storyboard="{StaticResource RotateIcon}"/>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                            <BeginStoryboard Storyboard="{StaticResource CollectsRestore}"/>
+                                            <BeginStoryboard Storyboard="{StaticResource RestoreIcon}"/>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="ToggleButton.MouseEnter">
+                                            <BeginStoryboard Storyboard="{StaticResource CollectsMouseEnter}"/>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="ToggleButton.MouseLeave">
+                                            <BeginStoryboard Storyboard="{StaticResource CollectsMouseLeave}"/>
+                                        </EventTrigger>
+                                    </ToggleButton.Triggers>-->
+                                <!--
+                                </ToggleButton>
+                                </Grid>-->
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <local:Subject x:Name="SubjectControl"/>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</UserControl>

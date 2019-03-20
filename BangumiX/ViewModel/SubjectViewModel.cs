@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using BangumiX.Model;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace BangumiX.ViewModel
 {
@@ -15,28 +16,42 @@ namespace BangumiX.ViewModel
         public SubjectLarge subject;
         public List<EpisodeViewModel> _Eps { get; set; }
         public List<CharacterViewModel> _Crts { get; set; }
-        public SubjectViewModel() { }
+        public SubjectViewModel()
+        {
+            subject = new SubjectLarge();
+            _Eps = new List<EpisodeViewModel>();
+            _Crts = new List<CharacterViewModel>();
+        }
         public SubjectViewModel(SubjectSmall s)
         {
             subject = new SubjectLarge
             {
                 id = s.id,
                 name = s.name,
-                name_cn = s.name
+                name_cn = s.name_cn,
+                images = s.images
             };
+            _Eps = new List<EpisodeViewModel>();
+            _Crts = new List<CharacterViewModel>();
         }
         public SubjectViewModel(SubjectLarge s)
         {
             subject = new SubjectLarge();
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
-            foreach (var e in s.eps)
+            if (s.eps != null)
             {
-                _Eps.Add(new EpisodeViewModel(e));
+                foreach (var e in s.eps)
+                {
+                    _Eps.Add(new EpisodeViewModel(e));
+                }
             }
-            foreach (var c in s.crt)
+            if (s.crt != null)
             {
-                _Crts.Add(new CharacterViewModel(c));
+                foreach (var c in s.crt)
+                {
+                    _Crts.Add(new CharacterViewModel(c));
+                }
             }
             subject = s;
         }
@@ -108,28 +123,31 @@ namespace BangumiX.ViewModel
         }
         public float Score => subject.rating.score;
         public int Rank => subject.rank;
-        public string ImageSmall
+        public BitmapImage ImageSmall
         {
             get
             {
+                if (subject.images == null) return null;
                 subject.images.TryGetValue("small", out string img);
-                return img;
+                return new BitmapImage(new Uri(img));
             }
         }
-        public string ImageGrid
+        public BitmapImage ImageGrid
         {
             get
             {
+                if (subject.images == null) return null;
                 subject.images.TryGetValue("grid", out string img);
-                return img;
+                return new BitmapImage(new Uri(img));
             }
         }
-        public string ImageLarge
+        public BitmapImage ImageLarge
         {
             get
             {
+                if (subject.images == null) return null;
                 subject.images.TryGetValue("large", out string img);
-                return img;
+                return new BitmapImage(new Uri(img));
             }
         }
         public uint ToTalCollection => (uint)subject.collection.Sum(x => x.Value);
@@ -148,16 +166,16 @@ namespace BangumiX.ViewModel
             EpsNormal = new List<Episode>();
             EpsSpecial = new List<Episode>();
             EpsSub = new List<Episode>();
-            bool offset_flag = true;
+            bool offsetFlag = true;
             foreach (var e in subject.eps)
             {
                 if (e.type == 0)
                 {
-                    if (offset_flag)
+                    if (offsetFlag)
                     {
                         EpsOffset = Convert.ToInt16(e.sort);
                         EpsOffset = EpsOffset < 0 ? 0 : EpsOffset;
-                        offset_flag = false;
+                        offsetFlag = false;
                     }
                     if (EpsSub.Count < 27)
                     {
@@ -179,22 +197,22 @@ namespace BangumiX.ViewModel
             RaisePropertyChanged("EpsSpecial");
 
             ButtonCount = new Dictionary<int, string>();
-            int n = EpsNormal.Count;
-            int button_n = 0;
-            while (n > 0)
+            int num = EpsNormal.Count;
+            int buttonNum = 0;
+            while (num > 0)
             {
-                int start = button_n * 100 + EpsOffset;
-                int end = n < 100 ? button_n * 100 + n + EpsOffset - 1 : (button_n + 1) * 100 + EpsOffset - 1;
-                ButtonCount.Add(button_n, string.Format("{0} - {1}", start, end));
-                button_n += 1;
-                n -= 100;
+                int begin = buttonNum * 100 + EpsOffset;
+                int end = num < 100 ? buttonNum * 100 + num + EpsOffset - 1 : (buttonNum + 1) * 100 + EpsOffset - 1;
+                ButtonCount.Add(buttonNum, string.Format("{0} - {1}", begin, end));
+                buttonNum += 1;
+                num -= 100;
             }
             if (EpsSpecial.Count > 0)
             {
-                ButtonCount.Add(button_n, "SP");
+                ButtonCount.Add(buttonNum, "SP");
             }
-            if (ButtonCount.Count > 1) ButtonVisibility = Windows.UI.Xaml.Visibility.Visible;
-            else ButtonVisibility = Windows.UI.Xaml.Visibility.Collapsed;
+            if (ButtonCount.Count > 1) ButtonVisibility = Visibility.Visible;
+            else ButtonVisibility = Visibility.Collapsed;
             RaisePropertyChanged("ButtonVisibility");
             RaisePropertyChanged("ButtonCount");
         }
@@ -255,13 +273,13 @@ namespace BangumiX.ViewModel
         public uint ID => character.id;
         public string Name => character.name == string.Empty ? null : character.name;
         public string NameCN => character.name_cn == string.Empty ? null : character.name_cn;
-        public string ImageGrid
+        public BitmapImage ImageGrid
         {
             get
             {
-                //if (character.images == null) return "https://bangumi.tv/img/info_only.png";
+                if (character.images == null) return null;
                 character.images.TryGetValue("grid", out string img);
-                return img == null ? "https://bangumi.tv/img/info_only.png" : img;
+                return new BitmapImage(new Uri(img ?? "https://bangumi.tv/img/info_only.png"));
             }
         }
         public dynamic Birth => character.info.birth;
