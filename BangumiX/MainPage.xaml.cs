@@ -30,11 +30,13 @@ namespace BangumiX
             UserVM = new ViewModel.UserViewModel();
         }
 
-        private void MainNavigation_Loaded(object sender, RoutedEventArgs e)
+        private async void MainNavigation_Loaded(object sender, RoutedEventArgs e)
         {
             MainNavigation.IsPaneOpen = false;
             MainNavigation.ExpandedModeThresholdWidth = int.MaxValue;
             ((NavigationViewItem)MainNavigation.SettingsItem).Content = "设置";
+            if (await Common.LoginHelper.CheckLogin()) return;
+            else await Common.LoginHelper.Login();
         }
 
         private void MainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

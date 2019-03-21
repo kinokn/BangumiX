@@ -36,11 +36,6 @@
                     <ListViewItem Content="五" Tag="Fri"/>
                     <ListViewItem Content="六" Tag="Sat"/>
                 </ListView>
-                <Button Background="Transparent" Margin="0 0 5 0" Padding="0" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                    <Button.Content>
-                        <SymbolIcon Symbol="Refresh"/>
-                    </Button.Content>
-                </Button>
             </RelativePanel>
         </Border>
     </Grid>

@@ -23,6 +23,12 @@ namespace BangumiX.Model
         public string url_name { get; set; }
         public string cn_name { get; set; }
     }
+    public class SubjectCollectStatus
+    {
+        public Dictionary<string, dynamic> status { get; set; }
+        public uint rating { get; set; }
+        public float ep_status { get; set; }
+    }
 
     public class SubjectSmall
     {

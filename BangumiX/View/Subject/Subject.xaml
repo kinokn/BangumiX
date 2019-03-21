@@ -1,0 +1,208 @@
+﻿<UserControl
+    x:Class="BangumiX.View.Subject"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BangumiX.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:common="using:BangumiX.Common"
+    xmlns:vm="using:BangumiX.ViewModel"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="800">
+    <UserControl.Resources>
+        <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0 4 0 0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement"
+                                               Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightChromeAltLowBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundElement"
+                                               Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlBackgroundHoverOpacity}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Focused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter"
+                                               Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlPageTextChromeBlackMediumLowBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundElement"
+                                               Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundElement"
+                                               Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TextControlBackgroundFocusedOpacity}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderElement"
+                                               Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAccentBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement"
+                                               Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlForegroundChromeBlackHighBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentElement"
+                                               Storyboard.TargetProperty="RequestedTheme">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Light" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="BackgroundElement"
+                                    Background="{TemplateBinding Background}"
+                                    Margin="{TemplateBinding BorderThickness}"
+                                    Opacity="{ThemeResource TextControlBackgroundRestOpacity}"/>
+                            <Border x:Name="BorderElement"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <ContentPresenter x:Name="HeaderContentPresenter"
+                                              x:DeferLoadStrategy="Lazy"
+                                              Visibility="Collapsed"
+                                              Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                              Margin="0"
+                                              Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              FontWeight="Normal" />
+                            <ContentControl x:Name="PlaceholderTextContentPresenter"
+                                            HorizontalAlignment="Center"
+                                            Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                            Margin="0 -2 0 3"
+                                            Padding="{TemplateBinding Padding}"
+                                            IsTabStop="False"
+                                            Content="{TemplateBinding PlaceholderText}"
+                                            IsHitTestVisible="False"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Name="GridMain" Padding="10 10 10 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="320"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="225"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="{x:Bind subjectVM.ImageLarge, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <StackPanel Margin="20 0 0 0" Grid.Column="1">
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{x:Bind subjectVM.Name, Mode=OneWay}" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{x:Bind subjectVM.NameCN, Mode=OneWay}"/>
+                <Grid Grid.Column="1" Height="200" Margin="0 10 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Margin="0 0 0 10" Text="观看进度管理：" FontSize="12" Foreground="Silver"/>
+                        <Grid Margin="0 0 0 10" Height="50" Visibility="{x:Bind subjectVM.SubjectCollectViewModel.StatusVisibility, Mode=OneWay}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind subjectVM.SubjectCollectViewModel.Status, Mode=OneWay}"/>
+                            <ProgressBar Grid.Row="1" Foreground="#FF004EB4" Value="{x:Bind subjectVM.SubjectCollectViewModel.EpStatus, Mode=OneWay}" Minimum="0" Maximum="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
+                            <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBox Width="22" Height="18" VerticalContentAlignment="Top" PlaceholderText="{x:Bind subjectVM.SubjectCollectViewModel.EpStatus, Mode=OneWay}"/>
+                                <TextBlock Width="15" Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Width="22" Height="16" Text="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
+                            </StackPanel>
+                            <Button Grid.Row="1" Grid.Column="2" Padding="0" FontSize="12" HorizontalAlignment="Stretch" BorderThickness="1" Content="更新"/>
+                        </Grid>
+                        <GridView ItemsSource="{x:Bind subjectVM.EpsSub, Mode=OneWay}">
+                            <GridView.ItemContainerStyle>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="MinWidth" Value="20"/>
+                                    <Setter Property="MinHeight" Value="20"/>
+                                    <Setter Property="Background" Value="DimGray"/>
+                                    <Setter Property="Margin" Value="0 0 5 5"/>
+                                </Style>
+                            </GridView.ItemContainerStyle>
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="vm:EpisodeViewModel">
+                                    <Border MinWidth="22" BorderThickness="0 2 0 0" BorderBrush="{x:Bind EpStatusColor, Mode=OneWay}">
+                                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind Sort, Mode=OneWay}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="评分：" FontSize="12" Foreground="Silver"/>
+                        <RelativePanel Margin="0 0 0 10">
+                            <TextBlock RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind subjectVM.Score, Mode=OneWay}" FontSize="28"/>
+                            <TextBlock RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Text="{x:Bind subjectVM.TotalRatingString, Mode=OneWay}" FontSize="14" Foreground="Silver"/>
+                        </RelativePanel>
+                        <ItemsControl ItemsSource="{x:Bind subjectVM.RatingCount}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:SubjectViewModel">
+                                    <StackPanel VerticalAlignment="Bottom">
+                                        <Border Name="br" Margin="6 2" Background="DimGray" Width="12" Height="{Binding Value}"/>
+                                        <TextBlock HorizontalAlignment="Center" Foreground="GhostWhite" Text="{Binding Key}">
+                                            <TextBlock.RenderTransform>
+                                                <TranslateTransform Y="0"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick" Content="概览"/>
+            <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick" Content="章节"/>
+            <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick" Content="角色"/>
+            <Button Name="buttonStuff" Grid.Column="3" Click="StuffClick" Content="制作"/>
+            <Button Name="buttonComment" Grid.Column="4" Click="CommentClick" Content="吐槽"/>
+        </Grid>
+        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
+        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
+    </Grid>
+</UserControl>

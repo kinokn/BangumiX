@@ -170,6 +170,36 @@ namespace BangumiX.Common
             }
         }
 
+        public static async Task<Model.SubjectCollectStatus> GetCollection(uint s_id)
+        {
+            string url = string.Format("/collection/{0}", s_id);
+            using (HttpResponseMessage response = await APIclient.GetAsync(url))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Model.SubjectCollectStatus subjectCollectStatus = JsonConvert.DeserializeObject<Model.SubjectCollectStatus>(responseBody);
+                    return subjectCollectStatus;
+                }
+                catch (HttpRequestException httpException)
+                {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new WebException(httpException.Message);
+                    }
+                    else
+                    {
+                        throw new AuthorizationException(response.StatusCode.ToString());
+                    }
+                }
+                catch (WebException)
+                {
+                    throw;
+                }
+            }
+        }
+
         public static async Task<Model.SubjectProgress> GetProgress(uint u_id, uint s_id)
         {
             string url = string.Format("user/{0}/progress?subject_id={1}", u_id, s_id);
@@ -187,7 +217,6 @@ namespace BangumiX.Common
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
                         throw new WebException(httpException.Message);
-
                     }
                     else
                     {
@@ -200,6 +229,7 @@ namespace BangumiX.Common
                 }
             }
         }
+
 
         public static async Task<Model.User> GetUser(uint id)
         {

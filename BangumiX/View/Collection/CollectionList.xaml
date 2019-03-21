@@ -88,7 +88,7 @@
                 </ListView>
             </SplitView.Pane>
             <SplitView.Content>
-                <local:Subject x:Name="SubjectControl"/>
+                <local:Subject x:Name="SubjectControl" Visibility="Collapsed"/>
             </SplitView.Content>
         </SplitView>
     </Grid>

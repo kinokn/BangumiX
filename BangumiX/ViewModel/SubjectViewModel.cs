@@ -7,20 +7,23 @@ using System.Threading.Tasks;
 
 using BangumiX.Model;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace BangumiX.ViewModel
 {
     public class SubjectViewModel : Common.ObservableViewModelBase
     {
-        public SubjectLarge subject;
-        public List<EpisodeViewModel> _Eps { get; set; }
-        public List<CharacterViewModel> _Crts { get; set; }
+        private SubjectLarge subject;
+        private List<EpisodeViewModel> _Eps { get; set; }
+        private List<CharacterViewModel> _Crts { get; set; }
+        private SubjectCollectViewModel _subjectCollectStatus { get; set; }
         public SubjectViewModel()
         {
             subject = new SubjectLarge();
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _subjectCollectStatus = new SubjectCollectViewModel();
         }
         public SubjectViewModel(SubjectSmall s)
         {
@@ -33,12 +36,14 @@ namespace BangumiX.ViewModel
             };
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _subjectCollectStatus = new SubjectCollectViewModel();
         }
         public SubjectViewModel(SubjectLarge s)
         {
             subject = new SubjectLarge();
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _subjectCollectStatus = new SubjectCollectViewModel();
             if (s.eps != null)
             {
                 foreach (var e in s.eps)
@@ -106,11 +111,26 @@ namespace BangumiX.ViewModel
                 return string.Empty;
             }
         }
-        public uint TotalRating => subject.rating.total;
+        public uint TotalRating
+        {
+            get
+            {
+                if (subject.rating == null) return 0;
+                return subject.rating.total;
+            }
+        }
+        public string TotalRatingString
+        {
+            get
+            {
+                return string.Format("{0}人评分", TotalRating);
+            }
+        }
         public Dictionary<string, float> RatingCount
         {
             get
             {
+                if (subject.rating == null) return null;
                 var _count = new Dictionary<string, float>();
                 foreach (var c in subject.rating.count.Keys)
                 {
@@ -121,7 +141,14 @@ namespace BangumiX.ViewModel
                 return _count;
             }
         }
-        public float Score => subject.rating.score;
+        public float Score
+        {
+            get
+            {
+                if (subject.rating == null) return 0;
+                return subject.rating.score;
+            }
+        }
         public int Rank => subject.rank;
         public BitmapImage ImageSmall
         {
@@ -150,51 +177,66 @@ namespace BangumiX.ViewModel
                 return new BitmapImage(new Uri(img));
             }
         }
-        public uint ToTalCollection => (uint)subject.collection.Sum(x => x.Value);
+        public uint ToTalCollection
+        {
+            get
+            {
+                if (subject.collection == null) return 0;
+                return (uint)subject.collection.Sum(x => x.Value);
+            }
+        }
         public List<EpisodeViewModel> Eps => _Eps;
         public List<CharacterViewModel> Crt => _Crts;
+        public SubjectCollectViewModel SubjectCollectViewModel => _subjectCollectStatus;
 
         public int EpsOffset { get; set; }
-        public List<Episode> EpsNormal { get; set; }
-        public List<Episode> EpsSpecial { get; set; }
-        public List<Episode> EpsSub { get; set; }
+        public List<EpisodeViewModel> EpsNormal { get; set; }
+        public List<EpisodeViewModel> EpsSpecial { get; set; }
+        public List<EpisodeViewModel> EpsSub { get; set; }
         public Visibility ButtonVisibility { get; set; }
         public Dictionary<int, string> ButtonCount { get; set; }
         public void EpsFilter()
         {
-            if (subject.eps == null) return;
-            EpsNormal = new List<Episode>();
-            EpsSpecial = new List<Episode>();
-            EpsSub = new List<Episode>();
+            if (_Eps == null) return;
+            EpsNormal = new List<EpisodeViewModel>();
+            EpsSpecial = new List<EpisodeViewModel>();
+            EpsSub = new List<EpisodeViewModel>();
             bool offsetFlag = true;
-            foreach (var e in subject.eps)
+            foreach (var ep in _Eps)
             {
-                if (e.type == 0)
+                if (ep.Type == 0)
                 {
                     if (offsetFlag)
                     {
-                        EpsOffset = Convert.ToInt16(e.sort);
+                        EpsOffset = Convert.ToInt16(ep.Sort);
                         EpsOffset = EpsOffset < 0 ? 0 : EpsOffset;
                         offsetFlag = false;
                     }
                     if (EpsSub.Count < 27)
                     {
-                        EpsSub.Add(e);
+                        EpsSub.Add(ep);
                     }
-                    EpsNormal.Add(e);
+                    EpsNormal.Add(ep);
                 }
                 else
                 {
-                    EpsSpecial.Add(e);
+                    EpsSpecial.Add(ep);
                 }
             }
             if (EpsSub.Count > 26)
             {
-                EpsSub.Add(new Episode() { sort = "…", status = "Air" });
+                EpsSub.Add(new EpisodeViewModel
+                (
+                    new Episode()
+                    {
+                        sort = "…",
+                        status = "Air"
+                    }
+                ));
             }
-            RaisePropertyChanged("EpsSub");
-            RaisePropertyChanged("EpsNormal");
-            RaisePropertyChanged("EpsSpecial");
+            //RaisePropertyChanged("EpsSub");
+            //RaisePropertyChanged("EpsNormal");
+            //RaisePropertyChanged("EpsSpecial");
 
             ButtonCount = new Dictionary<int, string>();
             int num = EpsNormal.Count;
@@ -213,12 +255,43 @@ namespace BangumiX.ViewModel
             }
             if (ButtonCount.Count > 1) ButtonVisibility = Visibility.Visible;
             else ButtonVisibility = Visibility.Collapsed;
-            RaisePropertyChanged("ButtonVisibility");
-            RaisePropertyChanged("ButtonCount");
+            //RaisePropertyChanged("ButtonVisibility");
+            //RaisePropertyChanged("ButtonCount");
         }
-        public void UpdateSubject(SubjectLarge s)
+        public void UpdateSubject(SubjectLarge s, SubjectCollectStatus subjectCollectStatus, SubjectProgress subjectProgress)
         {
             subject = s;
+            _Eps = new List<EpisodeViewModel>();
+            _Crts = new List<CharacterViewModel>();
+            if (s.eps != null)
+            {
+                foreach (var e in s.eps)
+                {
+                    _Eps.Add(new EpisodeViewModel(e));
+                }
+            }
+            if (s.crt != null)
+            {
+                foreach (var c in s.crt)
+                {
+                    _Crts.Add(new CharacterViewModel(c));
+                }
+            }
+            if (subjectCollectStatus != null) _subjectCollectStatus = new SubjectCollectViewModel(subjectCollectStatus);
+            if (subjectProgress != null && subjectProgress.eps != null)
+            {
+                foreach (var ep in subjectProgress.eps)
+                {
+                    foreach (var curEp in _Eps)
+                    {
+                        if (ep.id == curEp.ID)
+                        {
+                            curEp.EpStatus = ep.status.id;
+                            break;
+                        }
+                    }
+                }
+            }
             EpsFilter();
             RaisePropertyChanged(string.Empty);
         }
@@ -227,11 +300,13 @@ namespace BangumiX.ViewModel
     public class EpisodeViewModel : Common.ObservableViewModelBase
     {
         public Episode episode;
+        public EpisodeViewModel() { }
         public EpisodeViewModel(Episode e)
         {
             episode = e;
         }
         public uint ID => episode.id;
+        public int Type => episode.type;
         public string Sort => episode.sort;
         public string Name => episode.name == string.Empty ? null : episode.name;
 
@@ -247,6 +322,7 @@ namespace BangumiX.ViewModel
             }
         }
         public Visibility FullNameVisibility => FullName.Length > 43 ? Visibility.Visible : Visibility.Collapsed;
+        public string Status => episode.status;
         public uint _EpStatus { get; set; }
         public uint EpStatus
         {
@@ -259,6 +335,31 @@ namespace BangumiX.ViewModel
                 _EpStatus = value;
                 RaisePropertyChanged("EpStatus");
             }
+        }
+        public SolidColorBrush EpStatusColor
+        {
+            get
+            {
+                if (EpStatus == 2) return GetSolidColorBrush("#FF004EB4");
+                switch (Status)
+                {
+                    case "Air":
+                        return GetSolidColorBrush("#FF4093FF");
+                    case "Today":
+                        return GetSolidColorBrush("#FF4093FF");
+                }
+                return GetSolidColorBrush("#FF3F3F3F");
+            }
+        }
+        public SolidColorBrush GetSolidColorBrush(string hex)
+        {
+            hex = hex.Replace("#", string.Empty);
+            byte a = (byte)(Convert.ToUInt32(hex.Substring(0, 2), 16));
+            byte r = (byte)(Convert.ToUInt32(hex.Substring(2, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hex.Substring(4, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hex.Substring(6, 2), 16));
+            SolidColorBrush myBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(a, r, g, b));
+            return myBrush;
         }
     }
 
@@ -297,5 +398,19 @@ namespace BangumiX.ViewModel
             JobList = s.jobs;
         }
         public string Jobs => string.Join(" ", JobList.ToArray());
+    }
+
+    public class SubjectCollectViewModel : Common.ObservableViewModelBase
+    {
+        private SubjectCollectStatus subjectCollectStatus;
+        public SubjectCollectViewModel() { }
+        public SubjectCollectViewModel(SubjectCollectStatus s)
+        {
+            subjectCollectStatus = s;
+        }
+        public Visibility StatusVisibility => subjectCollectStatus == null ? Visibility.Collapsed : Visibility.Visible;
+        public string Status => subjectCollectStatus.status == null ? string.Empty : string.Format("我{0}这部动画", subjectCollectStatus.status["name"]);
+        public uint Rating => subjectCollectStatus.rating;
+        public float EpStatus => subjectCollectStatus.ep_status;
     }
 }

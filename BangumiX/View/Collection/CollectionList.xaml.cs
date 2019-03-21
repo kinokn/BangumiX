@@ -46,13 +46,15 @@ namespace BangumiX.View
         private async void ListViewCollectionsSelectedIndexChanged(object sender, SelectionChangedEventArgs e)
         {
             if (subjectList == null) return;
+            SubjectControl.Visibility = Visibility.Collapsed;
             SubjectControl.Reset();
 
             var index = ListViewCollection.SelectedIndex;
+            Model.SubjectLarge subjectLarge = new Model.SubjectLarge();
             if (index == -1) return;
             try
             {
-                SubjectControl.subjectVM.UpdateSubject(await Retry.Do(() => ApiHelper.GetSubject(subjectList[index].ID), TimeSpan.FromSeconds(10)));
+               subjectLarge = await Retry.Do(() => ApiHelper.GetSubject(subjectList[index].ID), TimeSpan.FromSeconds(10));
             }
             catch (WebException webException)
             {
@@ -60,10 +62,10 @@ namespace BangumiX.View
                 return;
             }
 
-            Model.SubjectProgress subjectProgress = new Model.SubjectProgress();
+            Model.SubjectCollectStatus subjectCollectStatus = new Model.SubjectCollectStatus();
             try
             {
-                subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, SubjectControl.subjectVM.ID), TimeSpan.FromSeconds(10));
+                subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(subjectLarge.id), TimeSpan.FromSeconds(10));
             }
             catch (WebException webException)
             {
@@ -73,21 +75,23 @@ namespace BangumiX.View
             {
                 Console.WriteLine(authorizationException.Message);
             }
-            if (subjectProgress != null && subjectProgress.eps != null)
+
+            Model.SubjectProgress subjectProgress = new Model.SubjectProgress();
+            try
             {
-                foreach (var ep in subjectProgress.eps)
-                {
-                    foreach (var curEp in SubjectControl.subjectVM.Eps)
-                    {
-                        if (ep.id == curEp.ID)
-                        {
-                            curEp.EpStatus = ep.status.id;
-                            break;
-                        }
-                    }
-                }
+                subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, subjectLarge.id), TimeSpan.FromSeconds(10));
             }
-            SubjectControl.subjectVM.EpsFilter();
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+            }
+            catch (AuthorizationException authorizationException)
+            {
+                Console.WriteLine(authorizationException.Message);
+            }
+
+            SubjectControl.subjectVM.UpdateSubject(subjectLarge, subjectCollectStatus, subjectProgress);
+            SubjectControl.Visibility = Visibility.Visible;
             return;
         }
 
