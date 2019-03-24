@@ -29,39 +29,14 @@ namespace BangumiX.View
         public Subject()
         {
             subjectVM = new ViewModel.SubjectViewModel();
-            subjectSummary = new SubjectSummary();
-            subjectEpisode = new SubjectEpisode();
-            subjectCharacter = new SubjectCharacter();
-            subjectStaff = new SubjectStaff();
+            subjectSummary = new SubjectSummary(ref subjectVM);
+            subjectEpisode = new SubjectEpisode(ref subjectVM);
+            subjectCharacter = new SubjectCharacter(ref subjectVM);
+            subjectStaff = new SubjectStaff(ref subjectVM);
             subjectComment = new SubjectComment();
             this.InitializeComponent();
 
             SubjectContentCtrl.Content = subjectSummary;
-        }
-
-        private void SummaryClick(object sender, RoutedEventArgs e)
-        {
-            SubjectContentCtrl.Content = subjectSummary;
-        }
-
-        private void EpisodeClick(object sender, RoutedEventArgs e)
-        {
-            SubjectContentCtrl.Content = subjectEpisode;
-        }
-
-        private void CharacterClick(object sender, RoutedEventArgs e)
-        {
-            SubjectContentCtrl.Content = subjectCharacter;
-        }
-
-        private void StuffClick(object sender, RoutedEventArgs e)
-        {
-            SubjectContentCtrl.Content = subjectStaff;
-        }
-
-        private void CommentClick(object sender, RoutedEventArgs e)
-        {
-            SubjectContentCtrl.Content = subjectComment;
         }
 
         private void ProgressBtnClick(object sender, RoutedEventArgs e)
@@ -76,9 +51,41 @@ namespace BangumiX.View
 
         public void Reset()
         {
-            SubjectContentCtrl.Content = subjectSummary;
+            subjectDetailListView.SelectedIndex = 0;
+            subjectEpisode.EpisodeReset();
             //BindingOperations.SetBinding(subjectEpisode.EpisodeItemsControl, ItemsControl.ItemsSourceProperty, new Binding("eps_normal"));
             //subjectEpisode.EpisodeList.ScrollToTop();
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var Item = subjectDetailListView.SelectedItem as ListViewItem;
+            switch (Item.Tag)
+            {
+                case "Summary":
+                    SubjectContentCtrl.Content = subjectSummary;
+                    break;
+                case "Episode":
+                    SubjectContentCtrl.Content = subjectEpisode;
+                    break;
+                case "Character":
+                    SubjectContentCtrl.Content = subjectCharacter;
+                    break;
+                case "Staff":
+                    SubjectContentCtrl.Content = subjectStaff;
+                    break;
+                case "Comment":
+                    SubjectContentCtrl.Content = subjectComment;
+                    break;
+            }
+        }
+
+        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (progressGridView.SelectedItem == null) return;
+            subjectDetailListView.SelectedIndex = 1;
+            var item = progressGridView.SelectedItem as ViewModel.EpisodeViewModel;
+            subjectEpisode.ChangeSelectedEpisodeFromProgress(Convert.ToInt32(item.Sort) - subjectVM.EpsOffset);
         }
     }
 }

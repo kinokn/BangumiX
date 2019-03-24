@@ -35,8 +35,16 @@ namespace BangumiX
             MainNavigation.IsPaneOpen = false;
             MainNavigation.ExpandedModeThresholdWidth = int.MaxValue;
             ((NavigationViewItem)MainNavigation.SettingsItem).Content = "设置";
-            if (await Common.LoginHelper.CheckLogin()) return;
-            else await Common.LoginHelper.Login();
+            if (await Common.LoginHelper.CheckLogin())
+            {
+                ContentFrame.Navigate(typeof(WatchingCollection));
+                return;
+            }
+            else
+            {
+                ContentFrame.Navigate(typeof(DailyCollection));
+                await Common.LoginHelper.Login();
+            }
         }
 
         private void MainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

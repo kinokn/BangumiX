@@ -37,7 +37,8 @@ namespace BangumiX.View
             ListViewCollection.SelectedIndex = -1;
             if (c != null && c.subjectList.Count != 0)
             {
-                subjectList = c.subjectList;
+                collectionVM = c;
+                subjectList = collectionVM.subjectList;
                 ListViewCollection.ItemsSource = subjectList;
                 ListViewCollection.SelectedIndex = 0;
             }
@@ -47,94 +48,45 @@ namespace BangumiX.View
         {
             if (subjectList == null) return;
             SubjectControl.Visibility = Visibility.Collapsed;
-            SubjectControl.Reset();
-
             var index = ListViewCollection.SelectedIndex;
-            Model.SubjectLarge subjectLarge = new Model.SubjectLarge();
             if (index == -1) return;
             try
             {
-               subjectLarge = await Retry.Do(() => ApiHelper.GetSubject(subjectList[index].ID), TimeSpan.FromSeconds(10));
+                await SubjectControl.subjectVM.UpdateSubject(subjectList[index].ID);
+                SubjectControl.Reset();
+                SubjectControl.Visibility = Visibility.Visible;
             }
-            catch (WebException webException)
+            catch (Exception ex)
             {
-                Console.WriteLine(webException.Message);
-                return;
+                Console.WriteLine(ex.Message);
             }
-
-            Model.SubjectCollectStatus subjectCollectStatus = new Model.SubjectCollectStatus();
-            try
-            {
-                subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(subjectLarge.id), TimeSpan.FromSeconds(10));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
-            }
-
-            Model.SubjectProgress subjectProgress = new Model.SubjectProgress();
-            try
-            {
-                subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, subjectLarge.id), TimeSpan.FromSeconds(10));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
-            }
-
-            SubjectControl.subjectVM.UpdateSubject(subjectLarge, subjectCollectStatus, subjectProgress);
-            SubjectControl.Visibility = Visibility.Visible;
             return;
-        }
-
-        private async Task UpdateCollection(uint id, string status)
-        {
-            try
-            {
-                await Retry.Do(() => ApiHelper.UpdateCollection(id, status), TimeSpan.FromSeconds(3));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
-            }
         }
 
         private async void WishBtn_Click(object sender, RoutedEventArgs e)
         {
             var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await UpdateCollection(subjectList[index].ID, "wish");
+            await collectionVM.UpdateCollection(subjectList[index].ID, "wish");
         }
         private async void WatchingBtn_Click(object sender, RoutedEventArgs e)
         {
             var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await UpdateCollection(subjectList[index].ID, "do");
+            await collectionVM.UpdateCollection(subjectList[index].ID, "do");
         }
         private async void WatchedBtn_Click(object sender, RoutedEventArgs e)
         {
             var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await UpdateCollection(subjectList[index].ID, "collect");
+            await collectionVM.UpdateCollection(subjectList[index].ID, "collect");
         }
         private async void HoldBtn_Click(object sender, RoutedEventArgs e)
         {
             var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await UpdateCollection(subjectList[index].ID, "on_hold");
+            await collectionVM.UpdateCollection(subjectList[index].ID, "on_hold");
         }
         private async void DropBtn_Click(object sender, RoutedEventArgs e)
         {
             var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await UpdateCollection(subjectList[index].ID, "dropped");
+            await collectionVM.UpdateCollection(subjectList[index].ID, "dropped");
         }
     }
 }

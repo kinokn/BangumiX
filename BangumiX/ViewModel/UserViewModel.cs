@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using BangumiX.Model;
+using BangumiX.Common;
 
 namespace BangumiX.ViewModel
 {
-    public class UserViewModel : Common.ObservableViewModelBase
+    public class UserViewModel : ObservableViewModelBase
     {
         public User User = new User();
 

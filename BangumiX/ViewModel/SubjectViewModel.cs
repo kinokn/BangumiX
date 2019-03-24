@@ -2,27 +2,31 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-
 using BangumiX.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using BangumiX.Common;
+using static BangumiX.Common.WebHelper;
 
 namespace BangumiX.ViewModel
 {
-    public class SubjectViewModel : Common.ObservableViewModelBase
+    public class SubjectViewModel : ObservableViewModelBase
     {
         private SubjectLarge subject;
         private List<EpisodeViewModel> _Eps { get; set; }
         private List<CharacterViewModel> _Crts { get; set; }
+        private List<StaffViewModel> _Staffs { get; set; }
         private SubjectCollectViewModel _subjectCollectStatus { get; set; }
         public SubjectViewModel()
         {
             subject = new SubjectLarge();
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _Staffs = new List<StaffViewModel>();
             _subjectCollectStatus = new SubjectCollectViewModel();
         }
         public SubjectViewModel(SubjectSmall s)
@@ -36,6 +40,7 @@ namespace BangumiX.ViewModel
             };
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _Staffs = new List<StaffViewModel>();
             _subjectCollectStatus = new SubjectCollectViewModel();
         }
         public SubjectViewModel(SubjectLarge s)
@@ -43,6 +48,7 @@ namespace BangumiX.ViewModel
             subject = new SubjectLarge();
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
+            _Staffs = new List<StaffViewModel>();
             _subjectCollectStatus = new SubjectCollectViewModel();
             if (s.eps != null)
             {
@@ -56,6 +62,13 @@ namespace BangumiX.ViewModel
                 foreach (var c in s.crt)
                 {
                     _Crts.Add(new CharacterViewModel(c));
+                }
+            }
+            if (s.staff != null)
+            {
+                foreach (var staff in s.staff)
+                {
+                    _Staffs.Add(new StaffViewModel(staff));
                 }
             }
             subject = s;
@@ -87,7 +100,7 @@ namespace BangumiX.ViewModel
         public string Summary => subject.summary;
         public int EpsCount => subject.eps_count;
         public string AirDate => subject.air_date;
-        public string AirWeekDay
+        public string AirWeekday
         {
             get
             {
@@ -181,12 +194,13 @@ namespace BangumiX.ViewModel
         {
             get
             {
-                if (subject.collection == null) return 0;
+                if (subject.collection.Count == 0) return 0;
                 return (uint)subject.collection.Sum(x => x.Value);
             }
         }
         public List<EpisodeViewModel> Eps => _Eps;
         public List<CharacterViewModel> Crt => _Crts;
+        public List<StaffViewModel> Staff => _Staffs;
         public SubjectCollectViewModel SubjectCollectViewModel => _subjectCollectStatus;
 
         public int EpsOffset { get; set; }
@@ -258,26 +272,73 @@ namespace BangumiX.ViewModel
             //RaisePropertyChanged("ButtonVisibility");
             //RaisePropertyChanged("ButtonCount");
         }
-        public void UpdateSubject(SubjectLarge s, SubjectCollectStatus subjectCollectStatus, SubjectProgress subjectProgress)
+        public async Task UpdateSubject(uint sID)
         {
-            subject = s;
+            SubjectLarge subjectLarge = new SubjectLarge();
+            try
+            {
+                subjectLarge = await Retry.Do(() => ApiHelper.GetSubject(sID), TimeSpan.FromSeconds(10));
+            }
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+                return;
+            }
+
+            SubjectCollectStatus subjectCollectStatus = new SubjectCollectStatus();
+            try
+            {
+                subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(sID), TimeSpan.FromSeconds(10));
+            }
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+            }
+            catch (AuthorizationException authorizationException)
+            {
+                Console.WriteLine(authorizationException.Message);
+            }
+
+            SubjectProgress subjectProgress = new SubjectProgress();
+            try
+            {
+                subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, sID), TimeSpan.FromSeconds(10));
+            }
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+            }
+            catch (AuthorizationException authorizationException)
+            {
+                Console.WriteLine(authorizationException.Message);
+            }
+            
+            subject = subjectLarge;
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
-            if (s.eps != null)
+            _Staffs = new List<StaffViewModel>();
+            if (subjectLarge.eps != null)
             {
-                foreach (var e in s.eps)
+                foreach (var e in subjectLarge.eps)
                 {
                     _Eps.Add(new EpisodeViewModel(e));
                 }
             }
-            if (s.crt != null)
+            if (subjectLarge.crt != null)
             {
-                foreach (var c in s.crt)
+                foreach (var c in subjectLarge.crt)
                 {
                     _Crts.Add(new CharacterViewModel(c));
                 }
             }
-            if (subjectCollectStatus != null) _subjectCollectStatus = new SubjectCollectViewModel(subjectCollectStatus);
+            if (subjectLarge.staff != null)
+            {
+                foreach (var staff in subjectLarge.staff)
+                {
+                    _Staffs.Add(new StaffViewModel(staff));
+                }
+            }
+            _subjectCollectStatus = new SubjectCollectViewModel(subjectCollectStatus);
             if (subjectProgress != null && subjectProgress.eps != null)
             {
                 foreach (var ep in subjectProgress.eps)
@@ -297,7 +358,7 @@ namespace BangumiX.ViewModel
         }
     }
 
-    public class EpisodeViewModel : Common.ObservableViewModelBase
+    public class EpisodeViewModel : ObservableViewModelBase
     {
         public Episode episode;
         public EpisodeViewModel() { }
@@ -321,7 +382,7 @@ namespace BangumiX.ViewModel
                 return s;
             }
         }
-        public Visibility FullNameVisibility => FullName.Length > 43 ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility FullNameVisibility => FullName.Length > 50 ? Visibility.Visible : Visibility.Collapsed;
         public string Status => episode.status;
         public uint _EpStatus { get; set; }
         public uint EpStatus
@@ -363,7 +424,7 @@ namespace BangumiX.ViewModel
         }
     }
 
-    public class CharacterViewModel : Common.ObservableViewModelBase
+    public class CharacterViewModel : ObservableViewModelBase
     {
         public Character character;
         public CharacterViewModel() { }
@@ -378,7 +439,7 @@ namespace BangumiX.ViewModel
         {
             get
             {
-                if (character.images == null) return null;
+                if (character.images == null) return new BitmapImage(new Uri("https://bangumi.tv/img/info_only.png"));
                 character.images.TryGetValue("grid", out string img);
                 return new BitmapImage(new Uri(img ?? "https://bangumi.tv/img/info_only.png"));
             }
@@ -397,10 +458,10 @@ namespace BangumiX.ViewModel
             base.character = s;
             JobList = s.jobs;
         }
-        public string Jobs => string.Join(" ", JobList.ToArray());
+        public string Jobs => "职业：" + string.Join(" ", JobList.ToArray());
     }
 
-    public class SubjectCollectViewModel : Common.ObservableViewModelBase
+    public class SubjectCollectViewModel : ObservableViewModelBase
     {
         private SubjectCollectStatus subjectCollectStatus;
         public SubjectCollectViewModel() { }
@@ -408,7 +469,7 @@ namespace BangumiX.ViewModel
         {
             subjectCollectStatus = s;
         }
-        public Visibility StatusVisibility => subjectCollectStatus == null ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility StatusVisibility => subjectCollectStatus.status == null ? Visibility.Collapsed : Visibility.Visible;
         public string Status => subjectCollectStatus.status == null ? string.Empty : string.Format("我{0}这部动画", subjectCollectStatus.status["name"]);
         public uint Rating => subjectCollectStatus.rating;
         public float EpStatus => subjectCollectStatus.ep_status;

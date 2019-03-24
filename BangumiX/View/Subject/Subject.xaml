@@ -9,7 +9,7 @@
     xmlns:vm="using:BangumiX.ViewModel"
     mc:Ignorable="d"
     d:DesignHeight="600"
-    d:DesignWidth="800">
+    d:DesignWidth="840">
     <UserControl.Resources>
         <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <Style TargetType="TextBox">
@@ -97,7 +97,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Name="GridMain" Padding="10 10 10 0">
+    <Grid Name="GridMain" Width="840" Padding="10 10 10 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="320"/>
             <RowDefinition Height="50"/>
@@ -111,12 +111,12 @@
             </Grid.ColumnDefinitions>
             <Image Source="{x:Bind subjectVM.ImageLarge, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <StackPanel Margin="20 0 0 0" Grid.Column="1">
-                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{x:Bind subjectVM.Name, Mode=OneWay}" FontFamily="Yu Gothic" FontWeight="Bold"/>
-                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{x:Bind subjectVM.NameCN, Mode=OneWay}"/>
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{x:Bind subjectVM.Name, Mode=OneWay}" TextWrapping="Wrap" FontFamily="Yu Gothic" FontWeight="Bold"/>
+                <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{x:Bind subjectVM.NameCN, Mode=OneWay}" TextWrapping="Wrap"/>
                 <Grid Grid.Column="1" Height="200" Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
@@ -139,9 +139,9 @@
                                 <TextBlock Width="15" Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Width="22" Height="16" Text="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
                             </StackPanel>
-                            <Button Grid.Row="1" Grid.Column="2" Padding="0" FontSize="12" HorizontalAlignment="Stretch" BorderThickness="1" Content="更新"/>
+                            <Button Grid.Row="1" Grid.Column="2" Height="18" Margin="0 2 0 -2" Padding="0" FontSize="12" HorizontalAlignment="Stretch" BorderThickness="1" Content="更新"/>
                         </Grid>
-                        <GridView ItemsSource="{x:Bind subjectVM.EpsSub, Mode=OneWay}">
+                        <GridView x:Name="progressGridView" ItemsSource="{x:Bind subjectVM.EpsSub, Mode=OneWay}" SelectionChanged="GridView_SelectionChanged">
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
                                     <Setter Property="MinWidth" Value="20"/>
@@ -168,14 +168,14 @@
                         <ItemsControl ItemsSource="{x:Bind subjectVM.RatingCount}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
+                                    <StackPanel Margin="-7 0 0 0" Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vm:SubjectViewModel">
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <Border Name="br" Margin="6 2" Background="DimGray" Width="12" Height="{Binding Value}"/>
-                                        <TextBlock HorizontalAlignment="Center" Foreground="GhostWhite" Text="{Binding Key}">
+                                        <Border Name="br" Margin="7 2" Background="DimGray" Width="12" Height="{Binding Value}"/>
+                                        <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="GhostWhite" Text="{Binding Key}">
                                             <TextBlock.RenderTransform>
                                                 <TranslateTransform Y="0"/>
                                             </TextBlock.RenderTransform>
@@ -188,21 +188,26 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Name="buttonSummary" Grid.Column="0" Click="SummaryClick" Content="概览"/>
-            <Button Name="buttonEpisode" Grid.Column="1" Click="EpisodeClick" Content="章节"/>
-            <Button Name="buttonCharacter" Grid.Column="2" Click="CharacterClick" Content="角色"/>
-            <Button Name="buttonStuff" Grid.Column="3" Click="StuffClick" Content="制作"/>
-            <Button Name="buttonComment" Grid.Column="4" Click="CommentClick" Content="吐槽"/>
-        </Grid>
-        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="790"/>
+        <ListView x:Name="subjectDetailListView" Grid.Row="1" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectionChanged="ListView_SelectionChanged">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Items>
+                <ListViewItem Content="概览" Tag="Summary"/>
+                <ListViewItem Content="章节" Tag="Episode"/>
+                <ListViewItem Content="角色" Tag="Character"/>
+                <ListViewItem Content="制作" Tag="Staff"/>
+                <ListViewItem Content="吐槽" Tag="Comment"/>
+            </ListView.Items>
+        </ListView>
+        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="820"/>
         <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
     </Grid>
 </UserControl>
