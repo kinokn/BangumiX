@@ -6,13 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loading="Page_Loading">
 
     <Grid>
         <local:CollectionList x:Name="CollectionListControl"/>
-        <Border Width="320" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Border Height="56">
+        <Border BorderBrush="Black" BorderThickness="1 0 1 1" Width="320" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border Height="48">
                 <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="乾杯- ( ゜- ゜)つロ"/>
             </Border>
         </Border>

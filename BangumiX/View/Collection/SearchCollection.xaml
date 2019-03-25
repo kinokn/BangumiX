@@ -5,13 +5,12 @@
     xmlns:local="using:BangumiX.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Grid>
         <local:CollectionList x:Name="CollectionListControl"/>
-        <Border HorizontalAlignment="Left" VerticalAlignment="Top">
-            <StackPanel Margin="5" Orientation="Horizontal">
+        <Border BorderBrush="Black" BorderThickness="1 0 1 1" Width="320" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Padding="5" Orientation="Horizontal">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Foreground" Value="GhostWhite"/>

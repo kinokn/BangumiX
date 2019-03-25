@@ -8,9 +8,25 @@
     xmlns:view="using:BangumiX.View"
     xmlns:Windows10version1803="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 6)"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Grid>
-        <NavigationView x:Name="MainNavigation"
+    Background="{StaticResource MainPageBackground}">
+
+    <Grid BorderBrush="Black" BorderThickness="1">
+        <Grid.Resources>
+            <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
+                          BackgroundSource="Backdrop"
+                          TintColor="Black"
+                          TintOpacity="0.5"
+                          FallbackColor="Transparent"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+            <Canvas Background="#CC000000"/>
+        </Border>
+        <NavigationView Grid.Row="1"
+                        x:Name="MainNavigation"
                         IsTabStop="False"
                         OpenPaneLength="250"
                         Loaded="MainNavigation_Loaded"

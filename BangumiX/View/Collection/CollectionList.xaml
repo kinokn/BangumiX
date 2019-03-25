@@ -12,20 +12,30 @@
     d:DesignWidth="800">
     <UserControl.Resources>
         <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <AcrylicBrush x:Key="PaneBackgroundAcrylicBrush"
+                      BackgroundSource="HostBackdrop"
+                      TintColor="Black"
+                      TintOpacity="0.7"
+                      FallbackColor="Black"/>
     </UserControl.Resources>
 
-    <Grid>
-        <SplitView DisplayMode="Inline"
+    <Grid Background="#CC000000">
+        <SplitView x:Name="collectSplistView"
+                   PaneBackground="{StaticResource PaneBackgroundAcrylicBrush}"
+                   DisplayMode="Inline"
                    IsPaneOpen="True">
             <SplitView.Pane>
                 <ListView x:Name="ListViewCollection"
+                          BorderBrush="Black"
+                          BorderThickness="1 0 1 0"
                           ItemsSource="{x:Bind collectionVM}"
                           IsItemClickEnabled="True"
-                          Margin="0 56 0 0">
+                          Margin="0 48 0 0"
+                          Padding="0 5 0 0">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Margin" Value="5 0 5 5"/>
-                            <Setter Property="Background" Value="#AF1F1F1F"/>
+                            <Setter Property="Background" Value="#AF0F0F0F"/>
                             <Setter Property="Height" Value="100"/>
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="Padding" Value="0"/>
@@ -87,9 +97,6 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </SplitView.Pane>
-            <SplitView.Content>
-                <local:Subject x:Name="SubjectControl" Visibility="Collapsed"/>
-            </SplitView.Content>
         </SplitView>
     </Grid>
 </UserControl>

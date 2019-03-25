@@ -20,7 +20,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="switchListView" Margin="0 0 0 10" HorizontalAlignment="Center" SelectionChanged="ListView_SelectionChanged" SelectedIndex="0" ItemsSource="{x:Bind subjectVM.ButtonCount, Mode=OneWay}" Visibility="{x:Bind subjectVM.ButtonVisibility, Mode=OneWay}">
+        <ListView Background="Transparent" x:Name="switchListView" Margin="0 0 0 10" HorizontalAlignment="Center" SelectionChanged="ListView_SelectionChanged" SelectedIndex="0" ItemsSource="{x:Bind subjectVM.ButtonCount, Mode=OneWay}" Visibility="{x:Bind subjectVM.ButtonVisibility, Mode=OneWay}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -44,6 +44,8 @@
         <ListView x:Name="episodeListView" Grid.Row="1" ItemsSource="{x:Bind subjectVM.EpsNormal, Mode=OneWay}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="#AF1F1F1F"/>
+                    <Setter Property="Margin" Value="0 2"/>
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="MinWidth" Value="0"/>
                     <Setter Property="MinHeight" Value="0"/>
@@ -51,7 +53,7 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:EpisodeViewModel">
-                    <RelativePanel Width="810" Height="30" Visibility="{x:Bind Name, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+                    <RelativePanel Height="30" Visibility="{x:Bind Name, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
                         <StackPanel RelativePanel.AlignVerticalCenterWithPanel="True" Orientation="Horizontal">
                             <TextBlock Text="{x:Bind Sort, Mode=OneWay}"/>
                             <TextBlock Margin="0 0 5 0" Text="."/>

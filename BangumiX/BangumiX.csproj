@@ -162,9 +162,6 @@
     <Compile Include="View\Subject\SubjectCharacter.xaml.cs">
       <DependentUpon>SubjectCharacter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectCharacterDetail.xaml.cs">
-      <DependentUpon>SubjectCharacterDetail.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Subject\SubjectComment.xaml.cs">
       <DependentUpon>SubjectComment.xaml</DependentUpon>
     </Compile>
@@ -173,9 +170,6 @@
     </Compile>
     <Compile Include="View\Subject\SubjectStaff.xaml.cs">
       <DependentUpon>SubjectStaff.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Subject\SubjectStaffDetail.xaml.cs">
-      <DependentUpon>SubjectStaffDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Subject\SubjectSummary.xaml.cs">
       <DependentUpon>SubjectSummary.xaml</DependentUpon>
@@ -276,10 +270,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectCharacterDetail.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Subject\SubjectComment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,10 +279,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Subject\SubjectStaff.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Subject\SubjectStaffDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

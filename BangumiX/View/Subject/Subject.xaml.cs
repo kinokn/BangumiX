@@ -49,14 +49,6 @@ namespace BangumiX.View
             //subjectEpisode.EpisodeList.ScrollToVerticalOffset((index - offset) * 40);
         }
 
-        public void Reset()
-        {
-            subjectDetailListView.SelectedIndex = 0;
-            subjectEpisode.EpisodeReset();
-            //BindingOperations.SetBinding(subjectEpisode.EpisodeItemsControl, ItemsControl.ItemsSourceProperty, new Binding("eps_normal"));
-            //subjectEpisode.EpisodeList.ScrollToTop();
-        }
-
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var Item = subjectDetailListView.SelectedItem as ListViewItem;

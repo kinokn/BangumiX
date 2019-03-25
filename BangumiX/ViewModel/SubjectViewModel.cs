@@ -312,7 +312,7 @@ namespace BangumiX.ViewModel
             {
                 Console.WriteLine(authorizationException.Message);
             }
-            
+
             subject = subjectLarge;
             _Eps = new List<EpisodeViewModel>();
             _Crts = new List<CharacterViewModel>();
@@ -444,15 +444,46 @@ namespace BangumiX.ViewModel
                 return new BitmapImage(new Uri(img ?? "https://bangumi.tv/img/info_only.png"));
             }
         }
-        public dynamic Birth => character.info.birth;
-        public dynamic Height => character.info.height;
-        public dynamic Gender => character.info.gender;
-        public dynamic Alias => character.info.alias;
+        public BitmapImage ImageLarge
+        {
+            get
+            {
+                if (character.images == null) return new BitmapImage(new Uri("https://bangumi.tv/img/info_only.png"));
+                character.images.TryGetValue("large", out string img);
+                return new BitmapImage(new Uri(img ?? "https://bangumi.tv/img/info_only.png"));
+            }
+        }
+        public dynamic Birth => character.info?.birth;
+        public dynamic Height => character.info?.height;
+        public dynamic Gender => character.info?.gender;
+        //public dynamic Alias => character.info.alias;
+        public string NameCNString => NameCN != null ? "中文名：" + NameCN : null;
+        public string NameString => Name != null ? "日文名：" + Name : null;
+        //public string NameEnString => character.info != null && character.info.alias != null ? "英文名：" + Alias["en"] : null;
+        public string GenderString => Gender != null ? "性别：" + Gender : null;
+        public string BirthString => Birth != null ? "生日：" + Birth : null;
+        public string HeightString => Height != null ? "身高：" + Height : null;
+        public string CVs
+        {
+            get
+            {
+                string cv = "声优：";
+                foreach (var actor in character.actors)
+                {
+                    cv = cv + " " + actor.name;
+                }
+                return cv;
+            }
+        }
     }
 
     public class StaffViewModel : CharacterViewModel
     {
         public List<string> JobList;
+        public StaffViewModel()
+        {
+            base.character = new Character();
+        }
         public StaffViewModel(Staff s)
         {
             base.character = s;
@@ -464,7 +495,10 @@ namespace BangumiX.ViewModel
     public class SubjectCollectViewModel : ObservableViewModelBase
     {
         private SubjectCollectStatus subjectCollectStatus;
-        public SubjectCollectViewModel() { }
+        public SubjectCollectViewModel()
+        {
+            subjectCollectStatus = new SubjectCollectStatus();
+        }
         public SubjectCollectViewModel(SubjectCollectStatus s)
         {
             subjectCollectStatus = s;

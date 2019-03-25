@@ -5,4 +5,12 @@
     xmlns:local="using:BangumiX"
     RequestedTheme="Dark">
 
+    <Application.Resources>
+        <AcrylicBrush x:Key="MainPageBackground"
+                      BackgroundSource="HostBackdrop"
+                      TintColor="Transparent"
+                      TintOpacity="0"
+                      FallbackColor="Transparent"/>
+    </Application.Resources>
+
 </Application>

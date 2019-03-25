@@ -25,6 +25,7 @@ namespace BangumiX.View
     {
         public List<ViewModel.SubjectViewModel> subjectList;
         public ViewModel.CollectionViewModel collectionVM;
+        public Subject subjectControl;
         public CollectionList()
         {
             this.InitializeComponent();
@@ -46,20 +47,12 @@ namespace BangumiX.View
 
         private async void ListViewCollectionsSelectedIndexChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (subjectList == null) return;
-            SubjectControl.Visibility = Visibility.Collapsed;
             var index = ListViewCollection.SelectedIndex;
-            if (index == -1) return;
-            try
-            {
-                await SubjectControl.subjectVM.UpdateSubject(subjectList[index].ID);
-                SubjectControl.Reset();
-                SubjectControl.Visibility = Visibility.Visible;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            if (subjectList == null || index == -1) return;
+            collectSplistView.Content = null;
+            subjectControl = new Subject();
+            await subjectControl.subjectVM.UpdateSubject(subjectList[index].ID);
+            collectSplistView.Content = subjectControl;
             return;
         }
 
