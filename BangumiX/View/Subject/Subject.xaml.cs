@@ -35,18 +35,6 @@ namespace BangumiX.View
             subjectStaff = new SubjectStaff(ref subjectVM);
             subjectComment = new SubjectComment();
             this.InitializeComponent();
-
-            SubjectContentCtrl.Content = subjectSummary;
-        }
-
-        private void ProgressBtnClick(object sender, RoutedEventArgs e)
-        {
-            //Model.Episode item = (Model.Episode)(sender as FrameworkElement).DataContext;
-            //Model.SubjectLarge subject = (Model.SubjectLarge)DataContext;
-            //int offset = subject.epsOffset;
-            //int index = (item.sort == "…") ? 0 : Convert.ToInt16(item.sort);
-            //SubjectContentCtrl.Content = subjectEpisode;
-            //subjectEpisode.EpisodeList.ScrollToVerticalOffset((index - offset) * 40);
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,9 +63,16 @@ namespace BangumiX.View
         private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (progressGridView.SelectedItem == null) return;
-            subjectDetailListView.SelectedIndex = 1;
+            var episodePage = subjectDetailListView.Items[1] as ListViewItem;
+            episodePage.IsSelected = true;
             var item = progressGridView.SelectedItem as ViewModel.EpisodeViewModel;
+            if (item.Sort == "…") return;
             subjectEpisode.ChangeSelectedEpisodeFromProgress(Convert.ToInt32(item.Sort) - subjectVM.EpsOffset);
+        }
+
+        private async void ProgressUpdateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await subjectVM.UpdateMultipleProgress();
         }
     }
 }

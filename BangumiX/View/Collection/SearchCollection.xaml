@@ -9,14 +9,16 @@
 
     <Grid>
         <local:CollectionList x:Name="CollectionListControl"/>
-        <Border BorderBrush="Black" BorderThickness="1 0 1 1" Width="320" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <StackPanel Padding="5" Orientation="Horizontal">
+        <Border Margin="0 32 0 0" Width="320" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Padding="5 0" Orientation="Horizontal">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Foreground" Value="GhostWhite"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Margin" Value="5 0 0 0"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBox x:Name="KeywordTextBox" Width="270"/>
+                <TextBox x:Name="KeywordTextBox" Width="270" Height="32"/>
                 <Button Background="Transparent" Click="SearchButtonClick">
                     <Button.Content>
                         <SymbolIcon Symbol="Find"/>

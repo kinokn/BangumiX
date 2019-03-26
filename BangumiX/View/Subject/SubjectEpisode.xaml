@@ -29,10 +29,12 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Margin" Value="5 0"/>
-                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Padding" Value="0 0 0 2"/>
                     <Setter Property="MinWidth" Value="0"/>
                     <Setter Property="MinHeight" Value="0"/>
                     <Setter Property="Height" Value="14"/>
+                    <Setter Property="BorderBrush" Value="Silver"/>
+                    <Setter Property="BorderThickness" Value="0 0 0 1"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
@@ -44,8 +46,6 @@
         <ListView x:Name="episodeListView" Grid.Row="1" ItemsSource="{x:Bind subjectVM.EpsNormal, Mode=OneWay}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="#AF1F1F1F"/>
-                    <Setter Property="Margin" Value="0 2"/>
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="MinWidth" Value="0"/>
                     <Setter Property="MinHeight" Value="0"/>

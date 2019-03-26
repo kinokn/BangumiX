@@ -10,9 +10,9 @@
 
     <Grid>
         <local:CollectionList x:Name="CollectionListControl"/>
-        <Border BorderBrush="Black" BorderThickness="1 0 1 1" Width="320" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Border Height="48">
-                <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="乾杯- ( ゜- ゜)つロ"/>
+        <Border Margin="0 32 0 0" Width="320" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border Height="40">
+                <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="乾杯- ( ゜- ゜)つロ"/>
             </Border>
         </Border>
     </Grid>

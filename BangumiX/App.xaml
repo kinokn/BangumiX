@@ -10,7 +10,12 @@
                       BackgroundSource="HostBackdrop"
                       TintColor="Transparent"
                       TintOpacity="0"
-                      FallbackColor="Transparent"/>
+                      FallbackColor="Black"/>
+        <AcrylicBrush x:Key="PaneBackgroundAcrylicBrush"
+                      BackgroundSource="HostBackdrop"
+                      TintColor="Black"
+                      TintOpacity="0.7"
+                      FallbackColor="Black"/>
     </Application.Resources>
 
 </Application>

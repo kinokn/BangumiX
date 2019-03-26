@@ -49,6 +49,7 @@ namespace BangumiX.Common
                     string responseBody = await response.Content.ReadAsStringAsync();
                     Model.Token token = JsonConvert.DeserializeObject<Model.Token>(responseBody);
                     token.token_time = DateTime.Now;
+                    APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
                 }
                 catch (HttpRequestException httpException)
                 {
@@ -88,6 +89,7 @@ namespace BangumiX.Common
                             string response_body = await response.Content.ReadAsStringAsync();
                             Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
                             token.token_time = DateTimeOffset.Now;
+                            APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
                         }
                         catch (HttpRequestException httpException)
                         {

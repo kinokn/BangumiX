@@ -10,29 +10,22 @@
     mc:Ignorable="d"
     Background="{StaticResource MainPageBackground}">
 
-    <Grid BorderBrush="Black" BorderThickness="1">
+    <Grid>
         <Grid.Resources>
             <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
                           BackgroundSource="Backdrop"
                           TintColor="Black"
-                          TintOpacity="0.5"
-                          FallbackColor="Transparent"/>
+                          TintOpacity="0.7"
+                          FallbackColor="Black"/>
         </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border BorderBrush="Black" BorderThickness="0 0 0 1">
-            <Canvas Background="#CC000000"/>
-        </Border>
-        <NavigationView Grid.Row="1"
-                        x:Name="MainNavigation"
+        <NavigationView x:Name="mainNavigation"
                         IsTabStop="False"
+                        IsSettingsVisible="False"
                         OpenPaneLength="250"
-                        Loaded="MainNavigation_Loaded"
+                        Loaded="mainNavigation_Loaded"
                         Windows10version1803:IsBackEnabled="False"
                         Windows10version1803:IsBackButtonVisible="Collapsed"
-                        ItemInvoked="MainNavigation_ItemInvoked">
+                        ItemInvoked="mainNavigation_ItemInvoked">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="搜索" Tag="NavToSearch">
                     <NavigationViewItem.Icon>
@@ -76,25 +69,25 @@
                     </StackPanel.Resources>
                     <NavigationViewItem>
                         <NavigationViewItem.Content>
-                            <Button Click="UserInfoBtn_Click">
+                            <Button Click="userInfoBtn_Click">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Width="250">
                                         <Border>
                                             <Ellipse Height="20" Width="20">
                                                 <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="{x:Bind UserVM.AvatarSmall, Mode=OneWay}"/>
+                                                    <ImageBrush ImageSource="{x:Bind userVM.AvatarSmall, Mode=OneWay}"/>
                                                 </Ellipse.Fill>
                                             </Ellipse>
                                         </Border>
-                                        <TextBlock Text="{x:Bind UserVM.Nickname, Mode=OneWay}"/>
+                                        <TextBlock Text="{x:Bind userVM.Nickname, Mode=OneWay}"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </NavigationViewItem.Content>
                     </NavigationViewItem>
-                    <NavigationViewItem>
+                    <!--<NavigationViewItem>
                         <NavigationViewItem.Content>
-                            <Button Click="DonationBtn_Click">
+                            <Button Click="donationBtn_Click">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal" Width="250">
                                         <Border>
@@ -105,10 +98,13 @@
                                 </Button.Content>
                             </Button>
                         </NavigationViewItem.Content>
-                    </NavigationViewItem>
+                    </NavigationViewItem>-->
                 </StackPanel>
             </NavigationView.PaneFooter>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
+        <Border Width="360" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Text="BangumiX" VerticalAlignment="Center" Margin="10 0 0 0" FontSize="12"/>
+        </Border>
     </Grid>
 </Page>

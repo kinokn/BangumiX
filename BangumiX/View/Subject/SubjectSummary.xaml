@@ -14,7 +14,7 @@
             <Setter Property="Background" Value="#7F3F3F3F"/>
             <Setter Property="Margin" Value="0 0 5 10"/>
             <Setter Property="Padding" Value="5 0"/>
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="BorderThickness" Value="4 0 0 0"/>
             <Setter Property="BorderBrush" Value="DimGray"/>
         </Style>

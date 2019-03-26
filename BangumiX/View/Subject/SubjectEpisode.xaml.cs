@@ -49,6 +49,7 @@ namespace BangumiX.View
             {
                 switchListView.SelectedIndex = 0;
                 episodeListView.ItemsSource = subjectVM.EpsNormal;
+                episodeListView.UpdateLayout();
             }
             episodeListView.SelectedIndex = index;
             episodeListView.ScrollIntoView(episodeListView.Items[index], ScrollIntoViewAlignment.Leading);

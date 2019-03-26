@@ -154,12 +154,12 @@ namespace BangumiX.ViewModel
                 return _count;
             }
         }
-        public float Score
+        public string Score
         {
             get
             {
-                if (subject.rating == null) return 0;
-                return subject.rating.score;
+                if (subject.rating == null) return "暂无评分";
+                return subject.rating.score.ToString("N1");
             }
         }
         public int Rank => subject.rank;
@@ -194,14 +194,14 @@ namespace BangumiX.ViewModel
         {
             get
             {
-                if (subject.collection.Count == 0) return 0;
+                if (subject.collection?.Count == 0) return 0;
                 return (uint)subject.collection.Sum(x => x.Value);
             }
         }
         public List<EpisodeViewModel> Eps => _Eps;
         public List<CharacterViewModel> Crt => _Crts;
         public List<StaffViewModel> Staff => _Staffs;
-        public SubjectCollectViewModel SubjectCollectViewModel => _subjectCollectStatus;
+        public SubjectCollectViewModel SubjectCollectStatus => _subjectCollectStatus;
 
         public int EpsOffset { get; set; }
         public List<EpisodeViewModel> EpsNormal { get; set; }
@@ -272,6 +272,21 @@ namespace BangumiX.ViewModel
             //RaisePropertyChanged("ButtonVisibility");
             //RaisePropertyChanged("ButtonCount");
         }
+
+        public async Task UpdateMultipleProgress()
+        {
+            try
+            {
+                if (_subjectCollectStatus.ChangedEpStatus == _subjectCollectStatus.EpStatus.ToString()) return;
+                await Retry.Do(() => ApiHelper.UpdateMultipleProgress(subject.id, _subjectCollectStatus.ChangedEpStatus), TimeSpan.FromSeconds(10));
+            }
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+                return;
+            }
+        }
+
         public async Task UpdateSubject(uint sID)
         {
             SubjectLarge subjectLarge = new SubjectLarge();
@@ -283,34 +298,6 @@ namespace BangumiX.ViewModel
             {
                 Console.WriteLine(webException.Message);
                 return;
-            }
-
-            SubjectCollectStatus subjectCollectStatus = new SubjectCollectStatus();
-            try
-            {
-                subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(sID), TimeSpan.FromSeconds(10));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
-            }
-
-            SubjectProgress subjectProgress = new SubjectProgress();
-            try
-            {
-                subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, sID), TimeSpan.FromSeconds(10));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
             }
 
             subject = subjectLarge;
@@ -338,17 +325,50 @@ namespace BangumiX.ViewModel
                     _Staffs.Add(new StaffViewModel(staff));
                 }
             }
-            _subjectCollectStatus = new SubjectCollectViewModel(subjectCollectStatus);
-            if (subjectProgress != null && subjectProgress.eps != null)
+
+            if (Settings.AccessToken != string.Empty)
             {
-                foreach (var ep in subjectProgress.eps)
+
+                SubjectCollectStatus subjectCollectStatus = new SubjectCollectStatus();
+                try
                 {
-                    foreach (var curEp in _Eps)
+                    subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(sID), TimeSpan.FromSeconds(10));
+                }
+                catch (WebException webException)
+                {
+                    Console.WriteLine(webException.Message);
+                }
+                catch (AuthorizationException authorizationException)
+                {
+                    Console.WriteLine(authorizationException.Message);
+                }
+
+                SubjectProgress subjectProgress = new SubjectProgress();
+                try
+                {
+                    subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, sID), TimeSpan.FromSeconds(10));
+                }
+                catch (WebException webException)
+                {
+                    Console.WriteLine(webException.Message);
+                }
+                catch (AuthorizationException authorizationException)
+                {
+                    Console.WriteLine(authorizationException.Message);
+                }
+
+                _subjectCollectStatus = new SubjectCollectViewModel(subjectCollectStatus);
+                if (subjectProgress != null && subjectProgress.eps != null)
+                {
+                    foreach (var ep in subjectProgress.eps)
                     {
-                        if (ep.id == curEp.ID)
+                        foreach (var curEp in _Eps)
                         {
-                            curEp.EpStatus = ep.status.id;
-                            break;
+                            if (ep.id == curEp.ID)
+                            {
+                                curEp.EpStatus = ep.status.id;
+                                break;
+                            }
                         }
                     }
                 }
@@ -383,7 +403,11 @@ namespace BangumiX.ViewModel
             }
         }
         public Visibility FullNameVisibility => FullName.Length > 50 ? Visibility.Visible : Visibility.Collapsed;
-        public string Status => episode.status;
+        public string Status
+        {
+            get { return episode.status; }
+            set { episode.status = value; }
+        }
         public uint _EpStatus { get; set; }
         public uint EpStatus
         {
@@ -467,6 +491,7 @@ namespace BangumiX.ViewModel
         {
             get
             {
+                if (character.actors == null) return string.Empty;
                 string cv = "声优：";
                 foreach (var actor in character.actors)
                 {
@@ -502,10 +527,23 @@ namespace BangumiX.ViewModel
         public SubjectCollectViewModel(SubjectCollectStatus s)
         {
             subjectCollectStatus = s;
+            ChangedEpStatus = subjectCollectStatus.ep_status.ToString();
         }
         public Visibility StatusVisibility => subjectCollectStatus.status == null ? Visibility.Collapsed : Visibility.Visible;
         public string Status => subjectCollectStatus.status == null ? string.Empty : string.Format("我{0}这部动画", subjectCollectStatus.status["name"]);
         public uint Rating => subjectCollectStatus.rating;
         public float EpStatus => subjectCollectStatus.ep_status;
+        private string _changedEpStatus { get; set; }
+        public string ChangedEpStatus
+        {
+            get
+            {
+                return _changedEpStatus; 
+            }
+            set
+            {
+                _changedEpStatus = value;
+            }
+        }
     }
 }

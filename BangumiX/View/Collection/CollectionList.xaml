@@ -12,11 +12,6 @@
     d:DesignWidth="800">
     <UserControl.Resources>
         <common:NullVisibilityConverter x:Key="NullToVisibilityConverter"/>
-        <AcrylicBrush x:Key="PaneBackgroundAcrylicBrush"
-                      BackgroundSource="HostBackdrop"
-                      TintColor="Black"
-                      TintOpacity="0.7"
-                      FallbackColor="Black"/>
     </UserControl.Resources>
 
     <Grid Background="#CC000000">
@@ -26,11 +21,9 @@
                    IsPaneOpen="True">
             <SplitView.Pane>
                 <ListView x:Name="ListViewCollection"
-                          BorderBrush="Black"
-                          BorderThickness="1 0 1 0"
                           ItemsSource="{x:Bind collectionVM}"
                           IsItemClickEnabled="True"
-                          Margin="0 48 0 0"
+                          Margin="0 75 0 0"
                           Padding="0 5 0 0">
                     <ListView.Resources>
                         <Style TargetType="ListViewItem">

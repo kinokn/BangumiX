@@ -12,15 +12,15 @@ namespace BangumiX.ViewModel
 {
     public class UserViewModel : ObservableViewModelBase
     {
-        public User User = new User();
+        public User user = new User();
 
-        public string Username { get { return User.username; } }
-        public string Nickname { get { return User.nickname; } }
-        public string AvatarSmall { get { return User.avatar["small"]; } }
+        public string Username { get { return user.username; } }
+        public string Nickname { get { return user.nickname; } }
+        public string AvatarSmall { get { return user.avatar["small"]; } }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser()
         {
-            User = user;
+            user = await ApiHelper.GetUser(Settings.UserID);
             RaisePropertyChanged(string.Empty);
         }
     }

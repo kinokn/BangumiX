@@ -295,5 +295,67 @@ namespace BangumiX.Common
                 }
             }
         }
+
+        public static async Task UpdateProgress(uint ep_id, string status)
+        {
+            string url = string.Format("ep/{0}/status/{1}", ep_id, status);
+            using (HttpResponseMessage response = await APIclient.GetAsync(url))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (HttpRequestException httpException)
+                {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new WebException(httpException.Message);
+
+                    }
+                    else
+                    {
+                        throw new AuthorizationException(response.StatusCode.ToString());
+                    }
+                }
+                catch (WebException)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public static async Task UpdateMultipleProgress(uint s_id, string end)
+        {
+            string url = string.Format("subject/{0}/update/watched_eps", s_id);
+            Dictionary<string, string> Data = new Dictionary<string, string>()
+            {
+                { "watched_eps", end }
+            };
+            FormUrlEncodedContent content = new FormUrlEncodedContent(Data);
+            using (HttpResponseMessage response = await APIclient.PostAsync(url, content))
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                    return;
+                }
+                catch (HttpRequestException httpException)
+                {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        throw new WebException(httpException.Message);
+
+                    }
+                    else
+                    {
+                        throw new AuthorizationException(response.StatusCode.ToString());
+                    }
+                }
+                catch (WebException)
+                {
+                    throw;
+                }
+            }
+        }
     }
 }

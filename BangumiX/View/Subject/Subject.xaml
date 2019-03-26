@@ -39,10 +39,6 @@
                                     </VisualState>
                                     <VisualState x:Name="Focused">
                                         <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PlaceholderTextContentPresenter"
-                                               Storyboard.TargetProperty="Foreground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlPageTextChromeBlackMediumLowBrush}" />
-                                            </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BackgroundElement"
                                                Storyboard.TargetProperty="Background">
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
@@ -74,22 +70,19 @@
                             <Border x:Name="BorderElement"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"/>
-                            <ContentPresenter x:Name="HeaderContentPresenter"
-                                              x:DeferLoadStrategy="Lazy"
-                                              Visibility="Collapsed"
-                                              Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                              Margin="0"
-                                              Content="{TemplateBinding Header}"
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              FontWeight="Normal" />
-                            <ContentControl x:Name="PlaceholderTextContentPresenter"
-                                            HorizontalAlignment="Center"
-                                            Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
-                                            Margin="0 -2 0 3"
-                                            Padding="{TemplateBinding Padding}"
-                                            IsTabStop="False"
-                                            Content="{TemplateBinding PlaceholderText}"
-                                            IsHitTestVisible="False"/>
+                            <ScrollViewer x:Name="ContentElement"
+                                          HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                                          HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                          VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                                          VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                          IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+                                          IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+                                          IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                          Margin="{TemplateBinding BorderThickness}"
+                                          Padding="2 -1 0 1"
+                                          IsTabStop="False"
+                                          AutomationProperties.AccessibilityView="Raw"
+                                          ZoomMode="Disabled" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -97,9 +90,9 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Name="GridMain" Width="840" Padding="10 10 10 0">
+    <Grid Name="GridMain" Width="840" Padding="10 42 10 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="320"/>
+            <RowDefinition Height="350"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
@@ -113,15 +106,15 @@
             <StackPanel Margin="20 0 0 0" Grid.Column="1">
                 <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="24" Text="{x:Bind subjectVM.Name, Mode=OneWay}" TextWrapping="Wrap" FontFamily="Yu Gothic" FontWeight="Bold"/>
                 <TextBlock HorizontalAlignment="Left" MaxWidth="400" FontSize="20" Text="{x:Bind subjectVM.NameCN, Mode=OneWay}" TextWrapping="Wrap"/>
-                <Grid Grid.Column="1" Height="200" Margin="0 10 0 0">
+                <Grid Grid.Column="1" MaxHeight="200" Margin="0 10 0 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel>
+                    <StackPanel Width="320">
                         <TextBlock Margin="0 0 0 10" Text="观看进度管理：" FontSize="12" Foreground="Silver"/>
-                        <Grid Margin="0 0 0 10" Height="50" Visibility="{x:Bind subjectVM.SubjectCollectViewModel.StatusVisibility, Mode=OneWay}">
+                        <Grid Margin="0 0 0 10" Height="50" Visibility="{x:Bind subjectVM.SubjectCollectStatus.StatusVisibility, Mode=OneWay}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
@@ -130,56 +123,59 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind subjectVM.SubjectCollectViewModel.Status, Mode=OneWay}"/>
-                            <ProgressBar Grid.Row="1" Foreground="#FF004EB4" Value="{x:Bind subjectVM.SubjectCollectViewModel.EpStatus, Mode=OneWay}" Minimum="0" Maximum="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind subjectVM.SubjectCollectStatus.Status, Mode=OneWay}"/>
+                            <ProgressBar Grid.Row="1" Foreground="#FF004EB4" Value="{x:Bind subjectVM.SubjectCollectStatus.EpStatus, Mode=OneWay}" Minimum="0" Maximum="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
                             <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
-                                <TextBox Width="22" Height="18" VerticalContentAlignment="Top" PlaceholderText="{x:Bind subjectVM.SubjectCollectViewModel.EpStatus, Mode=OneWay}"/>
+                                <TextBox Width="22" Height="18" VerticalContentAlignment="Top" Text="{x:Bind subjectVM.SubjectCollectStatus.ChangedEpStatus, Mode=TwoWay}"/>
                                 <TextBlock Width="15" Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock Width="22" Height="16" Text="{x:Bind subjectVM.EpsCount, Mode=OneWay}"/>
                             </StackPanel>
-                            <Button Grid.Row="1" Grid.Column="2" Height="18" Margin="0 2 0 -2" Padding="0" FontSize="12" HorizontalAlignment="Stretch" BorderThickness="1" Content="更新"/>
+                            <Button Grid.Row="1" Grid.Column="2" Height="18" Margin="0 0 1 -2" Padding="0" FontSize="12" HorizontalAlignment="Stretch" BorderThickness="1" Content="更新" Click="ProgressUpdateBtn_Click"/>
                         </Grid>
-                        <GridView x:Name="progressGridView" ItemsSource="{x:Bind subjectVM.EpsSub, Mode=OneWay}" SelectionChanged="GridView_SelectionChanged">
+                        <GridView Padding="0 0 -8 0" x:Name="progressGridView" ItemsSource="{x:Bind subjectVM.EpsSub, Mode=OneWay}" SelectionChanged="GridView_SelectionChanged">
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
-                                    <Setter Property="MinWidth" Value="20"/>
-                                    <Setter Property="MinHeight" Value="20"/>
+                                    <Setter Property="MinWidth" Value="18"/>
+                                    <Setter Property="MinHeight" Value="18"/>
                                     <Setter Property="Background" Value="DimGray"/>
-                                    <Setter Property="Margin" Value="0 0 5 5"/>
+                                    <Setter Property="Margin" Value="0 0 7 7"/>
+                                    <Setter Property="FontSize" Value="12"/>
                                 </Style>
                             </GridView.ItemContainerStyle>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="vm:EpisodeViewModel">
-                                    <Border MinWidth="22" BorderThickness="0 2 0 0" BorderBrush="{x:Bind EpStatusColor, Mode=OneWay}">
+                                    <Border MinWidth="20" MinHeight="20" BorderThickness="0 2 0 0" BorderBrush="{x:Bind EpStatusColor, Mode=OneWay}">
                                         <TextBlock HorizontalAlignment="Center" Text="{x:Bind Sort, Mode=OneWay}"/>
                                     </Border>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
                     </StackPanel>
+                    <Border Grid.Column="1" Width="1" Margin="0 25 0 0" HorizontalAlignment="Center" BorderBrush="DimGray" BorderThickness="0 0 1 0"/>
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="评分：" FontSize="12" Foreground="Silver"/>
-                        <RelativePanel Margin="0 0 0 10">
+                        <RelativePanel Margin="0 0 0 20">
                             <TextBlock RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind subjectVM.Score, Mode=OneWay}" FontSize="28"/>
-                            <TextBlock RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Text="{x:Bind subjectVM.TotalRatingString, Mode=OneWay}" FontSize="14" Foreground="Silver"/>
+                            <TextBlock RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Text="{x:Bind subjectVM.TotalRatingString, Mode=OneWay}" FontSize="12" Foreground="Silver"/>
                         </RelativePanel>
                         <ItemsControl ItemsSource="{x:Bind subjectVM.RatingCount}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Margin="-7 0 0 0" Orientation="Horizontal"/>
+                                    <StackPanel Margin="-6 0 0 0" Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="vm:SubjectViewModel">
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <Border Name="br" Margin="7 2" Background="DimGray" Width="12" Height="{Binding Value}"/>
-                                        <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="GhostWhite" Text="{Binding Key}">
-                                            <TextBlock.RenderTransform>
-                                                <TranslateTransform Y="0"/>
-                                            </TextBlock.RenderTransform>
-                                        </TextBlock>
+                                        <Border Margin="6 2" Background="DimGray" Width="12" Height="{Binding Value}"/>
+                                        <Border Width="12">
+                                            <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="GhostWhite" Text="{Binding Key}">
+                                                <TextBlock.RenderTransform>
+                                                    <TranslateTransform Y="0"/>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                        </Border>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -188,7 +184,8 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <ListView x:Name="subjectDetailListView" Grid.Row="1" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectionChanged="ListView_SelectionChanged">
+        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
+        <ListView x:Name="subjectDetailListView" Grid.Row="1" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectedIndex="0" SelectionChanged="ListView_SelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -197,6 +194,7 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="18"/>
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.Items>
@@ -208,6 +206,5 @@
             </ListView.Items>
         </ListView>
         <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="820"/>
-        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
     </Grid>
 </UserControl>

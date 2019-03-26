@@ -23,31 +23,34 @@ namespace BangumiX
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public ViewModel.UserViewModel UserVM;
+        public ViewModel.UserViewModel userVM;
         public MainPage()
         {
             this.InitializeComponent();
-            UserVM = new ViewModel.UserViewModel();
+            userVM = new ViewModel.UserViewModel();
         }
 
-        private async void MainNavigation_Loaded(object sender, RoutedEventArgs e)
+        private async void mainNavigation_Loaded(object sender, RoutedEventArgs e)
         {
-            MainNavigation.IsPaneOpen = false;
-            MainNavigation.ExpandedModeThresholdWidth = int.MaxValue;
-            ((NavigationViewItem)MainNavigation.SettingsItem).Content = "设置";
+            mainNavigation.IsPaneOpen = false;
+            mainNavigation.ExpandedModeThresholdWidth = int.MaxValue;
+            //((NavigationViewItem)mainNavigation.SettingsItem).Content = "设置";
             if (await Common.LoginHelper.CheckLogin())
             {
+                mainNavigation.SelectedItem = mainNavigation.MenuItems[1];
                 ContentFrame.Navigate(typeof(WatchingCollection));
+                await userVM.UpdateUser();
                 return;
             }
             else
             {
+                mainNavigation.SelectedItem = mainNavigation.MenuItems[2];
                 ContentFrame.Navigate(typeof(DailyCollection));
                 await Common.LoginHelper.Login();
             }
         }
 
-        private void MainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void mainNavigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             NavigationViewItem Item = args.InvokedItemContainer as NavigationViewItem;
             switch (Item.Tag)
@@ -67,16 +70,19 @@ namespace BangumiX
             }
         }
 
-        private async void UserInfoBtn_Click(object sender, RoutedEventArgs e)
+        private async void userInfoBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainNavigation.IsPaneOpen = false;
-            if (await Common.LoginHelper.CheckLogin()) return;
+            mainNavigation.IsPaneOpen = false;
+            if (await Common.LoginHelper.CheckLogin())
+            {
+                await userVM.UpdateUser();
+            }
             else await Common.LoginHelper.Login();
         }
 
-        private void DonationBtn_Click(object sender, RoutedEventArgs e)
+        private void donationBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainNavigation.IsPaneOpen = false;
+            mainNavigation.IsPaneOpen = false;
         }
     }
 }
