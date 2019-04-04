@@ -72,7 +72,17 @@ namespace BangumiX.View
 
         private async void ProgressUpdateBtn_Click(object sender, RoutedEventArgs e)
         {
-            await subjectVM.UpdateMultipleProgress();
+            try
+            {
+                this.IsEnabled = false;
+                subjectProgressRing.IsActive = true;
+                await subjectVM.UpdateMultipleProgress();
+            }
+            finally
+            {
+                subjectProgressRing.IsActive = false;
+                this.IsEnabled = true;
+            }
         }
     }
 }

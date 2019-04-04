@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -32,8 +33,15 @@ namespace BangumiX.View
 
         private async void Page_Loading(FrameworkElement sender, object args)
         {
+            await Refresh();
+        }
+
+        private async Task Refresh()
+        {
             try
             {
+                CollectionListControl.IsEnabled = false;
+                collectionLoadingProgressRing.IsActive = true;
                 await Retry.Do(async () =>
                 {
                     ViewModel.CollectionViewModel collectionVM = new ViewModel.CollectionViewModel(await ApiHelper.GetWatching(Settings.UserID));
@@ -48,6 +56,16 @@ namespace BangumiX.View
             {
                 Console.WriteLine(authorizationException.Message);
             }
+            finally
+            {
+                collectionLoadingProgressRing.IsActive = false;
+                CollectionListControl.IsEnabled = true;
+            }
+        }
+
+        private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await Refresh();
         }
     }
 }

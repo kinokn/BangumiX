@@ -8,8 +8,8 @@
     <Application.Resources>
         <AcrylicBrush x:Key="MainPageBackground"
                       BackgroundSource="HostBackdrop"
-                      TintColor="Transparent"
-                      TintOpacity="0"
+                      TintColor="Black"
+                      TintOpacity="0.5"
                       FallbackColor="Black"/>
         <AcrylicBrush x:Key="PaneBackgroundAcrylicBrush"
                       BackgroundSource="HostBackdrop"

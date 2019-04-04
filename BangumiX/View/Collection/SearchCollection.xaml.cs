@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Navigation;
 using BangumiX.Common;
 using System.Net;
 using static BangumiX.Common.WebHelper;
+using System.Threading.Tasks;
+using Windows.System;
 
 namespace BangumiX.View
 {
@@ -34,9 +36,25 @@ namespace BangumiX.View
 
         private async void SearchButtonClick(object sender, RoutedEventArgs e)
         {
+            await Search();
+        }
+
+        private async void KeywordTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter)
+            {
+                await Search();
+                this.Focus(FocusState.Programmatic);
+            }
+        }
+
+        private async Task Search()
+        {
             Model.SearchCollection searchCollection = new Model.SearchCollection();
             try
             {
+                CollectionListControl.IsEnabled = false;
+                collectionLoadingProgressRing.IsActive = true;
                 searchCollection = await Retry.Do(() => ApiHelper.GetSearch(KeywordTextBox.Text), TimeSpan.FromSeconds(3));
             }
             catch (WebException webException)
@@ -52,8 +70,13 @@ namespace BangumiX.View
                 Console.WriteLine(emptySearchException.Message);
                 return;
             }
-            collectionVM = new ViewModel.CollectionViewModel(searchCollection.list);
-            CollectionListControl.SwitchList(ref collectionVM);
+            finally
+            {
+                collectionVM = new ViewModel.CollectionViewModel(searchCollection.list);
+                CollectionListControl.SwitchList(ref collectionVM);
+                collectionLoadingProgressRing.IsActive = false;
+                CollectionListControl.IsEnabled = true;
+            }
         }
     }
 }

@@ -97,6 +97,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <ProgressRing x:FieldModifier="Public" Grid.RowSpan="4" Height="120" Width="120" x:Name="subjectProgressRing"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="225"/>

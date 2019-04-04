@@ -36,6 +36,8 @@ namespace BangumiX.View
         {
             try
             {
+                CollectionListControl.IsEnabled = false;
+                collectionLoadingProgressRing.IsActive = true;
                 await Retry.Do(async () =>
                 {
                     List<Model.DailyCollection> myCollectionResult = await ApiHelper.GetDaily();
@@ -64,6 +66,11 @@ namespace BangumiX.View
             catch (AuthorizationException authorizationException)
             {
                 Console.WriteLine(authorizationException.Message);
+            }
+            finally
+            {
+                collectionLoadingProgressRing.IsActive = false;
+                CollectionListControl.IsEnabled = true;
             }
         }
 

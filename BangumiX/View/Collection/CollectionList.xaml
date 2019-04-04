@@ -90,6 +90,9 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </SplitView.Pane>
+            <SplitView.Content>
+                <local:Subject x:Name="subjectControl" Visibility="Collapsed"/>
+            </SplitView.Content>
         </SplitView>
     </Grid>
 </UserControl>

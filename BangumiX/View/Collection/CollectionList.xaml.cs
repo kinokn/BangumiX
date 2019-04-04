@@ -25,7 +25,6 @@ namespace BangumiX.View
     {
         public List<ViewModel.SubjectViewModel> subjectList;
         public ViewModel.CollectionViewModel collectionVM;
-        public Subject subjectControl;
         public CollectionList()
         {
             this.InitializeComponent();
@@ -49,37 +48,44 @@ namespace BangumiX.View
         {
             var index = ListViewCollection.SelectedIndex;
             if (subjectList == null || index == -1) return;
-            collectSplistView.Content = null;
-            subjectControl = new Subject();
-            await subjectControl.subjectVM.UpdateSubject(subjectList[index].ID);
-            collectSplistView.Content = subjectControl;
-            return;
+            try
+            {
+                subjectControl.IsEnabled = false;
+                subjectControl.subjectProgressRing.IsActive = true;
+                await subjectControl.subjectVM.UpdateSubject(subjectList[index].ID);
+            }
+            finally
+            {
+                subjectControl.subjectProgressRing.IsActive = false;
+                subjectControl.IsEnabled = true;
+                subjectControl.Visibility = Visibility.Visible;
+            }
         }
 
         private async void WishBtn_Click(object sender, RoutedEventArgs e)
         {
-            var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await collectionVM.UpdateCollection(subjectList[index].ID, "wish");
+            var subjectVM = (sender as MenuFlyoutItem).DataContext as ViewModel.SubjectViewModel;
+            await collectionVM.UpdateCollection(subjectVM.ID, "wish");
         }
         private async void WatchingBtn_Click(object sender, RoutedEventArgs e)
         {
-            var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await collectionVM.UpdateCollection(subjectList[index].ID, "do");
+            var subjectVM = (sender as MenuFlyoutItem).DataContext as ViewModel.SubjectViewModel;
+            await collectionVM.UpdateCollection(subjectVM.ID, "do");
         }
         private async void WatchedBtn_Click(object sender, RoutedEventArgs e)
         {
-            var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await collectionVM.UpdateCollection(subjectList[index].ID, "collect");
+            var subjectVM = (sender as MenuFlyoutItem).DataContext as ViewModel.SubjectViewModel;
+            await collectionVM.UpdateCollection(subjectVM.ID, "collect");
         }
         private async void HoldBtn_Click(object sender, RoutedEventArgs e)
         {
-            var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await collectionVM.UpdateCollection(subjectList[index].ID, "on_hold");
+            var subjectVM = (sender as MenuFlyoutItem).DataContext as ViewModel.SubjectViewModel;
+            await collectionVM.UpdateCollection(subjectVM.ID, "on_hold");
         }
         private async void DropBtn_Click(object sender, RoutedEventArgs e)
         {
-            var index = ListViewCollection.Items.IndexOf((sender as Button).DataContext);
-            await collectionVM.UpdateCollection(subjectList[index].ID, "dropped");
+            var subjectVM = (sender as MenuFlyoutItem).DataContext as ViewModel.SubjectViewModel;
+            await collectionVM.UpdateCollection(subjectVM.ID, "dropped");
         }
     }
 }

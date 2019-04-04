@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -35,35 +36,7 @@ namespace BangumiX.View
 
         private async void Page_Loading(FrameworkElement sender, object args)
         {
-            try
-            {
-                await Retry.Do(async () =>
-                {
-                    List<Model.MyCollection> myCollectionResult = await ApiHelper.GetMyCollection(Settings.UserID);
-                    myCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
-                    {
-                        { 1, null },
-                        { 2, null },
-                        { 3, null },
-                        { 4, null },
-                        { 5, null }
-                    };
-                    foreach (var c in myCollectionResult)
-                    {
-                        myCollection[(uint)c.status["id"]] = new ViewModel.CollectionViewModel(c.list);
-                    }
-                    curCollection = myCollection[3];
-                    CollectionListControl.SwitchList(ref curCollection);
-                }, TimeSpan.FromSeconds(10));
-            }
-            catch (WebException webException)
-            {
-                Console.WriteLine(webException.Message);
-            }
-            catch (AuthorizationException authorizationException)
-            {
-                Console.WriteLine(authorizationException.Message);
-            }
+            await Refresh();
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -92,6 +65,51 @@ namespace BangumiX.View
                     curCollection = myCollection[5];
                     CollectionListControl.SwitchList(ref curCollection);
                     break;
+            }
+        }
+
+        private async void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await Refresh();
+        }
+
+        private async Task Refresh()
+        {
+            try
+            {
+                CollectionListControl.IsEnabled = false;
+                collectionLoadingProgressRing.IsActive = true;
+                await Retry.Do(async () =>
+                {
+                    List<Model.MyCollection> myCollectionResult = await ApiHelper.GetMyCollection(Settings.UserID);
+                    myCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
+                    {
+                        { 1, null },
+                        { 2, null },
+                        { 3, null },
+                        { 4, null },
+                        { 5, null }
+                    };
+                    foreach (var c in myCollectionResult)
+                    {
+                        myCollection[(uint)c.status["id"]] = new ViewModel.CollectionViewModel(c.list);
+                    }
+                    curCollection = myCollection[3];
+                    CollectionListControl.SwitchList(ref curCollection);
+                }, TimeSpan.FromSeconds(10));
+            }
+            catch (WebException webException)
+            {
+                Console.WriteLine(webException.Message);
+            }
+            catch (AuthorizationException authorizationException)
+            {
+                Console.WriteLine(authorizationException.Message);
+            }
+            finally
+            {
+                collectionLoadingProgressRing.IsActive = false;
+                CollectionListControl.IsEnabled = true;
             }
         }
     }

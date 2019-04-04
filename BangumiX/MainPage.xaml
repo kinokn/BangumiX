@@ -15,7 +15,7 @@
             <AcrylicBrush x:Key="NavigationViewDefaultPaneBackground"
                           BackgroundSource="Backdrop"
                           TintColor="Black"
-                          TintOpacity="0.7"
+                          TintOpacity="0.5"
                           FallbackColor="Black"/>
         </Grid.Resources>
         <NavigationView x:Name="mainNavigation"
@@ -42,11 +42,11 @@
                         <PathIcon/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="我的" Tag="NavToMine">
+                <!--<NavigationViewItem Content="我的" Tag="NavToMine">
                     <NavigationViewItem.Icon>
                         <PathIcon/>
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                </NavigationViewItem>-->
             </NavigationView.MenuItems>
             <NavigationView.PaneFooter>
                 <StackPanel>

@@ -194,7 +194,7 @@ namespace BangumiX.ViewModel
         {
             get
             {
-                if (subject.collection?.Count == 0) return 0;
+                if (subject.collection == null || subject.collection.Count == 0) return 0;
                 return (uint)subject.collection.Sum(x => x.Value);
             }
         }
@@ -279,6 +279,7 @@ namespace BangumiX.ViewModel
             {
                 if (_subjectCollectStatus.ChangedEpStatus == _subjectCollectStatus.EpStatus.ToString()) return;
                 await Retry.Do(() => ApiHelper.UpdateMultipleProgress(subject.id, _subjectCollectStatus.ChangedEpStatus), TimeSpan.FromSeconds(10));
+                await UpdateSubject(ID);
             }
             catch (WebException webException)
             {
