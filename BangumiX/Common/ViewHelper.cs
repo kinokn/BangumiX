@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
 namespace BangumiX.Common
@@ -38,33 +39,44 @@ namespace BangumiX.Common
         }
     }
 
-    //public class RelayCommand : ICommand
-    //{
-    //    protected readonly Action<object> _execute;
-    //    protected readonly Predicate<object> _can_execute;
+    public static class ExceptionDialog
+    {
+        public static async Task DisplayNoNetworkDialog()
+        {
+            ContentDialog noNetworkDialog = new ContentDialog
+            {
+                Title = "网络连接异常",
+                Content = "请检查网络连接后重试。",
+                CloseButtonText = "好的"
+            };
 
-    //    public RelayCommand() { }
+            ContentDialogResult result = await noNetworkDialog.ShowAsync();
+        }
 
-    //    public RelayCommand(Action<object> execute) : this(execute, null) { }
+        public static async Task DisplayNoAuthDialog()
+        {
+            ContentDialog noAuthDialog = new ContentDialog
+            {
+                Title = "未登录",
+                Content = "请先登录后重试。",
+                CloseButtonText = "好的"
+            };
 
-    //    public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-    //    {
-    //        _execute = execute;
-    //        _can_execute = canExecute;
-    //    }
+            ContentDialogResult result = await noAuthDialog.ShowAsync();
+        }
 
-    //    public event EventHandler CanExecuteChanged;
+        public static async Task DisplayNoCollectDialog()
+        {
+            ContentDialog noAuthDialog = new ContentDialog
+            {
+                Title = "错误",
+                Content = "未收藏该条目。",
+                CloseButtonText = "好的"
+            };
 
-    //    public bool CanExecute(object parameter)
-    //    {
-    //        return _can_execute(parameter);
-    //    }
-
-    //    public void Execute(object parameter)
-    //    {
-    //        _execute(parameter);
-    //    }
-    //}
+            ContentDialogResult result = await noAuthDialog.ShowAsync();
+        }
+    }
 
     public class ObservableViewModelBase : INotifyPropertyChanged
     {

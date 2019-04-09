@@ -79,24 +79,21 @@ namespace BangumiX.View
             {
                 CollectionListControl.IsEnabled = false;
                 collectionLoadingProgressRing.IsActive = true;
-                await Retry.Do(async () =>
+                List<Model.MyCollection> myCollectionResult = await ApiHelper.GetMyCollection(Settings.UserID);
+                myCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
                 {
-                    List<Model.MyCollection> myCollectionResult = await ApiHelper.GetMyCollection(Settings.UserID);
-                    myCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
-                    {
-                        { 1, null },
-                        { 2, null },
-                        { 3, null },
-                        { 4, null },
-                        { 5, null }
-                    };
-                    foreach (var c in myCollectionResult)
-                    {
-                        myCollection[(uint)c.status["id"]] = new ViewModel.CollectionViewModel(c.list);
-                    }
-                    curCollection = myCollection[3];
-                    CollectionListControl.SwitchList(ref curCollection);
-                }, TimeSpan.FromSeconds(10));
+                    { 1, null },
+                    { 2, null },
+                    { 3, null },
+                    { 4, null },
+                    { 5, null }
+                };
+                foreach (var c in myCollectionResult)
+                {
+                    myCollection[(uint)c.status["id"]] = new ViewModel.CollectionViewModel(c.list);
+                }
+                curCollection = myCollection[3];
+                CollectionListControl.SwitchList(ref curCollection);
             }
             catch (WebException webException)
             {

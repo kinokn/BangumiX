@@ -134,44 +134,44 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Collection.cs" />
-    <Compile Include="Model\Subject.cs" />
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Models\Collection.cs" />
+    <Compile Include="Models\Subject.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\CollectionViewModel.cs" />
-    <Compile Include="ViewModel\SubjectViewModel.cs" />
-    <Compile Include="ViewModel\UserViewModel.cs" />
-    <Compile Include="View\Collection\CollectionList.xaml.cs">
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
+    <Compile Include="ViewModels\SubjectViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="Views\Collection\CollectionList.xaml.cs">
       <DependentUpon>CollectionList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Collection\DailyCollection.xaml.cs">
+    <Compile Include="Views\Collection\DailyCollection.xaml.cs">
       <DependentUpon>DailyCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Collection\MyCollection.xaml.cs">
+    <Compile Include="Views\Collection\MyCollection.xaml.cs">
       <DependentUpon>MyCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Collection\SearchCollection.xaml.cs">
+    <Compile Include="Views\Collection\SearchCollection.xaml.cs">
       <DependentUpon>SearchCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\Subject.xaml.cs">
+    <Compile Include="Views\Subject\Subject.xaml.cs">
       <DependentUpon>Subject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Collection\WatchingCollection.xaml.cs">
+    <Compile Include="Views\Collection\WatchingCollection.xaml.cs">
       <DependentUpon>WatchingCollection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectCharacter.xaml.cs">
+    <Compile Include="Views\Subject\SubjectCharacter.xaml.cs">
       <DependentUpon>SubjectCharacter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectComment.xaml.cs">
+    <Compile Include="Views\Subject\SubjectComment.xaml.cs">
       <DependentUpon>SubjectComment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectEpisode.xaml.cs">
+    <Compile Include="Views\Subject\SubjectEpisode.xaml.cs">
       <DependentUpon>SubjectEpisode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectStaff.xaml.cs">
+    <Compile Include="Views\Subject\SubjectStaff.xaml.cs">
       <DependentUpon>SubjectStaff.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Subject\SubjectSummary.xaml.cs">
+    <Compile Include="Views\Subject\SubjectSummary.xaml.cs">
       <DependentUpon>SubjectSummary.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -242,47 +242,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Collection\CollectionList.xaml">
+    <Page Include="Views\Collection\CollectionList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Collection\DailyCollection.xaml">
+    <Page Include="Views\Collection\DailyCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Collection\MyCollection.xaml">
+    <Page Include="Views\Collection\MyCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Collection\SearchCollection.xaml">
+    <Page Include="Views\Collection\SearchCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\Subject.xaml">
+    <Page Include="Views\Subject\Subject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Collection\WatchingCollection.xaml">
+    <Page Include="Views\Collection\WatchingCollection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectCharacter.xaml">
+    <Page Include="Views\Subject\SubjectCharacter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectComment.xaml">
+    <Page Include="Views\Subject\SubjectComment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectEpisode.xaml">
+    <Page Include="Views\Subject\SubjectEpisode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectStaff.xaml">
+    <Page Include="Views\Subject\SubjectStaff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Subject\SubjectSummary.xaml">
+    <Page Include="Views\Subject\SubjectSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

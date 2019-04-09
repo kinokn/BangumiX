@@ -31,7 +31,7 @@ namespace BangumiX.Common
                     await RefreshToken();
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
                     return false;
                 }
@@ -51,25 +51,18 @@ namespace BangumiX.Common
                     token.token_time = DateTime.Now;
                     APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
-                    if (response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        throw new WebException(httpException.Message);
-                    }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    await ExceptionDialog.DisplayNoNetworkDialog();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
                 }
             }
         }
 
-        public static async Task Login()
+        public static async Task<bool> Login()
         {
             string startURL = string.Format("https://bgm.tv/oauth/authorize?client_id={0}&response_type=code", Settings.ClientID);
             string endURL = "http://47.101.195.180:5000/callback";
@@ -90,36 +83,29 @@ namespace BangumiX.Common
                             Model.Token token = JsonConvert.DeserializeObject<Model.Token>(response_body);
                             token.token_time = DateTimeOffset.Now;
                             APIclient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(Settings.TokenType, Settings.AccessToken);
+                            return true;
                         }
-                        catch (HttpRequestException httpException)
+                        catch (HttpRequestException)
                         {
-                            if (response.StatusCode == HttpStatusCode.NotFound)
-                            {
-                                throw new WebException(httpException.Message);
-                            }
-                            else
-                            {
-                                throw new AuthorizationException(response.StatusCode.ToString());
-                            }
+                            await ExceptionDialog.DisplayNoNetworkDialog();
+                            return false;
                         }
                         catch (WebException)
                         {
-                            throw;
+                            await ExceptionDialog.DisplayNoNetworkDialog();
+                            return false;
                         }
                     }
                 }
                 else
                 {
-                    throw new Exception(webAuthenticationResult.ResponseErrorDetail.ToString());
+                    return false;
                 }
-
             }
             catch
             {
                 throw;
             }
-
         }
-
     }
 }

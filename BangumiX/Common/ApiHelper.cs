@@ -13,6 +13,11 @@ namespace BangumiX.Common
     {
         public static async Task<List<Model.Collection>> GetWatching(uint id, string cat = "watching")
         {
+            if (id == 0)
+            {
+                await ExceptionDialog.DisplayNoAuthDialog();
+                return new List<Model.Collection>();
+            }
             string url = string.Format("user/{0}/collection?app_id={1}&cat={2}", id, Settings.ClientID, cat);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
@@ -23,26 +28,29 @@ namespace BangumiX.Common
                     List<Model.Collection> watching = JsonConvert.DeserializeObject<List<Model.Collection>>(responseBody);
                     return watching;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    return new List<Model.Collection>();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.Collection>();
                 }
             }
         }
 
         public static async Task<List<Model.MyCollection>> GetMyCollection(uint id, string subject_type = "anime")
         {
+            if (id == 0)
+            {
+                await ExceptionDialog.DisplayNoAuthDialog();
+                return new List<Model.MyCollection>();
+            }
             string url = string.Format("user/{0}/collections/{1}?app_id={2}", id, subject_type, Settings.ClientID);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
@@ -53,21 +61,18 @@ namespace BangumiX.Common
                     List<Model.MyCollectionWrapper> collectionList = JsonConvert.DeserializeObject<List<Model.MyCollectionWrapper>>(responseBody);
                     return collectionList[0].collects;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    return new List<Model.MyCollection>();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.MyCollection>();
                 }
             }
         }
@@ -84,27 +89,28 @@ namespace BangumiX.Common
                     List<Model.DailyCollection> dailyCollections = JsonConvert.DeserializeObject<List<Model.DailyCollection>>(responseBody);
                     return dailyCollections;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    return new List<Model.DailyCollection>();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.DailyCollection>();
                 }
             }
         }
 
         public static async Task<Model.SearchCollection> GetSearch(string keyword, uint start = 0)
         {
+            if (keyword == string.Empty)
+            {
+                return new Model.SearchCollection();
+            }
             string url = string.Format("search/subject/{0}?max_results=25&start={1}&type=2", keyword, start);
             using (HttpResponseMessage response = await APIclient.GetAsync(Uri.EscapeUriString(url)))
             {
@@ -115,21 +121,18 @@ namespace BangumiX.Common
                     Model.SearchCollection searchCollection = JsonConvert.DeserializeObject<Model.SearchCollection>(responseBody);
                     return searchCollection;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    return new Model.SearchCollection();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SearchCollection();
                 }
                 catch (JsonReaderException jsonReaderException)
                 {
@@ -151,21 +154,18 @@ namespace BangumiX.Common
                     Model.SubjectLarge subject = JsonConvert.DeserializeObject<Model.SubjectLarge>(responseBody);
                     return subject;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    return new Model.SubjectLarge();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectLarge();
                 }
             }
         }
@@ -182,26 +182,37 @@ namespace BangumiX.Common
                     Model.SubjectCollectStatus subjectCollectStatus = JsonConvert.DeserializeObject<Model.SubjectCollectStatus>(responseBody);
                     return subjectCollectStatus;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        throw new AuthorizationException(response.StatusCode.ToString());
+                        await ExceptionDialog.DisplayNoAuthDialog();
                     }
+                    else if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        await ExceptionDialog.DisplayNoCollectDialog();
+                    }
+                    return new Model.SubjectCollectStatus();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectCollectStatus();
                 }
             }
         }
 
         public static async Task<Model.SubjectProgress> GetProgress(uint u_id, uint s_id)
         {
+            if (u_id == 0)
+            {
+                await ExceptionDialog.DisplayNoAuthDialog();
+                return new Model.SubjectProgress();
+            }
             string url = string.Format("user/{0}/progress?subject_id={1}", u_id, s_id);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
@@ -212,20 +223,22 @@ namespace BangumiX.Common
                     Model.SubjectProgress subjectProgress = JsonConvert.DeserializeObject<Model.SubjectProgress>(responseBody);
                     return subjectProgress;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        throw new AuthorizationException(response.StatusCode.ToString());
+                        await ExceptionDialog.DisplayNoAuthDialog();
                     }
+                    return new Model.SubjectProgress();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectProgress();
                 }
             }
         }
@@ -233,6 +246,10 @@ namespace BangumiX.Common
 
         public static async Task<Model.User> GetUser(uint id)
         {
+            if (id == 0)
+            {
+                return new Model.User();
+            }
             string url = string.Format("user/{0}", id);
             using (HttpResponseMessage response = await APIclient.GetAsync(url))
             {
@@ -243,21 +260,18 @@ namespace BangumiX.Common
                     Model.User user = JsonConvert.DeserializeObject<Model.User>(responseBody);
                     return user;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
-                    {
-                        throw new AuthorizationException(response.StatusCode.ToString());
-                    }
+                    return new Model.User();
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.User();
                 }
             }
         }
@@ -275,23 +289,25 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    return;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        throw new AuthorizationException(response.StatusCode.ToString());
+                        await ExceptionDialog.DisplayNoAuthDialog();
+                    }
+                    else if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        await ExceptionDialog.DisplayNoCollectDialog();
                     }
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
                 }
             }
         }
@@ -305,21 +321,20 @@ namespace BangumiX.Common
                 {
                     response.EnsureSuccessStatusCode();
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        throw new AuthorizationException(response.StatusCode.ToString());
+                        await ExceptionDialog.DisplayNoAuthDialog();
                     }
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
                 }
             }
         }
@@ -337,23 +352,21 @@ namespace BangumiX.Common
                 try
                 {
                     response.EnsureSuccessStatusCode();
-                    return;
                 }
-                catch (HttpRequestException httpException)
+                catch (HttpRequestException)
                 {
                     if (response.StatusCode == HttpStatusCode.NotFound)
                     {
-                        throw new WebException(httpException.Message);
-
+                        await ExceptionDialog.DisplayNoNetworkDialog();
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        throw new AuthorizationException(response.StatusCode.ToString());
+                        await ExceptionDialog.DisplayNoAuthDialog();
                     }
                 }
                 catch (WebException)
                 {
-                    throw;
+                    await ExceptionDialog.DisplayNoNetworkDialog();
                 }
             }
         }

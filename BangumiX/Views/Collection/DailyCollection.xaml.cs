@@ -38,26 +38,23 @@ namespace BangumiX.View
             {
                 CollectionListControl.IsEnabled = false;
                 collectionLoadingProgressRing.IsActive = true;
-                await Retry.Do(async () =>
+                List<Model.DailyCollection> myCollectionResult = await ApiHelper.GetDaily();
+                dailyCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
                 {
-                    List<Model.DailyCollection> myCollectionResult = await ApiHelper.GetDaily();
-                    dailyCollection = new Dictionary<uint, ViewModel.CollectionViewModel>()
-                    {
-                        { 1, null },
-                        { 2, null },
-                        { 3, null },
-                        { 4, null },
-                        { 5, null },
-                        { 6, null },
-                        { 7, null }
-                    };
-                    foreach (var c in myCollectionResult)
-                    {
-                        dailyCollection[(uint)c.weekday["id"]] = new ViewModel.CollectionViewModel(c.items);
-                    }
-                    curCollection = dailyCollection[7];
-                    CollectionListControl.SwitchList(ref curCollection);
-                }, TimeSpan.FromSeconds(10));
+                    { 1, null },
+                    { 2, null },
+                    { 3, null },
+                    { 4, null },
+                    { 5, null },
+                    { 6, null },
+                    { 7, null }
+                };
+                foreach (var c in myCollectionResult)
+                {
+                    dailyCollection[(uint)c.weekday["id"]] = new ViewModel.CollectionViewModel(c.items);
+                }
+                curCollection = dailyCollection[7];
+                CollectionListControl.SwitchList(ref curCollection);
             }
             catch (WebException webException)
             {

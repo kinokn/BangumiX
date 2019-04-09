@@ -11,30 +11,6 @@ namespace BangumiX.Common
     {
         public static ApplicationDataContainer RoamingSettings = ApplicationData.Current.RoamingSettings;
 
-        public static string Email
-        {
-            get
-            {
-                return RoamingSettings.Values["Email"] is string ? (string)RoamingSettings.Values["Email"] : string.Empty;
-            }
-            set
-            {
-                RoamingSettings.Values["Email"] = value;
-            }
-        }
-
-        public static string Password
-        {
-            get
-            {
-                return RoamingSettings.Values["Password"] is string ? (string)RoamingSettings.Values["Password"] : string.Empty;
-            }
-            set
-            {
-                RoamingSettings.Values["Password"] = value;
-            }
-        }
-
         public static string TokenType
         {
             get

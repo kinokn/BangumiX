@@ -32,7 +32,7 @@ namespace BangumiX.ViewModel
         {
             try
             {
-                await Retry.Do(() => ApiHelper.UpdateCollection(id, status), TimeSpan.FromSeconds(10));
+                await ApiHelper.UpdateCollection(id, status);
             }
             catch (WebException webException)
             {

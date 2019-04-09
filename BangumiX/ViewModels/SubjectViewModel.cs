@@ -278,7 +278,7 @@ namespace BangumiX.ViewModel
             try
             {
                 if (_subjectCollectStatus.ChangedEpStatus == _subjectCollectStatus.EpStatus.ToString()) return;
-                await Retry.Do(() => ApiHelper.UpdateMultipleProgress(subject.id, _subjectCollectStatus.ChangedEpStatus), TimeSpan.FromSeconds(10));
+                await ApiHelper.UpdateMultipleProgress(subject.id, _subjectCollectStatus.ChangedEpStatus);
                 await UpdateSubject(ID);
             }
             catch (WebException webException)
@@ -293,7 +293,7 @@ namespace BangumiX.ViewModel
             SubjectLarge subjectLarge = new SubjectLarge();
             try
             {
-                subjectLarge = await Retry.Do(() => ApiHelper.GetSubject(sID), TimeSpan.FromSeconds(10));
+                subjectLarge = await ApiHelper.GetSubject(sID);
             }
             catch (WebException webException)
             {
@@ -333,7 +333,7 @@ namespace BangumiX.ViewModel
                 SubjectCollectStatus subjectCollectStatus = new SubjectCollectStatus();
                 try
                 {
-                    subjectCollectStatus = await Retry.Do(() => ApiHelper.GetCollection(sID), TimeSpan.FromSeconds(10));
+                    subjectCollectStatus = await ApiHelper.GetCollection(sID);
                 }
                 catch (WebException webException)
                 {
@@ -347,7 +347,7 @@ namespace BangumiX.ViewModel
                 SubjectProgress subjectProgress = new SubjectProgress();
                 try
                 {
-                    subjectProgress = await Retry.Do(() => ApiHelper.GetProgress(Settings.UserID, sID), TimeSpan.FromSeconds(10));
+                    subjectProgress = await ApiHelper.GetProgress(Settings.UserID, sID);
                 }
                 catch (WebException webException)
                 {

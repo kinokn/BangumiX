@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 using BangumiX.View;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace BangumiX
 {
@@ -28,6 +29,7 @@ namespace BangumiX
         {
             this.InitializeComponent();
             userVM = new ViewModel.UserViewModel();
+            //userVM.LogOut();
         }
 
         private async void mainNavigation_Loaded(object sender, RoutedEventArgs e)
@@ -35,18 +37,22 @@ namespace BangumiX
             mainNavigation.IsPaneOpen = false;
             mainNavigation.ExpandedModeThresholdWidth = int.MaxValue;
             //((NavigationViewItem)mainNavigation.SettingsItem).Content = "设置";
-            if (await Common.LoginHelper.CheckLogin())
+            if (await userVM.CheckLogin())
             {
                 mainNavigation.SelectedItem = mainNavigation.MenuItems[1];
-                ContentFrame.Navigate(typeof(WatchingCollection));
+                ContentFrame.Navigate(typeof(WatchingCollection), null, new DrillInNavigationTransitionInfo());
                 await userVM.UpdateUser();
                 return;
             }
             else
             {
                 mainNavigation.SelectedItem = mainNavigation.MenuItems[2];
-                ContentFrame.Navigate(typeof(DailyCollection));
-                await Common.LoginHelper.Login();
+                ContentFrame.Navigate(typeof(DailyCollection), null, new DrillInNavigationTransitionInfo());
+                if (await userVM.Login())
+                {
+                    mainNavigation.SelectedItem = mainNavigation.MenuItems[1];
+                    ContentFrame.Navigate(typeof(WatchingCollection), null, new DrillInNavigationTransitionInfo());
+                }
             }
         }
 
@@ -56,16 +62,16 @@ namespace BangumiX
             switch (Item.Tag)
             {
                 case "NavToDaily":
-                    ContentFrame.Navigate(typeof(DailyCollection));
+                    ContentFrame.Navigate(typeof(DailyCollection), null, new DrillInNavigationTransitionInfo());
                     break;
                 case "NavToSearch":
-                    ContentFrame.Navigate(typeof(SearchCollection));
+                    ContentFrame.Navigate(typeof(SearchCollection), null, new DrillInNavigationTransitionInfo());
                     break;
                 case "NavToWatching":
-                    ContentFrame.Navigate(typeof(WatchingCollection));
+                    ContentFrame.Navigate(typeof(WatchingCollection), null, new DrillInNavigationTransitionInfo());
                     break;
                 case "NavToMine":
-                    ContentFrame.Navigate(typeof(MyCollection));
+                    ContentFrame.Navigate(typeof(MyCollection), null, new DrillInNavigationTransitionInfo());
                     break;
             }
         }
@@ -73,16 +79,16 @@ namespace BangumiX
         private async void userInfoBtn_Click(object sender, RoutedEventArgs e)
         {
             mainNavigation.IsPaneOpen = false;
-            if (await Common.LoginHelper.CheckLogin())
+            if (await userVM.CheckLogin())
             {
                 await userVM.UpdateUser();
             }
-            else await Common.LoginHelper.Login();
+            else await userVM.Login();
         }
 
-        private void donationBtn_Click(object sender, RoutedEventArgs e)
-        {
-            mainNavigation.IsPaneOpen = false;
-        }
+        //private void donationBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    mainNavigation.IsPaneOpen = false;
+        //}
     }
 }
