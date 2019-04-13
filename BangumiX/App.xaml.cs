@@ -44,6 +44,8 @@ namespace BangumiX
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(320, 320));
+
             ApplicationViewTitleBar formattableTitleBar = ApplicationView.GetForCurrentView().TitleBar;
             formattableTitleBar.ButtonBackgroundColor = Colors.Transparent;
             formattableTitleBar.ButtonForegroundColor = Colors.Silver;

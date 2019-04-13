@@ -93,11 +93,9 @@
     <Grid Name="GridMain" Width="840" Padding="10 42 10 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="350"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ProgressRing x:FieldModifier="Public" Grid.RowSpan="4" Height="120" Width="120" x:Name="subjectProgressRing"/>
+        <ProgressRing x:FieldModifier="Public" Grid.RowSpan="4" Height="100" Width="100" x:Name="subjectProgressRing"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="225"/>
@@ -185,27 +183,13 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <ContentControl x:Name="SubjectContentCtrl" Grid.Row="3"/>
-        <ListView x:Name="subjectDetailListView" Grid.Row="1" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" SelectedIndex="0" SelectionChanged="ListView_SelectionChanged">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="18"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.Items>
-                <ListViewItem Content="概览" Tag="Summary"/>
-                <ListViewItem Content="章节" Tag="Episode"/>
-                <ListViewItem Content="角色" Tag="Character"/>
-                <ListViewItem Content="制作" Tag="Staff"/>
-                <ListViewItem Content="吐槽" Tag="Comment"/>
-            </ListView.Items>
-        </ListView>
-        <Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="820"/>
+        <Pivot x:FieldModifier="Public" x:Name="pivotSubject" Grid.Row="1">
+            <PivotItem Header="概览" x:Name="pivotSummary"/>
+            <PivotItem Header="章节" x:Name="pivotEpisode"/>
+            <PivotItem Header="角色" x:Name="pivotCharacter"/>
+            <PivotItem Header="制作" x:Name="pivotStaff"/>
+            <PivotItem Header="吐槽" x:Name="pivotComment"/>
+        </Pivot>
+        <!--<Line Grid.Row="2" StrokeThickness="2" Stroke="DimGray" X1="0" X2="820"/>-->
     </Grid>
 </UserControl>

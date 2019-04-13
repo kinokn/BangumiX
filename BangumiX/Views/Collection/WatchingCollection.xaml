@@ -10,7 +10,7 @@
 
     <Grid>
         <local:CollectionList x:Name="CollectionListControl"/>
-        <ProgressRing x:Name="collectionLoadingProgressRing" Width="120" Height="120" Margin="100" HorizontalAlignment="Left"/>
+        <ProgressRing x:Name="collectionLoadingProgressRing" Width="100" Height="100" Margin="120" HorizontalAlignment="Left"/>
         <Border Margin="0 32 0 0" Width="320" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
             <RelativePanel>
                 <Border Height="40" RelativePanel.AlignHorizontalCenterWithPanel="True">

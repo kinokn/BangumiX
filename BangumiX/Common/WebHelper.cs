@@ -14,7 +14,7 @@ namespace BangumiX.Common
         public static readonly HttpClient APIclient = new HttpClient()
         {
             BaseAddress = new Uri("https://api.bgm.tv/"),
-            Timeout = new TimeSpan(0, 0, 10)
+            Timeout = new TimeSpan(0, 0, 30)
         };
         public static readonly HttpClient TokenClient = new HttpClient()
         {

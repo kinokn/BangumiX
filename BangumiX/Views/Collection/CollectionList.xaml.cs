@@ -58,6 +58,7 @@ namespace BangumiX.View
             {
                 subjectControl.subjectProgressRing.IsActive = false;
                 subjectControl.IsEnabled = true;
+                subjectControl.pivotSubject.SelectedIndex = 0;
                 subjectControl.Visibility = Visibility.Visible;
             }
         }

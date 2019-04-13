@@ -41,6 +41,11 @@ namespace BangumiX.Common
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new List<Model.Collection>();
                 }
+                catch (TaskCanceledException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.Collection>();
+                }
             }
         }
 
@@ -74,6 +79,11 @@ namespace BangumiX.Common
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new List<Model.MyCollection>();
                 }
+                catch (TaskCanceledException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.MyCollection>();
+                }
             }
         }
 
@@ -98,6 +108,11 @@ namespace BangumiX.Common
                     return new List<Model.DailyCollection>();
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new List<Model.DailyCollection>();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new List<Model.DailyCollection>();
@@ -138,6 +153,11 @@ namespace BangumiX.Common
                 {
                     throw new EmptySearchException(jsonReaderException.Message);
                 }
+                catch (TaskCanceledException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SearchCollection();
+                }
             }
         }
 
@@ -163,6 +183,11 @@ namespace BangumiX.Common
                     return new Model.SubjectLarge();
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectLarge();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new Model.SubjectLarge();
@@ -199,6 +224,11 @@ namespace BangumiX.Common
                     return new Model.SubjectCollectStatus();
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectCollectStatus();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new Model.SubjectCollectStatus();
@@ -240,6 +270,11 @@ namespace BangumiX.Common
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new Model.SubjectProgress();
                 }
+                catch (TaskCanceledException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.SubjectProgress();
+                }
             }
         }
 
@@ -269,6 +304,11 @@ namespace BangumiX.Common
                     return new Model.User();
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                    return new Model.User();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                     return new Model.User();
@@ -309,6 +349,10 @@ namespace BangumiX.Common
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                 }
+                catch (TaskCanceledException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                }
             }
         }
 
@@ -333,6 +377,10 @@ namespace BangumiX.Common
                     }
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                 }
@@ -365,6 +413,10 @@ namespace BangumiX.Common
                     }
                 }
                 catch (WebException)
+                {
+                    await ExceptionDialog.DisplayNoNetworkDialog();
+                }
+                catch (TaskCanceledException)
                 {
                     await ExceptionDialog.DisplayNoNetworkDialog();
                 }
